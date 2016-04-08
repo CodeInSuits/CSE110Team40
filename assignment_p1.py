@@ -3,13 +3,13 @@ __author__ = 'urajkuma@ucsd.edu,A91060509,yil261@ucsd.edu,PID,L1Kong@ucsd.edu,PI
 from Queue import Queue
 
 million = 1000000
-prime = [True]*million
+prime = [1]*million
 
 def sieve():
 	for i in range(2, 1000, 1):
 		if prime[i] == False:
 			for j in range(i*2, million, j = j+i):
-				prime[j] = True
+				prime[j] = 2
     
 def numDigits(num):
 	return len(str(num))
@@ -45,7 +45,7 @@ def main():
     sieve()
     parent = [-1]*100000
     distance = [-1]*100000
-    a,b = map(int, raw_input().split())
+    b,a = map(int, raw_input().split())
     size = numDigits(a)
     digits = [None]*size
     primes = Queue()
@@ -53,27 +53,24 @@ def main():
     primes.put(a)
     parent[a] = 0;
     threshold = exponents(size)
-    while primes.empty() == False:
+    while (primes.empty() != True):
     	num = primes.get()
     	for x in range((size-1), -1, -1):
     		arr(digits, num)
     		for i in range(0, 10):
     			digits[x] = i
     			temp = arrToNum(digits, size)
-    			if (prime[temp] == False and distance[temp] == -1 and temp >= threshold):
+    			if ((prime[temp] == 1) and (distance[temp] == -1) and (temp >= threshold)):
     				distance[temp] = distance[num] + 1
     				parent[temp] = num
     				primes.put(temp)
-	
-	if(distance[b] == -1):    
-		print 'UNSOLVABLE'
-
-	else:
-		
-		while parent[b] != 0:
-			print b, " "
-			b = parent[b]
-
+    if(parent[b] != -1):
+        while (parent[b] != 0) and (parent[b] != -1):
+            print b, " "
+            b = parent[b]
+    else:
+        print 'UNSOLVABLE'
 
 if __name__ == '__main__':
     main()
+
