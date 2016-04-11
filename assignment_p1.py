@@ -3,13 +3,17 @@ __author__ = 'urajkuma@ucsd.edu,A91060509,yil261@ucsd.edu,PID,L1Kong@ucsd.edu,PI
 from Queue import Queue
 
 million = 1000000
-prime = [1]*million
+prime = [True]*million #Initialize all numbers to be "prime"
 
-def sieve():
-	for i in range(2, 1000, 1):
-		if prime[i] == False:
-			for j in range(i*2, million, j = j+i):
-				prime[j] = 2
+def sieve(limit):
+    prime = [True]*(limit+1) # create limit+1 list because it's '0' starting
+	prime[0] = False
+	prime[1] = False
+	for i in xrange(2,limit+1): # Search through all number up till this number, using "xrange" because it's python 2
+		if prime[i] == True: # if this number hasn't been marked as False, then it's a prime #
+			for j in xrange(i+i, limit, i): # Find all multiples of this prime #
+				prime[j] = False # mark off unprime #
+	return prime
     
 def numDigits(num):
 	return len(str(num))
