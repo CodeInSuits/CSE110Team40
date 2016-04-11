@@ -7,13 +7,13 @@ prime = [True]*million #Initialize all numbers to be "prime"
 
 def sieve(limit):
     prime = [True]*(limit+1) # create limit+1 list because it's '0' starting
-	prime[0] = False
-	prime[1] = False
-	for i in xrange(2,limit+1): # Search through all number up till this number, using "xrange" because it's python 2
-		if prime[i] == True: # if this number hasn't been marked as False, then it's a prime #
-			for j in xrange(i+i, limit, i): # Find all multiples of this prime #
-				prime[j] = False # mark off unprime #
-	return prime
+    prime[0] = False
+    prime[1] = False
+    for i in xrange(2,limit+1): # Search through all number up till this number, using "xrange" because it's python 2
+	    if prime[i] == True: # if this number hasn't been marked as False, then it's a prime #
+		    for j in xrange(i+i, limit, i): # Find all multiples of this prime #
+			    prime[j] = False # mark off unprime #
+    return prime
     
 def numDigits(num):
 	return len(str(num))
