@@ -85,7 +85,7 @@ def printPath(visit,num):
 def getPath (p1,p2):
 # input: <str> p1 and <str> p2
 # return the path between two primes
-# using DLS with max-depth=5 and root-depth=0
+# using DLS with max-depth=8 and root-depth=0
 # return "UNSOLVABLE" if not path exist
 # visit[]: visited state lookup table to check if prime[i] is visited
 #           as well as storing path information
