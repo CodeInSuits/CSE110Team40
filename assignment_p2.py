@@ -56,8 +56,10 @@ def getPossibleActions (num):
         for i in xrange(10):
             old[digit] = i
             new = digits2num(old)
-            if prime[int(new)]:
-                l+=[new]
+            # no leading zero
+            if str(new) == old:
+                if prime[int(new)]:
+                    l+=[new]
         old[digit] = save_digit
     return l             
     
