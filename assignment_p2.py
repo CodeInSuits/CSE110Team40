@@ -57,7 +57,7 @@ def getPossibleActions (num):
             old[digit] = i
             new = digits2num(old)
             # no leading zero
-            if str(new) == old:
+            if str(int(new)) == new:
                 if prime[int(new)]:
                     l+=[new]
         old[digit] = save_digit
@@ -89,6 +89,8 @@ def getPath (p1,p2):
     N=len(p1)
     global prime
     prime = sieve(10**N)
+    if not prime [int(p1)]:
+        return "UNSOLVABLE"
     depth =5
     visit = {p1:(0,0)} # using 0 to indicate root node
     stack=[(p1,0)]
