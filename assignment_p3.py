@@ -10,14 +10,14 @@ def sieve(limit):
 # Then from 2 to limit, for each True value, mark off all its multiple indices as False
 # Return the list
 
-    prime = [True]*(limit)
-    prime[0] = False
-    prime[1] = False
+    tmp = [True]*(limit)
+    tmp[0] = False
+    tmp[1] = False
     for i in xrange(2,limit):
-        if prime[i] == True:
-	    for j in xrange(i+i, limit, i):
-                prime[j] = False
-    return prime
+        if tmp[i] == True:
+            for j in xrange(i+i, limit, i):
+                tmp[j] = False
+    return tmp
 
 
 def num2digits(num):
@@ -56,7 +56,6 @@ def getPossibleActions (num):
 
     N = len(num)
     old = num2digits(num)
-    prime = sieve(10**N)
     l=[]
     for digit in xrange(N):
         save_digit = old[digit]
@@ -93,6 +92,8 @@ def getPath (p1,p2):
 #           visited entry stores its parent
 
     N=len(p1)
+    global prime
+    prime = sieve(10**N)
     for depth in xrange(6):
         visit = [(x,depth) for x in xrange(10**N)]
         visit[int(p1)]=(0,0)
