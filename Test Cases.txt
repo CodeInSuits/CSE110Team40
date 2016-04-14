@@ -1,0 +1,19 @@
+# We should use the same test cases in for analysis
+# If you have special ones, please add it below
+# you can test all these cases with my "test.sh" code
+# Use "#" for comments
+
+# Regular Cases
+101 997
+1009 9973
+10007 99991
+100003 104729
+
+# Edge Cases
+101 1009
+100 103
+103 100
+103 103
+
+
+
