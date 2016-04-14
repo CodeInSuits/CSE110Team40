@@ -2,6 +2,7 @@ __author__ = 'urajkuma@ucsd.edu,A91060509,yil261@ucsd.edu,PID,L1Kong@ucsd.edu,PI
 
 # library importing
 import sys # for arugment parsing
+from time import time #runtime test
 
 def sieve(limit):
 # Sieve of Eratosthenes method for prime number list
@@ -9,15 +10,14 @@ def sieve(limit):
 # First mark 0 and 1 as False, and everything else True
 # Then from 2 to limit, for each True value, mark off all its multiple indices as False
 # Return the list
-
-    prime = [True]*(limit)
-    prime[0] = False
-    prime[1] = False
+    tmp = [True]*(limit)
+    tmp[0] = False
+    tmp[1] = False
     for i in xrange(2,limit):
-        if prime[i] == True:
-	    for j in xrange(i+i, limit, i):
-                prime[j] = False
-    return prime
+        if tmp[i] == True:
+            for j in xrange(i+i, limit, i):
+                tmp[j] = False
+    return tmp
 
 
 def num2digits(num):
@@ -41,12 +41,6 @@ def digits2num(l):
         num+=str(i)
     return num
 
-def swap(l,i,num):
-# input: (list l,index i,num)
-# change the ith element of l to num
-
-    tmp=[x for x in l]
-    
 
 def getPossibleActions (num):
 # input: <str> num
@@ -56,7 +50,6 @@ def getPossibleActions (num):
 
     N = len(num)
     old = num2digits(num)
-    prime = sieve(10**N)
     l=[]
     for digit in xrange(N):
         save_digit = old[digit]
@@ -75,10 +68,10 @@ def printPath(visit,num):
 
     N = len(num)
     path=""
-    while visit[int(num)][0] != 0:
-        path = path + " " + str(num).zfill(N)[::-1]
-        num = str(visit[int(num)][0])
-    path = path+" " + str(num).zfill(N)[::-1]
+    while visit[num][0] != 0:
+        path = path + " " + num.zfill(N)[::-1]
+        num = visit[num][0]
+    path = path+" " + num.zfill(N)[::-1]
     return path[::-1].strip()
 
 
@@ -87,31 +80,39 @@ def getPath (p1,p2):
 # return the path between two primes
 # using DLS with max-depth=8 and root-depth=0
 # return "UNSOLVABLE" if not path exist
-# visit[]: visited state lookup table to check if prime[i] is visited
-#           as well as storing path information
+# visit: visited state lookup table to check if prime[i] is visited
+#           as well as storing path information (stores its 
 #           unvisited entry stores itself
 #           visited entry stores its parent
-    depth =5
     N=len(p1)
-    visit = [(x,depth) for x in xrange(10**N)]
-    visit[int(p1)]=(0,0)
+    global prime
+    prime = sieve(10**N)
+    depth =5
+    #visit = [(x,depth) for x in xrange(10**N)]
+    visit = {p1:(0,0)} # using 0 to indicate root node
     stack=[(p1,0)]
     while len(stack) != 0:
         node, d = stack.pop()
         if node == p2:
+            #return "found path"
             return printPath(visit,p2)
         if d == depth:
             continue
         for child in getPossibleActions(node):
-            tmp = int(child)
-            if (visit[tmp][0] == tmp) or (d < visit[tmp][1]):
-                visit[tmp] = (int(node),d+1)
-                stack+=[(child,d+1)]
+            if (visit.get(child)):
+                if (d >= visit[child][1]):
+                    continue
+            visit[child] = (node,d+1)
+            stack+=[(child,d+1)]
     return "UNSOLVABLE"
 
 def main() :
     argv=str(sys.stdin.readline()).split()
-    print(getPath(argv[0],argv[1]))
+    begin_time=time()
+    path=getPath(argv[0],argv[1])
+    end_time=time()
+    print(path)
+    print("time spent: ",end_time-begin_time)
 
 
 if __name__ == '__main__':
