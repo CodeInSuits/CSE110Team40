@@ -54,10 +54,13 @@ def getPossibleActions (num):
     for digit in xrange(N):
         save_digit = old[digit]
         for i in xrange(10):
+            # skip same bit
+            if save_digit == i:
+                continue
             old[digit] = i
             new = digits2num(old)
             # no leading zero
-            if str(int(new)) == new:
+            if new[0] != '0':
                 if prime[int(new)]:
                     l+=[new]
         old[digit] = save_digit
@@ -69,11 +72,11 @@ def printPath(visit,num):
 # print the path from x->y
 
     N = len(num)
-    path=""
-    while visit[num][0] != 0:
-        path = path + " " + num.zfill(N)[::-1]
-        num = visit[num][0]
-    path = path+" " + num.zfill(N)[::-1]
+    path=num[::-1]
+    prev = visit[num][0]
+    while prev:
+        path = path + " " + prev[::-1]
+        prev = visit[prev][0]
     return path[::-1].strip()
 
 
@@ -91,31 +94,75 @@ def getPath (p1,p2):
     prime = sieve(10**N)
     if not prime [int(p1)]:
         return "UNSOLVABLE"
-    depth =5
-    visit = {p1:(0,0)} # using 0 to indicate root node
+    if p1 == p2:
+        return p2
+    depth =5+1
+    visit = {p1:('',0)} # using '' to indicate root node
     stack=[(p1,0)]
     while len(stack) != 0:
         node, d = stack.pop()
-        if node == p2:
-            #return "found path"
-            return printPath(visit,p2)
-        if d == depth:
-            continue
         for child in getPossibleActions(node):
-            if (visit.get(child)):
+            if child == p2:
+                visit[child] = (node,d+1)
+                return printPath(visit,p2)
+            if d==depth-1:
+                    continue
+            if (visit.get(child)!= None):
                 if (d >= visit[child][1]):
                     continue
             visit[child] = (node,d+1)
             stack+=[(child,d+1)]
     return "UNSOLVABLE"
 
+
+######################## Below are not used code ################
+def PrintPath(visit,num):
+    N = len(num)
+    path=num[::-1]
+    prev = visit[int(num)][0]
+    while prev:
+        path = path + " " + prev[::-1]
+        prev = visit[int(prev)][0]
+    return path[::-1].strip()
+
+
+def GetPath (p1,p2):
+    N=len(p1)
+    global prime
+    prime = sieve(10**N)
+    if not prime [int(p1)]:
+        return "UNSOLVABLE"
+    if p1 == p2:
+        return p2
+    depth =5+1
+    visit = [(None,0)]*10**N # using '' to indicate root node
+    visit[int(p1)]=('',0)
+    stack=[(p1,0)]
+    while len(stack) != 0:
+        node, d = stack.pop()
+        for child in getPossibleActions(node):
+            tmp = int(child)
+            if child == p2:
+                visit[tmp] = (node,d+1)
+                return printPath(visit,p2)
+            if (visit[tmp][0]!= None and d >= visit[tmp][1]) or d==depth-1:
+                    continue
+            visit[tmp] = (node,d+1)
+            stack+=[(child,d+1)]
+    return "UNSOLVABLE"
+##############################################################
+
+
+##############
+#### Main ####
+##############
 def main() :
     argv=str(sys.stdin.readline()).split()
-    begin_time=time()
+    begin=time()
     path=getPath(argv[0],argv[1])
-    end_time=time()
+    end=time()
     print(path)
-    print("time spent: ",end_time-begin_time)
+    print "time",end-begin
 
 
 if __name__ == '__main__':
