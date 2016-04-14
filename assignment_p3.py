@@ -2,6 +2,7 @@ __author__ = 'urajkuma@ucsd.edu,A91060509,yil261@ucsd.edu,PID,L1Kong@ucsd.edu,PI
 
 # library importing
 import sys # for arugment parsing
+from time import time
 
 def sieve(limit):
 # Sieve of Eratosthenes method for prime number list
@@ -41,12 +42,6 @@ def digits2num(l):
         num+=str(i)
     return num
 
-def swap(l,i,num):
-# input: (list l,index i,num)
-# change the ith element of l to num
-
-    tmp=[x for x in l]
-    
 
 def getPossibleActions (num):
 # input: <str> num
@@ -74,10 +69,10 @@ def printPath(visit,num):
 
     N = len(num)
     path=""
-    while visit[int(num)][0] != 0:
-        path = path + " " + str(num).zfill(N)[::-1]
-        num = str(visit[int(num)][0])
-    path = path+" " + str(num).zfill(N)[::-1]
+    while visit[num][0] != 0:
+        path = path + " " + num.zfill(N)[::-1]
+        num = visit[num][0]
+    path = path+" " + num.zfill(N)[::-1]
     return path[::-1].strip()
 
 
@@ -95,8 +90,7 @@ def getPath (p1,p2):
     global prime
     prime = sieve(10**N)
     for depth in xrange(6):
-        visit = [(x,depth) for x in xrange(10**N)]
-        visit[int(p1)]=(0,0)
+        visit = {p1:(0,0)} # using 0 to indicate root node
         stack=[(p1,0)]
         while len(stack) != 0:
             node, d = stack.pop()
@@ -105,15 +99,20 @@ def getPath (p1,p2):
             if d == depth:
                 continue
             for child in getPossibleActions(node):
-                tmp = int(child)
-                if (visit[tmp][0] == tmp) or (d < visit[tmp][1]):
-                    visit[tmp] = (int(node),d+1)
-                    stack+=[(child,d+1)]
+                if (visit.get(child)):
+                    if (d >= visit[child][1]):
+                        continue
+                visit[child] = (node,d+1)
+                stack+=[(child,d+1)]
     return "UNSOLVABLE"
 
 def main() :
     argv=str(sys.stdin.readline()).split()
-    print(getPath(argv[0],argv[1]))
+    begin_time=time()
+    path=getPath(argv[0],argv[1])
+    end_time=time()
+    print(path)
+    print("time spent: ",end_time-begin_time)
 
 
 if __name__ == '__main__':

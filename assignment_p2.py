@@ -88,7 +88,6 @@ def getPath (p1,p2):
     global prime
     prime = sieve(10**N)
     depth =5
-    #visit = [(x,depth) for x in xrange(10**N)]
     visit = {p1:(0,0)} # using 0 to indicate root node
     stack=[(p1,0)]
     while len(stack) != 0:
