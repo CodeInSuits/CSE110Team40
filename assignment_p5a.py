@@ -19,6 +19,27 @@ class PriorityQueue:
 		
 		def get(self):
 				return heapq.heappop(self.elements)[1]
+				
+def getPossibleActions2 (num):
+	# input: <str> num
+	# return a list of <str> num' which are primes and
+	# differ from num by exactly one digit
+	# prime[]: prime number lookup table to check if prime[i] is prime
+
+		N = len(num)
+		old = num2digits(num)
+		l=[]
+		for digit in xrange(N):
+			save_digit = old[digit]
+			for i in xrange(10):
+				old[digit] = i
+				new = digits2num(old)
+				# no leading zero
+				if str(new) == old:
+					if prime[int(new)]:
+						l+=[new]
+			old[digit] = save_digit
+		return l 
 
 def sieve(limit):
 # Sieve of Eratosthenes method for prime number list
@@ -59,6 +80,8 @@ def getPossibleActions (num):
 						old = num2digits(num)
 						prime = sieve(10**N)
 						l=[]
+						if not prime[int(num)]:
+							return l
 						for digit in xrange(N):
 								save_digit = old[digit]
 								for i in xrange(10):
@@ -69,7 +92,7 @@ def getPossibleActions (num):
 								old[digit] = save_digit
 						return l             
 
-def reconstruct_path(came_from, start, goal):
+def printPath(came_from, start, goal):
 				if goal not in came_from:
 					return 'UNSOLVABLE'
 				current = goal
@@ -79,10 +102,11 @@ def reconstruct_path(came_from, start, goal):
 						path.append(current)
 				path.reverse()
 				return path
+
 def heuristic(str1, str2):
 	return sum(itertools.imap(str.__ne__, str1, str2))
 
-def a_star_search(start, goal):
+def getPath(start, goal):
 				frontier = PriorityQueue()
 				frontier.put(start, 0)
 				came_from = {}
@@ -107,12 +131,9 @@ def a_star_search(start, goal):
 				
 				return came_from
 
-def lev(a, b):
-	if not a: return len(b)
-	if not b: return len(a)
-	return min(lev(a[1:], b[1:])+(a[0] != b[0]), lev(a[1:], b)+1, lev(a, b[1:])+1)
-
-print(lev(str(423), str(342)))
-print(heuristic(str(423), str(342)))
-came_from = a_star_search(100001, 293339)
-print(reconstruct_path(came_from, 100001, 293339))
+#argv=str(sys.stdin.readline()).split()
+came_from = getPath(103, 113)
+print(printPath(came_from, 103, 111))
+print(getPossibleActions(str(113)))
+primes = sieve(200)
+print(primes[103])
