@@ -1,15 +1,17 @@
 __author__ = 'urajkuma@ucsd.edu,A91060509,yil261@ucsd.edu,A91085115,L1Kong@ucsd.edu,A97010449'
 
 from Queue import Queue
+from time import time
 
-million = 1000000
-prime = [False]*million
-
-def sieve():
-    for i in range(2, 1000, 1):
-        if prime[i] == False:
-            for j in range(i*2, million, i):
-                prime[j] = True
+def sieve(limit):
+    tmp = [True] * limit
+    tmp[0] = False
+    tmp[1] = False
+    for i in xrange(2,limit):
+        if tmp[i]:
+            for j in xrange(i+i, limit, i):
+                tmp[j] = False
+    return tmp
     
 def numDigits(num):
     return len(str(num))
@@ -38,41 +40,73 @@ def exponents(size):
 
     return threshold
 
-
 def main():
-    b,a = map(int, raw_input().split())
+    nodeCount = 0
+    a,b = map(int, raw_input().split())
+    begin = time()
     size = numDigits(a)
+    N = 10**size
+    global prime
+    prime = sieve(N)
     digits = [None]*size
-    primes = Queue()
-    primes.put(a)
     threshold = exponents(size)
-    sieve()
-    parent = [-1]*million
-    distance = [-1]*million
-    parent[a] = 0;
-    distance[a] = 0
-    if(prime[b] != False or prime[a] != False):
+    parent = [None]*N
+    visited = [None]*N # changed your distance[] to visited[]
+    parent[a] = None;
+    visited[a] = True
+    
+    primes = Queue()
+    if not prime[a]:
+        end=time()
+        print "node visit:",nodeCount
         print "UNSOLVABLE"
-    else:
-        while (primes.empty() != True):
-            num = primes.get()
-            for x in range((size-1), -1, -1):
-                arr(digits, num)
-                for i in range(0, 10):
-                    digits[x] = i
-                    temp = arrToNum(digits, size)
-                    if ((prime[temp] == False) and (distance[temp] == -1) and (temp >= threshold)):
-                        distance[temp] = distance[num] + 1
-                        parent[temp] = num
-                        primes.put(temp)
+        print "time spent:",end-begin
+        return
+    if a == b:
+        end=time()
+        print "node visit:",nodeCount
+        print a
+        print "time spent:",end-begin
+        return
+    primes.put(a)
+    nodeCount+=1
+    while (primes.empty() != True):
+        num = primes.get()
+        for x in xrange(size):
+            arr(digits, num)
+            for i in xrange(0, 10):
+                digits[x] = i
+                temp = arrToNum(digits, size)
+                if  temp < threshold:
+                    continue
+                if (temp == b):
+                    parent[temp]=num
+                    end=time()
+                    print "node visit:",nodeCount
+                    output=str(b)
+                    tmp=parent[b]
+                    while tmp:
+                        output = str(tmp)+" "+output
+                        tmp = parent[tmp]
+                    #output = str(a) + " " + output
+                    print output
+                    print "time spent:",end-begin
+                    return
+                if prime[temp] and not visited[temp] :
+                    visited[temp] = True
+                    parent[temp] = num
+                    primes.put(temp)
+                    nodeCount+=1
 
-        if(distance[b] == -1):
-            print "UNSOLVABLE"
-        else:
-            while(parent[b] != False):
-                print b,
-                b = parent[b]
-            print a
-
+    # if the function doesn't return in while
+    # then no path exists
+    end=time()
+    print "node visit:",nodeCount
+    print "UNSOLVABLE"
+    print "time spent:",end-begin
+    return
+            
+            
+            
 if __name__ == '__main__':
     main()

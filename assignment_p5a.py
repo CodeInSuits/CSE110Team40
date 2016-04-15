@@ -86,7 +86,7 @@ def printPath(came_from, start, goal):
         current = came_from[current]
         path.append(current)
     path.reverse()
-    return path
+    return " ".join(path)
 
 def heuristic(str1, str2):
     return sum(itertools.imap(str.__ne__, str1, str2))
@@ -125,7 +125,7 @@ def main() :
     came_from = getPath(argv[0], argv[1])
     print(printPath(came_from, argv[0], argv[1]))
     end_time=time()
-    print("time spent: ",end_time-begin_time)
+    print "time spent: ",end_time-begin_time
 
 if __name__ == '__main__':
     main()

@@ -117,56 +117,11 @@ def getPath (p1,p2):
                     if (d >= visit[child][1]):
                         continue
                 visit[child] = (node,d+1)
-                stack+=[(child,d+1)]
+                stack.append((child,d+1))
                 nodeCount+=1
     print "node visited:",nodeCount
     return "UNSOLVABLE"
 
-######################## Alternative ###################3
-def PrintPath(visit,num):
-    begin=time()
-    N = len(num)
-    path=num[::-1]
-    prev = visit[int(num)][0]
-    while prev:
-        path = path + " " + prev[::-1]
-        prev = visit[int(prev)][0]
-    #path = path+" " + prev.zfill(N)[::-1]
-    end=time()
-    print "print time:",end-begin
-    return path[::-1].strip()
-
-def GetPath(p1,p2):
-    begin=time()
-    N=len(p1)
-    global prime
-    prime = sieve(10**N)
-    if not prime [int(p1)]:
-        return "UNSOLVABLE"
-    if p1 == p2:
-        return p2
-    DEPTH = 8+1
-    for depth in xrange(1,DEPTH):
-        visit = [(None,0)]*10**N # using '' to indicate root node
-        visit[int(p1)]=('',0)
-        stack=[(p1,0)]
-        while len(stack) != 0:
-            node, d = stack.pop()
-            for child in getPossibleActions(node):
-                tmp = int(child)
-                if child == p2:
-                    visit[tmp] = (node,d+1)
-                    end=time()
-                    print "find:",end-begin
-                    return printPath(visit,p2)
-                if (visit[tmp][0]!= None and d >= visit[tmp][1]) or d==depth-1:
-                        continue
-                visit[tmp] = (node,d+1)
-                stack+=[(child,d+1)]
-    end=time()
-    print "find:",end-begin
-    return "UNSOLVABLE"
-########################################################
 
 def main() :
     argv=str(sys.stdin.readline()).split()
