@@ -21,7 +21,7 @@ def arrToNum(digits, size):
     temp = 0
     x = 0
     while x < size:
-        temp = temp*10 + digits[x]
+        temp = temp*10 + int(digits[x])
         x+=1
 
     return temp
@@ -29,7 +29,7 @@ def arrToNum(digits, size):
 def arr(digits, num):
     x = numDigits(num) - 1
     while num:
-        digits[x] = num%10
+        digits[x] = str(num%10)
         num = num/10
         x -= 1
 
@@ -83,7 +83,7 @@ def main():
 
     primes = Queue()
     primes2 = Queue()
-    if(not prime[a] or not prime[b]):
+    if(not prime[a]):
         end=time()
         print "node visit:",nodeCount
         print "UNSOLVABLE"
@@ -110,11 +110,11 @@ def main():
         for x in range(size):
             arr(digits, num)
             for i in range(0, 10):
-                digits[x] = i
+                digits[x] = str(i)
                 temp = arrToNum(digits, size)
                 if temp < threshold:
                     continue
-                stemp="".digits
+                stemp="".join(digits)
                 if stemp in set2:
                     parent[temp]=num
                     end=time()
@@ -132,11 +132,11 @@ def main():
         for x in range(size2):
             arr(digits2, num2)
             for i in range(0, 10):
-                digits2[x] = i
+                digits2[x] = str(i)
                 temp = arrToNum(digits2, size2)
                 if temp < threshold2:
                     continue
-                stemp="".digits2
+                stemp="".join(digits2)
                 if stemp in set1:
                     child[temp]=num2
                     end=time()
