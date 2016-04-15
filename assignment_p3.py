@@ -104,7 +104,6 @@ def getPath (p1,p2):
         visit = {p1:('',0)} # using '' to indicate root node
         stack=[(p1,0)]
         nodeCount+=1
-        print nodeCount
         while len(stack) != 0:
             node, d = stack.pop()
             for child in getPossibleActions(node):
