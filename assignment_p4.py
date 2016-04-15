@@ -96,11 +96,11 @@ def main():
         print "time spent:",end-begin
         return
     primes.put(a)
-    arr(digits, num)
+    arr(digits, a)
     set1.add("".join(digits))
     nodeCount+=1
     primes2.put(b)
-    arr(digits2, num2)
+    arr(digits2, b)
     set2.add("".join(digits2))
     nodeCount+=1
     
