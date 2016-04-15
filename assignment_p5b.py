@@ -59,8 +59,6 @@ def sieve(limit):
 						for j in xrange(i+i, limit, i):
 								prime[j] = False
 		return prime
-
-
 def num2digits(num):
 		l=[]
 		for i in num:
@@ -89,7 +87,7 @@ def printPath(came_from, start, goal):
 				return path
 
 def heuristic(str1, str2):
-	return sum(itertools.imap(str.__ne__, str1, str2))
+	return 1.5*sum(itertools.imap(str.__ne__, str1, str2))
 
 def getPath(start, goal):
 	N=len(str(start))
@@ -123,10 +121,13 @@ def getPath(start, goal):
 def main() :
 	argv=str(sys.stdin.readline()).split()
 	begin_time=time()
-	came_from = getPath(argv[0], argv[1])
-	print(printPath(came_from, argv[0], argv[1]))
+	came_from = getPath(101, 1009)
+	print(printPath(came_from, 101, 1009))
 	end_time=time()
 	print("time spent: ",end_time-begin_time)
 
 if __name__ == '__main__':
 	main()
+#argv=str(sys.stdin.readline()).split()
+
+
