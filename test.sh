@@ -13,6 +13,10 @@ do
     then 
         continue
     else
+        echo
+        echo "Input:"
+        echo $line
+        echo "Outpu:"
         echo $line | python $input
     fi
 done < "Test Cases.txt"
