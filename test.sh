@@ -16,7 +16,7 @@ do
         echo
         echo "Input:"
         echo $line
-        echo "Outpu:"
+        echo "Output:"
         echo $line | python $input
     fi
 done < "Test Cases.txt"

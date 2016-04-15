@@ -1,54 +1,61 @@
 
 Input:
 101 997
-Outpu:
+Output:
 node visited: 25
 101 109 199 197 997
-time 0.00154209136963
+time 0.00101113319397
 
 Input:
 1009 9973
-Outpu:
+Output:
 node visited: 50
 1009 1069 1063 1093 1993 1973 9973
-time 0.0127739906311
+time 0.00803089141846
 
 Input:
 10007 99991
-Outpu:
+Output:
 node visited: 4852
 10007 10037 10937 19937 19997 19991 99991
-time 1.0449821949
+time 0.959938049316
 
 Input:
 100003 104729
-Outpu:
+Output:
 node visited: 3355
 100003 100703 106703 106753 106759 104759 104729
-time 0.810847997665
+time 1.52477502823
+
+Input:
+1000003 1676267
+Output:
+node visited: 34674
+UNSOLVABLE
+time 18.3847019672
 
 Input:
 101 1009
-Outpu:
+Output:
 node visited: 967
 UNSOLVABLE
-time 0.0593810081482
+time 0.0931260585785
 
 Input:
 100 103
-Outpu:
+Output:
 UNSOLVABLE
-time 0.000293970108032
+time 0.000482082366943
 
 Input:
 103 100
-Outpu:
+Output:
 node visited: 945
 UNSOLVABLE
-time 0.0579309463501
+time 0.0873501300812
 
 Input:
 103 103
-Outpu:
+Output:
 103
-time 0.000286102294922
+time 0.000507116317749
