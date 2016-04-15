@@ -61,17 +61,18 @@ def main():
     begin = time()
     size = numDigits(a)
     size2 = numDigits(b)
-    N = 10**size
+    N1 = 10**size
+    N2 = 10**size2
     global prime
-    prime = sieve(N)
+    prime = sieve(max(N1,N2))
     digits = [None]*size
     digits2 = [None]*size2
     threshold = exponents(size)
     threshold2 = exponents(size2)
-    parent = [None]*N
-    visited = [None]*N
-    visited2 = [None]*N
-    child = [None]*N
+    parent = [None]*N1
+    visited = [None]*N1
+    visited2 = [None]*N2
+    child = [None]*N2
     parent[a] = None
     child[b] = None
     visited[a] = True   
@@ -95,10 +96,12 @@ def main():
         print "time spent:",end-begin
         return
     primes.put(a)
-    set1.add(a)
+    arr(digits, num)
+    set1.add("".join(digits))
     nodeCount+=1
     primes2.put(b)
-    set2.add(b)
+    arr(digits2, num2)
+    set2.add("".join(digits2))
     nodeCount+=1
     
     while (not primes.empty() and not primes2.empty()):
@@ -111,7 +114,8 @@ def main():
                 temp = arrToNum(digits, size)
                 if temp < threshold:
                     continue
-                if temp in set2:
+                stemp="".digits
+                if stemp in set2:
                     parent[temp]=num
                     end=time()
                     print "node visit:",nodeCount
@@ -122,7 +126,7 @@ def main():
                     visited[temp] = True
                     parent[temp] = num
                     primes.put(temp)
-                    set1.add(temp)
+                    set1.add(stemp)
                     nodeCount+=1
 
         for x in range(size2):
@@ -132,7 +136,8 @@ def main():
                 temp = arrToNum(digits2, size2)
                 if temp < threshold2:
                     continue
-                if temp in set1:
+                stemp="".digits2
+                if stemp in set1:
                     child[temp]=num2
                     end=time()
                     print "node visit:",nodeCount
@@ -143,7 +148,7 @@ def main():
                     visited2[temp] = True
                     child[temp] = num2
                     primes2.put(temp)
-                    set2.add(temp)
+                    set2.add(stemp)
                     nodeCount+=1
 
     end=time()
