@@ -91,6 +91,7 @@ def getPath (p1,p2):
 #           unvisited entry stores itself
 #           visited entry stores its parent
 
+    nodeCount=0
     N=len(p1)
     global prime
     prime = sieve(10**N)
@@ -102,19 +103,24 @@ def getPath (p1,p2):
     for depth in xrange(1,DEPTH):
         visit = {p1:('',0)} # using '' to indicate root node
         stack=[(p1,0)]
+        nodeCount+=1
+        print nodeCount
         while len(stack) != 0:
             node, d = stack.pop()
             for child in getPossibleActions(node):
                 if child == p2:
                     visit[child] = (node,d+1)
+                    print "node visited:",nodeCount
                     return printPath(visit,p2)
-                if d==depth-1:
+                if d==depth:
                         continue
                 if (visit.get(child)!= None):
                     if (d >= visit[child][1]):
                         continue
                 visit[child] = (node,d+1)
                 stack+=[(child,d+1)]
+                nodeCount+=1
+    print "node visited:",nodeCount
     return "UNSOLVABLE"
 
 ######################## Alternative ###################3
