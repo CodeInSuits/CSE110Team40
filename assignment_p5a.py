@@ -116,7 +116,7 @@ def getPath(start, goal):
                 priority = new_cost + heuristic(goal,element)
                 frontier_queue.put(element, priority)
                 came_from_map[element] = current
-    print(visited)
+    print "nodes visited:",visited
     return came_from_map
 
 def main() :
