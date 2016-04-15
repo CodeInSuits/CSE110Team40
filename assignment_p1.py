@@ -39,8 +39,6 @@ def exponents(size):
     return threshold
 
 
-
-
 def main():
     b,a = map(int, raw_input().split())
     size = numDigits(a)
@@ -52,27 +50,29 @@ def main():
     parent = [-1]*million
     distance = [-1]*million
     parent[a] = 0;
-    distance[a] = 0    
-    while (primes.empty() != True):
-        num = primes.get()
-        for x in range((size-1), -1, -1):
-            arr(digits, num)
-            for i in range(0, 10):
-                digits[x] = i
-                temp = arrToNum(digits, size)
-                if ((prime[temp] == False) and (distance[temp] == -1) and (temp >= threshold)):
-                    distance[temp] = distance[num] + 1
-                    parent[temp] = num
-                    primes.put(temp)
-
-    if(distance[b] == -1):
+    distance[a] = 0
+    if(prime[b] != False or prime[a] != False):
         print "UNSOLVABLE"
     else:
-        while(parent[b] != False):
-            print b,
-            b = parent[b]
-        print a
+        while (primes.empty() != True):
+            num = primes.get()
+            for x in range((size-1), -1, -1):
+                arr(digits, num)
+                for i in range(0, 10):
+                    digits[x] = i
+                    temp = arrToNum(digits, size)
+                    if ((prime[temp] == False) and (distance[temp] == -1) and (temp >= threshold)):
+                        distance[temp] = distance[num] + 1
+                        parent[temp] = num
+                        primes.put(temp)
 
+        if(distance[b] == -1):
+            print "UNSOLVABLE"
+        else:
+            while(parent[b] != False):
+                print b,
+                b = parent[b]
+            print a
 
 if __name__ == '__main__':
     main()
