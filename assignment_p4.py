@@ -71,6 +71,8 @@ def main():
         num = primes.get()
         num2 = primes2.get()
 
+#        if((num in set2) or (num2 in set1)):
+ #           print "hi"
         for x in range((size-1), -1, -1):
             arr(digits, num)
             for i in range(0, 10):
