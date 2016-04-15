@@ -8,7 +8,7 @@ import heapq
 import itertools
 from time import time
 
-class PriorityQueue:
+class FrontierRunner:
     def __init__(self):
         self.elements = []
     
@@ -93,7 +93,7 @@ def getPath(start, goal):
     N=len(start)
     global prime
     prime = sieve(10**N)
-    frontier_queue = PriorityQueue()
+    frontier_queue = FrontierRunner()
     frontier_queue.put(start, 0)
     came_from_map = {}
     cost_so_far_map = {}
