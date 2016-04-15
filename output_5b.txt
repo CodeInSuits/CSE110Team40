@@ -2,55 +2,55 @@
 Input:
 101 997
 Outpu:
-nodes visited: 7
+nodes visited: 4
 ['101', '107', '197', '997']
-('time spent: ', 0.0014889240264892578)
+('time spent: ', 0.001132965087890625)
 
 Input:
 1009 9973
 Outpu:
-nodes visited: 30
+nodes visited: 6
 ['1009', '1019', '1013', '1913', '1973', '9973']
-('time spent: ', 0.010899066925048828)
+('time spent: ', 0.006147861480712891)
 
 Input:
 10007 99991
 Outpu:
-nodes visited: 9
+nodes visited: 6
 ['10007', '90007', '90001', '90901', '99901', '99991']
-('time spent: ', 0.0548710823059082)
+('time spent: ', 0.05973196029663086)
 
 Input:
 100003 104729
 Outpu:
-nodes visited: 20
-['100003', '100703', '103703', '103723', '104723', '104729']
-('time spent: ', 0.6623020172119141)
+nodes visited: 7
+['100003', '104003', '104009', '104059', '104759', '104729']
+('time spent: ', 0.6590731143951416)
 
 Input:
 101 1009
 Outpu:
 nodes visited: 143
 UNSOLVABLE
-('time spent: ', 0.01859283447265625)
+('time spent: ', 0.018937110900878906)
 
 Input:
 100 103
 Outpu:
 nodes visited: 2
 ['100', '103']
-('time spent: ', 0.000782012939453125)
+('time spent: ', 0.0007810592651367188)
 
 Input:
 103 100
 Outpu:
 nodes visited: 143
 UNSOLVABLE
-('time spent: ', 0.01892709732055664)
+('time spent: ', 0.018761873245239258)
 
 Input:
 103 103
 Outpu:
 nodes visited: 1
 ['103']
-('time spent: ', 0.0005540847778320312)
+('time spent: ', 0.0005500316619873047)
