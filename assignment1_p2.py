@@ -119,9 +119,14 @@ def getPath (p1,p2):
 #### Main ####
 ##############
 def main() :
-    argv=str(sys.stdin.readline()).split()
-    path=getPath(argv[0],argv[1])
-    print(path)
+    #argv=str(sys.stdin.readline()).split()
+    #print argv
+    while True:
+        argv=str(sys.stdin.readline()).split()
+        if not argv:
+            break
+        path=getPath(argv[0],argv[1])
+        print(path)
 
 
 if __name__ == '__main__':
