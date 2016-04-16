@@ -43,8 +43,8 @@ def exponents(size):
 
 
 def printPath(parent,child,num):
-    left = str(num)
-    right = ""
+    left = ""
+    right = str(num)
     a=parent[num]
     b=child[num]
     while a:
@@ -53,7 +53,8 @@ def printPath(parent,child,num):
     while b:
         right += " "+str(b)
         b = child[b]
-    print left+right    
+    print left
+    print right    
 
 def getPath(a,b):
     size = numDigits(a)
@@ -84,7 +85,8 @@ def getPath(a,b):
         print "UNSOLVABLE"
         return
     if (a == b):
-        print a,b
+        print a
+        print b
         return
     primes.put(a)
     arr(digits, a)
