@@ -6,7 +6,6 @@ __author__ = 'urajkuma@ucsd.edu,A91060509,yil261@ucsd.edu,A91085115,L1Kong@ucsd.
 import sys # for arugment parsing
 import heapq
 import itertools
-from time import time
 
 #cite:
 #http://www.redblobgames.com/pathfinding/a-star/implementation.html
@@ -97,17 +96,17 @@ def getPath(start, goal):
     N=len(str(start))
     global prime
     prime = sieve(10**N)
-    frontier_queue = FrontierRunner()
-    frontier_queue.put(start, 0)
     came_from_map = {}
     cost_so_far_map = {}
     came_from_map[start] = None
+    if not prime[int(start)]:
+        return came_from_map
     cost_so_far_map[start] = 0
-    visited = 0
+    frontier_queue = FrontierRunner()
+    frontier_queue.put(start, 0)
     
     while not frontier_queue.empty():
         current = frontier_queue.get()
-        visited += 1
         if current == goal:
             break
         
@@ -118,16 +117,12 @@ def getPath(start, goal):
                 priority = new_cost + heuristic(goal,element)
                 frontier_queue.put(element, priority)
                 came_from_map[element] = current
-    print "nodes visited:",visited
     return came_from_map
 
 def main() :
     argv=str(sys.stdin.readline()).split()
-    begin_time=time()
     came_from = getPath(argv[0], argv[1])
     print(printPath(came_from, argv[0], argv[1]))
-    end_time=time()
-    print "time spent: ",end_time-begin_time
 
 if __name__ == '__main__':
     main()

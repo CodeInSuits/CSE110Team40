@@ -2,7 +2,6 @@ __author__ = 'urajkuma@ucsd.edu,A91060509,yil261@ucsd.edu,A91085115,L1Kong@ucsd.
 
 from Queue import Queue
 from sets import Set
-from time import time
 
 def sieve(limit):
     tmp = [True] * limit
@@ -43,7 +42,7 @@ def exponents(size):
 
 
 def printPath(parent,child,num):
-    left = ""
+    left = str(num)
     right = ""
     a=parent[num]
     b=child[num]
@@ -53,12 +52,10 @@ def printPath(parent,child,num):
     while b:
         right += " "+str(b)
         b = child[b]
-    print left+"(%s)"%num+right    
+    print left+right    
 
 def main():
-    nodeCount = 0
     a,b = map(int, raw_input().split())
-    begin = time()
     size = numDigits(a)
     size2 = numDigits(b)
     N1 = 10**size
@@ -83,26 +80,18 @@ def main():
 
     primes = Queue()
     primes2 = Queue()
-    if(not prime[a]):
-        end=time()
-        print "node visit:",nodeCount
+    if(not prime[a] or not prime[b]):
         print "UNSOLVABLE"
-        print "time spent:",end-begin
         return
     if (a == b):
-        end=time()
-        print "node visit: 2"
         print a
-        print "time spent:",end-begin
         return
     primes.put(a)
     arr(digits, a)
     set1.add("".join(digits))
-    nodeCount+=1
     primes2.put(b)
     arr(digits2, b)
     set2.add("".join(digits2))
-    nodeCount+=1
     
     while (not primes.empty() and not primes2.empty()):
         num = primes.get()
@@ -117,17 +106,13 @@ def main():
                 stemp="".join(digits)
                 if stemp in set2:
                     parent[temp]=num
-                    end=time()
-                    print "node visit:",nodeCount
                     printPath(parent,child,temp)
-                    print "time spent:",end-begin
                     return
                 if prime[temp] and not visited[temp]:
                     visited[temp] = True
                     parent[temp] = num
                     primes.put(temp)
                     set1.add(stemp)
-                    nodeCount+=1
 
         for x in range(size2):
             arr(digits2, num2)
@@ -139,22 +124,15 @@ def main():
                 stemp="".join(digits2)
                 if stemp in set1:
                     child[temp]=num2
-                    end=time()
-                    print "node visit:",nodeCount
                     printPath(parent,child,temp)
-                    print "time spent:",end-begin
                     return
                 if prime[temp] and not visited2[temp]:
                     visited2[temp] = True
                     child[temp] = num2
                     primes2.put(temp)
                     set2.add(stemp)
-                    nodeCount+=1
 
-    end=time()
-    print "node visit:",nodeCount
     print "UNSOLVABLE"
-    print "time spent:",end-begin
     return
 
 

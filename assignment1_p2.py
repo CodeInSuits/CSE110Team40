@@ -2,7 +2,6 @@ __author__ = 'urajkuma@ucsd.edu,A91060509,yil261@ucsd.edu,A91085115,L1Kong@ucsd.
 
 # library importing
 import sys # for arugment parsing
-from time import time #runtime test
 
 def sieve(limit):
 # Sieve of Eratosthenes method for prime number list
@@ -90,7 +89,6 @@ def getPath (p1,p2):
 #           unvisited entry stores itself
 #           visited entry stores its parent
 
-    nodeCount=0
     N=len(p1)
     global prime
     prime = sieve(10**N)
@@ -101,13 +99,11 @@ def getPath (p1,p2):
     depth =5
     visit = {p1:('',0)} # using '' to indicate root node
     stack=[(p1,0)]
-    nodeCount+=1
     while len(stack) != 0:
         node, d = stack.pop()
         for child in getPossibleActions(node):
             if child == p2:
                 visit[child] = (node,d+1)
-                print "node visited:",nodeCount
                 return printPath(visit,p2)
             if d==depth:
                     continue
@@ -116,8 +112,6 @@ def getPath (p1,p2):
                     continue
             visit[child] = (node,d+1)
             stack.append((child,d+1))
-            nodeCount+=1
-    print "node visited:",nodeCount
     return "UNSOLVABLE"
     
 
@@ -126,11 +120,8 @@ def getPath (p1,p2):
 ##############
 def main() :
     argv=str(sys.stdin.readline()).split()
-    begin=time()
     path=getPath(argv[0],argv[1])
-    end=time()
     print(path)
-    print "time",end-begin
 
 
 if __name__ == '__main__':

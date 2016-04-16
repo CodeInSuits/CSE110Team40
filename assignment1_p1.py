@@ -1,7 +1,6 @@
 __author__ = 'urajkuma@ucsd.edu,A91060509,yil261@ucsd.edu,A91085115,L1Kong@ucsd.edu,A97010449'
 
 from Queue import Queue
-from time import time
 
 def sieve(limit):
     tmp = [True] * limit
@@ -41,9 +40,7 @@ def exponents(size):
     return threshold
 
 def main():
-    nodeCount = 0
     a,b = map(int, raw_input().split())
-    begin = time()
     size = numDigits(a)
     N = 10**size
     global prime
@@ -57,19 +54,12 @@ def main():
     
     primes = Queue()
     if not prime[a]:
-        end=time()
-        print "node visit:",nodeCount
         print "UNSOLVABLE"
-        print "time spent:",end-begin
         return
     if a == b:
-        end=time()
-        print "node visit:",nodeCount
         print a
-        print "time spent:",end-begin
         return
     primes.put(a)
-    nodeCount+=1
     while (primes.empty() != True):
         num = primes.get()
         for x in xrange(size):
@@ -77,33 +67,25 @@ def main():
             for i in xrange(0, 10):
                 digits[x] = i
                 temp = arrToNum(digits, size)
-                if  temp < threshold:
+                if  temp < threshold or not prime[temp]:
                     continue
                 if (temp == b):
                     parent[temp]=num
-                    end=time()
-                    print "node visit:",nodeCount
                     output=str(b)
                     tmp=parent[b]
                     while tmp:
                         output = str(tmp)+" "+output
                         tmp = parent[tmp]
-                    #output = str(a) + " " + output
                     print output
-                    print "time spent:",end-begin
                     return
-                if prime[temp] and not visited[temp] :
+                if not visited[temp] :
                     visited[temp] = True
                     parent[temp] = num
                     primes.put(temp)
-                    nodeCount+=1
 
     # if the function doesn't return in while
     # then no path exists
-    end=time()
-    print "node visit:",nodeCount
     print "UNSOLVABLE"
-    print "time spent:",end-begin
     return
             
             
