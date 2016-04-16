@@ -1,5 +1,5 @@
 __author__ = 'urajkuma@ucsd.edu,A91060509,yil261@ucsd.edu,A91085115,L1Kong@ucsd.edu,A97010449'
-
+import sys
 from Queue import Queue
 
 def sieve(limit):
@@ -39,8 +39,7 @@ def exponents(size):
 
     return threshold
 
-def main():
-    a,b = map(int, raw_input().split())
+def getPath(a,b):
     size = numDigits(a)
     N = 10**size
     global prime
@@ -88,7 +87,12 @@ def main():
     print "UNSOLVABLE"
     return
             
-            
-            
+def main():
+    while True:
+        argv=str(sys.stdin.readline()).split()
+        if not argv:
+            break
+        getPath(int(argv[0]),int(argv[1]))
+
 if __name__ == '__main__':
     main()

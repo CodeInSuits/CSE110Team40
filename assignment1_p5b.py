@@ -116,9 +116,12 @@ def getPath(start, goal):
     return came_from_map
 
 def main() :
-    argv=str(sys.stdin.readline()).split()
-    came_from = getPath(argv[0],argv[1])
-    print(printPath(came_from, argv[0],argv[1]))
+    while True:
+        argv=str(sys.stdin.readline()).split()
+        if not argv:
+            break
+        came_from = getPath(argv[0],argv[1])
+        print(printPath(came_from, argv[0],argv[1]))
 
 if __name__ == '__main__':
     main()

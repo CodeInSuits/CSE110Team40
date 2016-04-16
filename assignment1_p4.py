@@ -1,5 +1,6 @@
 __author__ = 'urajkuma@ucsd.edu,A91060509,yil261@ucsd.edu,A91085115,L1Kong@ucsd.edu,A97010449'
 
+import sys
 from Queue import Queue
 from sets import Set
 
@@ -54,8 +55,7 @@ def printPath(parent,child,num):
         b = child[b]
     print left+right    
 
-def main():
-    a,b = map(int, raw_input().split())
+def getPath(a,b):
     size = numDigits(a)
     size2 = numDigits(b)
     N1 = 10**size
@@ -134,6 +134,13 @@ def main():
 
     print "UNSOLVABLE"
     return
+
+def main():
+    while True:
+        argv=str(sys.stdin.readline()).split()
+        if not argv:
+            break
+        getPath(int(argv[0]),int(argv[1]))
 
 
 if __name__ == '__main__':
