@@ -42,19 +42,23 @@ def exponents(size):
     return threshold
 
 
-def printPath(parent,child,num):
-    left = ""
-    right = str(num)
+def printPath(parent,child,num,flag):
+    if flag:
+        left = ""
+        right = str(num)
+    else:
+        left = str(num)
+        right = ""
     a=parent[num]
     b=child[num]
     while a:
         left = str(a) + " " + left
         a = parent[a]
     while b:
-        right += " "+str(b)
+        right += str(b)+" "
         b = child[b]
-    print left
-    print right    
+    print left.strip()
+    print right.strip()
 
 def getPath(a,b):
     size = numDigits(a)
@@ -108,7 +112,7 @@ def getPath(a,b):
                 stemp="".join(digits)
                 if stemp in set2:
                     parent[temp]=num
-                    printPath(parent,child,temp)
+                    printPath(parent,child,temp,True)
                     return
                 if prime[temp] and not visited[temp]:
                     visited[temp] = True
@@ -126,7 +130,7 @@ def getPath(a,b):
                 stemp="".join(digits2)
                 if stemp in set1:
                     child[temp]=num2
-                    printPath(parent,child,temp)
+                    printPath(parent,child,temp,False)
                     return
                 if prime[temp] and not visited2[temp]:
                     visited2[temp] = True
