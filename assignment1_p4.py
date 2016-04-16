@@ -84,7 +84,7 @@ def getPath(a,b):
         print "UNSOLVABLE"
         return
     if (a == b):
-        print a
+        print a,b
         return
     primes.put(a)
     arr(digits, a)
