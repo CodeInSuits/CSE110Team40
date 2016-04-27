@@ -9,44 +9,49 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.firebase.client.Firebase;
+
 public class MainActivity extends Activity implements View.OnClickListener{
 
-    //private Firebase firebase;
 
+    //backend object
+    private Firebase firebase;
+
+    //login button
     private Button login;
+
+    //register button
     private Button register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //get rid of the hiderous action bar on the top
         ActionBar actionBar = getActionBar();
         actionBar.hide();
+
+        //set up the view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //connect the login button
         login = (Button)findViewById(R.id.login);
         login.setOnClickListener(this);
 
+
+        //connect the register button
         register = (Button)findViewById(R.id.register);
         register.setOnClickListener(this);
 
-
-
-
-        /*
+        //initialize the firebase object
         Firebase.setAndroidContext(this);
 
-        firebase = new Firebase("https:// fiery-fire-5662.firebaseio.com/");
 
-        firebase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        //connect to the server
+        firebase = new Firebase("https://coupletone.firebaseio.com/");
 
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });*/
+        Firebase usernames = firebase.child("usernames");
+        usernames.setValue("Test");
 
 
     }

@@ -27,5 +27,4 @@ android {
 dependencies {
     compile 'com.firebase:firebase-client-android:2.5.2+'
     compile 'com.github.dmytrodanylyk.android-process-button:library:1.0.0'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
 }
