@@ -28,12 +28,12 @@ class MinimaxPlayer(Player):
         if(len(possibleMoves) == 0):
             return self.Max(state)
 
-        currentScore = 0 #to keep track of which is the winner at each level
+        currentScore = 1 #to keep track of which is the winner at each level
 
         for i, move in enumerate(possibleMoves):
             newBoard = state.result(move)
             newScore = self.Max(newBoard)
-            if(newScore >= currentScore):
+            if(newScore <= currentScore):
                 currentScore = newScore
 
         return currentScore
@@ -51,12 +51,12 @@ class MinimaxPlayer(Player):
         if(len(possibleMoves) == 0):
             return self.Min(state)
 
-        currentScore = 0 #to keep track of which is winner at each level
+        currentScore = -1 #to keep track of which is winner at each level
 
         for i, move in enumerate(possibleMoves):
             newBoard = state.result(move)
             newScore = self.Min(newBoard)
-            if(currentScore < newScore):
+            if(newScore >= currentScore):
                 currentScore = newScore
 
         return currentScore
