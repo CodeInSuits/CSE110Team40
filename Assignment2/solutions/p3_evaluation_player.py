@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-__author__ = 'Dan'
-__email__ = 'daz040@eng.ucsd.edu'
+__author__ = 'Lingyi Kong'
+__email__ = 'l1kong@ucsd.edu'
 
 from assignment2 import Player, State, Action
 

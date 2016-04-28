@@ -21,16 +21,16 @@ class MinimaxPlayer(Player):
         if(state.is_terminal()):
             # utility function returns value for opponent
             # thus we take the opposite value for our player
-            return -state.utility(state.player)
+            return state.utility(self)
 
         #else, generate new states
         possibleMoves = state.actions()
 
         #if no possible moves for Min, then call Max again on that same state
         if(len(possibleMoves) == 0):
-			# need to switch opponent when calling Max again
-			# result function with None action simply returns
-			# the same state with opponent
+            # need to switch opponent when calling Max again
+            # result function with None action simply returns
+            # the same state with opponent
             return self.Max(state.result(None))
 
         # Our opponent wants to have -1 for our player's utility
@@ -50,15 +50,15 @@ class MinimaxPlayer(Player):
         returns: Utility for our player
         """
         if(state.is_terminal()):
-            return state.utility(state.player)
+            return state.utility(self)
 
         possibleMoves = state.actions()
 
         #if no possible moves for Max, then call Min again on that same state
         if(len(possibleMoves) == 0):
-			# need to switch opponent when calling Max again
-			# result function with None action simply returns
-			# the same state with opponent
+            # need to switch opponent when calling Max again
+            # result function with None action simply returns
+            # the same state with opponent
             return self.Min(state.result(None))
 
         currentScore = -1 # Initialize losing position
