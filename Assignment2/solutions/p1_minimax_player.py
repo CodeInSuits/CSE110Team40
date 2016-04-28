@@ -2,6 +2,9 @@
 __author__ = 'Utkrisht Rajkumar'
 __email__ = 'urajkuma@ucsd.edu'
 
+import sys
+
+sys.path.append("../src")
 from assignment2 import Player, State, Action
 
 class MinimaxPlayer(Player):
