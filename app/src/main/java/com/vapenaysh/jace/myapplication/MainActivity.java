@@ -8,11 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.firebase.client.Firebase;
 
-public class MainActivity extends Activity implements View.OnClickListener{
-
+    public class MainActivity extends Activity implements View.OnClickListener{
 
     //backend object
     private Firebase firebase;
@@ -82,7 +82,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login:
-                //something
+                EditText uname = (EditText) findViewById(R.id.email);
+                EditText passw = (EditText) findViewById(R.id.password);
+                //TODO: login logic
+                startActivity(new Intent(MainActivity.this, MapsActivity.class));
                 break;
             case R.id.register:
                 startActivity(new Intent(MainActivity.this, CreateAccount.class));
