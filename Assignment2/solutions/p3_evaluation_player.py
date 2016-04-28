@@ -35,4 +35,15 @@ class EvaluationPlayer(Player):
         """
         Evaluates the state for the player with the given row
         """
+        player_goal_stones = state.board[state.player_goal_idx]
+        opponent_goal_stones = state.board[state.opponent_goal_idx]
+        player_pit_stones=0
+        for i in xrange(*state.possible_action_range()):
+            player_pit_stones += state.board[i]
+        total = state.M*state.N
+        opponent_pit_stones= total - player_goal_stones-opponent_goal_stones-player_pit_stones
+        prefactor = 1.0/2.0/state.M/state.N
+        # We use minus sign because this is actually opponent's state
+        weight = -(player_goal_stones-opponent_goal_stones+player_pit_stones-opponent_pit_stones)
+        return prefactor * weight
         raise NotImplementedError("Need to implement this method")
