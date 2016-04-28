@@ -16,7 +16,7 @@ class MinimaxPlayer(Player):
 
         #if terminal state, then return utility of that state
         if(state.is_terminal()):
-            return state.utility(state.player)
+            return state.utility(self)
 
         #else, generate new states
         possibleMoves = state.actions()
@@ -40,7 +40,7 @@ class MinimaxPlayer(Player):
         """ Args: Takes in state
         returns: -1,0,1 based on utility of the player of that state """
         if(state.is_terminal()):
-            return state.utility(state.player)
+            return state.utility(self)
 
         possibleMoves = state.actions()
 
