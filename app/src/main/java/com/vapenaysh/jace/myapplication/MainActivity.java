@@ -85,7 +85,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 //something
                 break;
             case R.id.register:
-                startActivity(new Intent(MainActivity.this, CreateAccount.class));
+                startActivity(new Intent(MainActivity.this, MapsActivity.class));
                 break;
         }
     }
