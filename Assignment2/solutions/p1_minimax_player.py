@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-__author__ = 'Utkrisht Rajkumar'
-__email__ = 'urajkuma@ucsd.edu'
+__author__ = 'Utkrisht Rajkumar, Lingyi Kong'
+__email__ = 'urajkuma@ucsd.edu, l1kong@ucsd.edu'
 
 import sys
 
