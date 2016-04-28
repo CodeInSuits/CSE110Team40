@@ -72,7 +72,8 @@ class MinimaxPlayer(Player):
         possibleMoves = state.actions()
         if(len(possibleMoves) == 0):
             return action
-        bestUtil = -1
+        
+        bestUtil = -2
         bestAction = 0
         #get the inital actions and states from given state
         for i, move in enumerate(possibleMoves):
