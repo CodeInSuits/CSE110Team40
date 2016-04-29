@@ -1,8 +1,53 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.vapenaysh.jace.myapplication.MapsActivity" />
+    android:orientation="vertical">
+
+    <fragment
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".7"
+        tools:context="com.vapenaysh.jace.myapplication.MapsActivity" />
+
+    <RelativeLayout
+        android:id="@+id/custom_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".3"
+        android:paddingLeft="@dimen/custom_name_padding"
+        android:paddingRight="@dimen/custom_name_padding">
+
+        <TextView
+            android:id="@+id/custom_name_prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/custom_name_height"
+            android:text="@string/choose_favorite"
+            android:gravity="center_vertical"
+            android:layout_centerHorizontal="true"
+            android:textSize="20dp"
+            android:background="#FFFF00"/>
+
+        <EditText
+            android:id="@+id/custom_name"
+            android:hint="Pick a custom name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/custom_name_height"
+            android:layout_below="@id/custom_name_prompt"
+           />
+
+        <Button
+            android:text="Save"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/custom_name_width"
+            android:layout_height="@dimen/custom_name_height"
+            android:onClick="saveCustomName"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

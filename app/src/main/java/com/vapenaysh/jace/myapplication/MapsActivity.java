@@ -2,17 +2,23 @@ package com.vapenaysh.jace.myapplication;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+                                                    GoogleMap.OnMapClickListener {
 
     private GoogleMap mMap;
+    private Marker currentMarker;
+    private TextView namePrompt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        namePrompt = (TextView) findViewById(R.id.custom_name_prompt);
+
     }
 
 
@@ -38,9 +46,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // Add a marker in sd and move the camera
+        LatLng ucsd = new LatLng(32.7157, -117.1611);
+        //mMap.addMarker(new MarkerOptions().position(ucsd).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ucsd, 13));
+        mMap.setOnMapClickListener(this);
+
+
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        if(currentMarker != null)
+            currentMarker.remove();
+        currentMarker = mMap.addMarker(new MarkerOptions().position(latLng));
+        namePrompt.setText("(Optional)Add a custom name!");
+    }
+
+    public void saveCustomName(View view){
+        if(currentMarker == null){
+            namePrompt.setText("Must pick a location first");
+        }
+        else{
+            TextView textView = (TextView)findViewById(R.id.custom_name);
+            String name = textView.getText().toString();
+            if( name.equals("") ){
+                name = "Location1";
+            }
+            namePrompt.setText(name);
+
+        }
     }
 }
