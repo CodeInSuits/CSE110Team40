@@ -88,15 +88,15 @@ class IDMPlayer(Player):
             # need to switch opponent when calling Max again
             # result function with None action simply returns
             # the same state with opponent
-            util,depthX= self.Max(state.result(None),alpha,beta, depth+1)
-            self.TT[state.ser()] = (util,self.maxDepth)
-            return (util, self.maxDepth)
+            util = self.Max(state.result(None),alpha,beta, depth+1)
+            self.TT[state.ser()] = (util,self.maxDepth-depth)
+            return util
 
         # our opponent wants worst utility for our player
         currentScore = 1
         for nextMove in possibleMoves:
             newBoard = state.result(nextMove)
-            newScore, depthX= self.Max(newBoard, alpha, beta, depth+1) # +1 depth for next pair of turns 
+            newScore = self.Max(newBoard, alpha, beta, depth+1) # +1 depth for next pair of turns 
             if(alpha > newScore): # alpha pruning
                 return (newScore,self.maxDepth)
             if(currentScore > newScore):
@@ -106,8 +106,8 @@ class IDMPlayer(Player):
 
         # only save the non-pruned result to transposition table
         # because pruned states might have states cause different result
-        self.TT[state.ser()] = (currentScore, self.maxDepth)
-        return (currentScore,self.maxDepth)
+        self.TT[state.ser()] = (currentScore, self.maxDepth-depth)
+        return currentScore
                 
     def Max(self, state, alpha, beta, depth):
         """
