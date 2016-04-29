@@ -13,8 +13,6 @@ class IDMPlayer(Player):
     Use the heurestic function from part 3 to evaluate current state.
     Also use transposition table for each explored state to speed up time
     """
-    
-
     def __init__(self):
         """Called when the Player object is initialized. You can use this to
         store any persistent data you want to store for the  game.
@@ -62,7 +60,7 @@ class IDMPlayer(Player):
 
         # if reaching current max depth, return utility
         # with evaluation function
-        if depth == self.maxDepth:
+        if depth == self.maxDepth:  
             return (self.evaluate(state),False)
         
         #else, generate new states
@@ -173,9 +171,9 @@ class IDMPlayer(Player):
         player_pit_stones=0
         for i in xrange(*state.possible_action_range()):
             player_pit_stones += state.board[i]
-        total = state.M*state.N
+        total = 2*state.M*state.N
         opponent_pit_stones= total - player_goal_stones-opponent_goal_stones-player_pit_stones
-        prefactor = 1.0/2.0/state.M/state.N
+        prefactor = 1.0/total
         # We use minus sign because this is actually opponent's state
         weight = -(player_goal_stones-opponent_goal_stones+player_pit_stones-opponent_pit_stones)
         return prefactor * weight
@@ -195,9 +193,9 @@ class IDMPlayer(Player):
         if(len(possibleMoves) == 0):
             return None
         self.bestAction = possibleMoves[0]
+        self.maxDepth = 1
         #while (not self.is_time_up()):
         while (self.maxDepth < 10):
-            print "Depth level: ", self.maxDepth
             bestUtil = -1
             curFlag = None
             action = possibleMoves[0] # default action
@@ -224,6 +222,7 @@ class IDMPlayer(Player):
             self.bestFlag = curFlag
             # terminate search if optimal move found before time limit
             if (self.bestFlag):
+                print "Found result before time"
             #either win_solution or no_win_solution is found:
                 return self.bestAction
                 
