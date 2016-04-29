@@ -54,13 +54,15 @@ class IDMPlayer(Player):
             # calling utility function with self will always
             # check winning status of our player
             util = state.utility(self)
-            self.TT[state.ser()] = (util,self.maxDepth-depth)
+            #self.EVAL = False
+            #self.TT[state.ser()] = (util,self.maxDepth)
+            self.TT[state.ser()] = (util,20)
             return util
 
         # if reaching current max depth, return utility
         # with evaluation function
         if depth == self.maxDepth:
-            self.EVAl = True
+            self.EVAL = True
             util = self.evaluate(state,self.row)
             self.TT[state.ser()] = (util,self.maxDepth-depth)
             return util
@@ -75,7 +77,7 @@ class IDMPlayer(Player):
             else:
                 # Because time is up so EVAL flag shouldn't matter
                 # This is just for safety check
-                self.EVAl = True
+                self.EVAL = True
                 util = self.evaluate(state,self.row)
                 self.TT[state.ser()] = (util,0)
             return util
@@ -134,7 +136,9 @@ class IDMPlayer(Player):
             # calling utility function with self will always
             # check winning status of our player
             util = state.utility(self)
-            self.TT[state.ser()] = (util,self.maxDepth-depth)
+            #self.EVAL = False
+            #self.TT[state.ser()] = (util,self.maxDepth)
+            self.TT[state.ser()] = (util,20)
             return util
 
         # max depth is only handled in Min()
@@ -151,7 +155,7 @@ class IDMPlayer(Player):
             else:
                 # Because time is up so EVAL flag shouldn't matter
                 # This is just for safety check
-                self.EVAl = True
+                self.EVAL = True
                 util = self.evaluate(state,self.row)
                 self.TT[state.ser()] = (util,0)
             return util
@@ -228,11 +232,11 @@ class IDMPlayer(Player):
             return None
         self.bestAction = possibleMoves[0]
         self.maxDepth = 1
-        self.EVAL = True # if evaluaete() is called
-        while (not self.is_time_up() and self.EVAL):
-            # set EVAL to false
+        self.EVAL = True # enter the while loop
+        # add a limit to max depth just in case infinite time is given for large board
+        while (not self.is_time_up() and self.EVAL and self.maxDepth < 20):
             self.EVAL = False
-            bestUtil = -1
+            bestUtil = -1 # re initialize bestUtil
             action = possibleMoves[0] # default action
             # running minimax algorithm with alpha-beta prunign to find best move
             # return action with max min_utility
@@ -241,7 +245,7 @@ class IDMPlayer(Player):
             for nextMove in possibleMoves:
                 # if time is up, return current bestAction
                 if (self.is_time_up()):
-                    print "time status:",self.is_time_up()
+                    #print "time status:",self.is_time_up()
                     return self.bestAction
                 newBoard = state.result(nextMove)
                 newScore = self.Min(newBoard, alpha, beta, 0) # We are maximizing the min here
@@ -254,4 +258,5 @@ class IDMPlayer(Player):
                 
             self.maxDepth += 1
 
+        #print "max depth",self.maxDepth,"util",bestUtil
         return self.bestAction
