@@ -19,8 +19,8 @@ class MinimaxPlayer(Player):
 
         #if terminal state, then return utility of that state
         if(state.is_terminal()):
-            # utility function returns value for opponent
-            # thus we take the opposite value for our player
+            # utility function with self parameter will always
+            # check current player's winning status
             return state.utility(self)
 
         #else, generate new states
@@ -35,8 +35,7 @@ class MinimaxPlayer(Player):
 
         # Our opponent wants to have -1 for our player's utility
         currentScore = 1 # assuming losing position for our opponent
-        bestAction = possibleMoves[0]
-
+        
         for nextMove in possibleMoves:
             newBoard = state.result(nextMove)
             newScore = self.Max(newBoard)
@@ -62,7 +61,6 @@ class MinimaxPlayer(Player):
             return self.Min(state.result(None))
 
         currentScore = -1 # Initialize losing position
-        bestAction = possibleMoves[0] # If no better option, take first one
 
         for nextMove in possibleMoves:
             newBoard = state.result(nextMove)
@@ -85,7 +83,7 @@ class MinimaxPlayer(Player):
         if(len(possibleMoves) == 0):
             return action
         bestUtil = -1
-        bestAction = possibleMoves[0] # default action
+        action = possibleMoves[0] # default action
         # running minimax algorithm to find best move
         # return action with max min_utility
         for nextMove in possibleMoves:
@@ -93,8 +91,8 @@ class MinimaxPlayer(Player):
             newScore = self.Min(newBoard) # We are maximizing the min here
             if bestUtil < newScore:
                 bestUtil = newScore
-                bestAction = nextMove
+                action = nextMove
                 
-        return bestAction
+        return action
 
         raise NotImplementedError("Need to implement this method")
