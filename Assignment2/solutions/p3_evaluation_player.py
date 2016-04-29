@@ -46,4 +46,6 @@ class EvaluationPlayer(Player):
         # We use minus sign because this is actually opponent's state
         weight = -(player_goal_stones-opponent_goal_stones+player_pit_stones-opponent_pit_stones)
         return prefactor * weight
+
+    
         raise NotImplementedError("Need to implement this method")
