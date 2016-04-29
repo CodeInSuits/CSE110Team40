@@ -23,8 +23,7 @@ class IDMPlayer(Player):
         self.TT={} # initialize empty transposition table
         self.bestAction = None# storing best action
         self.bestFlag = None # flag if terminal answer has found
-        self.maxDepth = 1 # max depth
-        self.EVAL = False # if evaluation function is used
+        self.maxDepth = 1 # max depth        
         
 
     def Min(self, state, alpha, beta, depth):
@@ -36,17 +35,16 @@ class IDMPlayer(Player):
                 Depth, current depth for depth limit
         Return: Utility, best utility value of current state
                     or worst utility value for our player
+                Terminal state, if game ends here
         """
         # Similar to Min() in part 1, except using alpha-beta pruning
         # and a transposition table to prune braches that are already bad
 
         # first check if state has been saved in transposition table
         if state.ser() in self.TT:
-            util,depthX = self.TT[state.ser()]
-            # use stored value if the number of expansion depth left
-            # is not greater than stored one
-            if (depthX >= self.maxDepth - depth):
-                return util
+            util,flag = self.TT[state.ser()]
+            if (flag):
+                return self.TT[state.ser()]
 
         
         #if terminal state, then return utility of that state
@@ -54,31 +52,15 @@ class IDMPlayer(Player):
             # calling utility function with self will always
             # check winning status of our player
             util = state.utility(self)
-            self.TT[state.ser()] = (util,self.maxDepth-depth)
-            return util
+            self.TT[state.ser()] = (util,True)
+            return (util, True)
 
         # if reaching current max depth, return utility
         # with evaluation function
-        if depth == self.maxDepth:
-            self.EVAl = True
-            util = self.evaluate(state,self.row)
-            self.TT[state.ser()] = (util,self.maxDepth-depth)
-            return util
-        
-        # Above functions runs pretty fast
-        # So we don't need to worry about time check
-        if self.is_time_up():
-            # Use transposition value if exist
-            # otherwise use evaluation function
-            if state.ser() in self.TT:
-                util,depthX = self.TT[state.ser()]
-            else:
-                # Because time is up so EVAL flag shouldn't matter
-                # This is just for safety check
-                self.EVAl = True
-                util = self.evaluate(state,self.row)
-                self.TT[state.ser()] = (util,0)
-            return util
+        if depth == self.maxDepth or self.is_time_up(): 
+            if (self.is_time_up()):
+                print "time up in Min"
+            return (self.evaluate(state,self.row),False)
         
         #else, generate new states
         possibleMoves = state.actions()
@@ -88,26 +70,28 @@ class IDMPlayer(Player):
             # need to switch opponent when calling Max again
             # result function with None action simply returns
             # the same state with opponent
-            util,depthX= self.Max(state.result(None),alpha,beta, depth+1)
-            self.TT[state.ser()] = (util,self.maxDepth)
-            return (util, self.maxDepth)
+            util,flag = self.Max(state.result(None),alpha,beta, depth+1)
+            self.TT[state.ser()] = (util,flag)
+            return (util, flag)
 
         # our opponent wants worst utility for our player
         currentScore = 1
+        currentFlag = None
         for nextMove in possibleMoves:
             newBoard = state.result(nextMove)
-            newScore, depthX= self.Max(newBoard, alpha, beta, depth+1) # +1 depth for next pair of turns 
+            newScore, flag = self.Max(newBoard, alpha, beta, depth+1) # +1 depth for next pair of turns 
             if(alpha > newScore): # alpha pruning
-                return (newScore,self.maxDepth)
+                return (newScore,flag)
             if(currentScore > newScore):
                 currentScore = newScore
+                currentFlag = flag
             # update beta if currentScore is smaller
             beta = currentScore if currentScore < beta else beta
 
         # only save the non-pruned result to transposition table
         # because pruned states might have states cause different result
-        self.TT[state.ser()] = (currentScore, self.maxDepth)
-        return (currentScore,self.maxDepth)
+        self.TT[state.ser()] = (currentScore, currentFlag)
+        return (currentScore,currentFlag)
                 
     def Max(self, state, alpha, beta, depth):
         """
