@@ -44,12 +44,10 @@ class IDMPlayer(Player):
 
         # first check if state has been saved in transposition table
         if state.ser() in self.TT:
-            return self.TT[state.ser()]
+            util,flag = self.TT[state.ser()]
+            if (flag):
+                return self.TT[state.ser()]
 
-        # if reaching current max depth, return utility
-        # with evaluation function
-        if depth == self.maxDepth:
-            return (self.evaluate(state),False)
         
         #if terminal state, then return utility of that state
         if(state.is_terminal()):
@@ -61,6 +59,11 @@ class IDMPlayer(Player):
             util = state.utility(self)
             self.TT[state.ser()] = (util,True)
             return (util, True)
+
+        # if reaching current max depth, return utility
+        # with evaluation function
+        if depth == self.maxDepth:
+            return (self.evaluate(state),False)
         
         #else, generate new states
         possibleMoves = state.actions()
@@ -104,10 +107,7 @@ class IDMPlayer(Player):
         # Similar to Max() in part 1, except using alpha-beta pruning
         # and a transposition table to prune braches that are already bad
 
-        # first check if state has been saved in transposition table
-        if state.ser() in self.TT:
-            return self.TT[state.ser()]
-        
+                
         #if terminal state, then return utility of that state
         if(state.is_terminal()):
             # calling utility function with self will always
@@ -118,6 +118,12 @@ class IDMPlayer(Player):
             util = state.utility(self)
             self.TT[state.ser()] = (util,True)
             return (util, True)
+
+        # first check if state has been saved in transposition table
+        if state.ser() in self.TT:
+            util,flag = self.TT[state.ser()]
+            if (flag):
+                return self.TT[state.ser()]
         
         #else, generate new states
         possibleMoves = state.actions()
@@ -189,9 +195,9 @@ class IDMPlayer(Player):
         if(len(possibleMoves) == 0):
             return None
         self.bestAction = possibleMoves[0]
-        print "time status:",self.is_time_up()
-        while (not self.is_time_up()):
-            #print "Depth level: ", self.maxDepth
+        #while (not self.is_time_up()):
+        while (self.maxDepth < 10):
+            print "Depth level: ", self.maxDepth
             bestUtil = -1
             curFlag = None
             action = possibleMoves[0] # default action
@@ -201,9 +207,11 @@ class IDMPlayer(Player):
             beta = 2 # act like inf
             for nextMove in possibleMoves:
                 # if time is up, return current bestAction
+                """
                 if (self.is_time_up()):
                     print "time status:",self.is_time_up()
                     return self.bestAction
+                """
                 newBoard = state.result(nextMove)
                 newScore, flag = self.Min(newBoard, alpha, beta, 0) # We are maximizing the min here
                 if bestUtil < newScore:
