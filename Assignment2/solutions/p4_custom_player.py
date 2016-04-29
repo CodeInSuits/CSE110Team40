@@ -24,6 +24,7 @@ class IDMPlayer(Player):
         """
         self.TT={} # initialize empty transposition table
         self.bestAction = None# storing best action
+        self.bestFlag = None # flag if terminal answer has found
         self.maxDepth = 1 # max depth        
         
 
@@ -36,6 +37,7 @@ class IDMPlayer(Player):
                 Depth, current depth for depth limit
         Return: Utility, best utility value of current state
                     or worst utility value for our player
+                Terminal state, if game ends here
         """
         # Similar to Min() in part 1, except using alpha-beta pruning
         # and a transposition table to prune braches that are already bad
@@ -47,7 +49,7 @@ class IDMPlayer(Player):
         # if reaching current max depth, return utility
         # with evaluation function
         if depth == self.maxDepth:
-            return self.evlauate(state)
+            return (self.evaluate(state),False)
         
         #if terminal state, then return utility of that state
         if(state.is_terminal()):
@@ -57,8 +59,8 @@ class IDMPlayer(Player):
             # which is either the highest or lowest value
             # only to compare two cases
             util = state.utility(self)
-            self.TT[state.ser()] = util
-            return util
+            self.TT[state.ser()] = (util,True)
+            return (util, True)
         
         #else, generate new states
         possibleMoves = state.actions()
@@ -68,26 +70,28 @@ class IDMPlayer(Player):
             # need to switch opponent when calling Max again
             # result function with None action simply returns
             # the same state with opponent
-            util = self.Max(state.result(None),alpha,beta)
-            self.TT[state.ser()] = util
-            return util
+            util,flag = self.Max(state.result(None),alpha,beta, depth+1)
+            self.TT[state.ser()] = (util,flag)
+            return (util, flag)
 
         # our opponent wants worst utility for our player
         currentScore = 1
+        currentFlag = None
         for nextMove in possibleMoves:
             newBoard = state.result(nextMove)
-            newScore = self.Max(newBoard, alpha, beta, depth+1) # +1 depth for next pair of turns 
+            newScore, flag = self.Max(newBoard, alpha, beta, depth+1) # +1 depth for next pair of turns 
             if(alpha > newScore): # alpha pruning
-                return newScore            
+                return (newScore,flag)
             if(currentScore > newScore):
                 currentScore = newScore
+                currentFlag = flag
             # update beta if currentScore is smaller
             beta = currentScore if currentScore < beta else beta
 
         # only save the non-pruned result to transposition table
         # because pruned states might have states cause different result
-        self.TT[state.ser()] = currentScore
-        return currentScore
+        self.TT[state.ser()] = (currentScore, currentFlag)
+        return (currentScore,currentFlag)
                 
     def Max(self, state, alpha, beta, depth):
         """
@@ -112,8 +116,8 @@ class IDMPlayer(Player):
             # which is either the highest or lowest value
             # only to compare two cases
             util = state.utility(self)
-            self.TT[state.ser()] = util
-            return util
+            self.TT[state.ser()] = (util,True)
+            return (util, True)
         
         #else, generate new states
         possibleMoves = state.actions()
@@ -123,26 +127,28 @@ class IDMPlayer(Player):
             # need to switch opponent when calling Min again
             # result function with None action simply returns
             # the same state with opponent
-            util = self.Min(state.result(None),alpha,beta, depth)
-            self.TT[state.ser()] = util
-            return util
+            util,flag = self.Min(state.result(None),alpha,beta, depth)
+            self.TT[state.ser()] = (util,flag)
+            return (util,flag)
 
         # maximizing the utility
         currentScore = -1
+        currentFlag = None
         for nextMove in possibleMoves:
             newBoard = state.result(nextMove)
-            newScore = self.Min(newBoard, alpha, beta) 
+            newScore,flag = self.Min(newBoard, alpha, beta, depth) 
             if(beta < newScore): # beta pruning
-                return newScore            
+                return (newScore,flag)
             if(currentScore < newScore):
                 currentScore = newScore
+                currentFlag = flag
             # update alpha if currentScore is larger
             alpha = currentScore if currentScore > alpha else alpha
 
         # only save the non-pruned result to transposition table
         # because pruned states might have states cause different result
-        self.TT[state.ser()] = currentScore
-        return currentScore
+        self.TT[state.ser()] = (currentScore,currentFlag)
+        return (currentScore,currentFlag)
 
     def evaluate(self, state):
         """
@@ -182,9 +188,12 @@ class IDMPlayer(Player):
         possibleMoves = state.actions()
         if(len(possibleMoves) == 0):
             return None
-        bestAction = possibleMoves[0]
-        while (not self.is_time_up):
+        self.bestAction = possibleMoves[0]
+        print "time status:",self.is_time_up()
+        while (not self.is_time_up()):
+            #print "Depth level: ", self.maxDepth
             bestUtil = -1
+            curFlag = None
             action = possibleMoves[0] # default action
             # running minimax algorithm with alpha-beta prunign to find best move
             # return action with max min_utility
@@ -193,15 +202,23 @@ class IDMPlayer(Player):
             for nextMove in possibleMoves:
                 # if time is up, return current bestAction
                 if (self.is_time_up()):
+                    print "time status:",self.is_time_up()
                     return self.bestAction
                 newBoard = state.result(nextMove)
-                newScore = self.Min(newBoard, alpha, beta, 0) # We are maximizing the min here
+                newScore, flag = self.Min(newBoard, alpha, beta, 0) # We are maximizing the min here
                 if bestUtil < newScore:
                     bestUtil = newScore
+                    curFlag = flag
                     action = nextMove
                     # update alpha since we are doing maximization
                     alpha = newScore
             self.bestAction = action
+            self.bestFlag = curFlag
+            # terminate search if optimal move found before time limit
+            if (self.bestFlag):
+            #either win_solution or no_win_solution is found:
+                return self.bestAction
+                
             self.maxDepth += 1
         # in case break out of while loop
         return self.bestAction
