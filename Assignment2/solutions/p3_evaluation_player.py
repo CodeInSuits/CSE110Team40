@@ -40,7 +40,7 @@ class EvaluationPlayer(Player):
         player_pit_stones=0
         for i in xrange(*state.possible_action_range()):
             player_pit_stones += state.board[i]
-        total = state.M*state.N
+        total = 2*state.M*state.N # both sides
         opponent_pit_stones= total - player_goal_stones-opponent_goal_stones-player_pit_stones
         prefactor = 1.0/2.0/state.M/state.N
         # We use minus sign because this is actually opponent's state
