@@ -70,9 +70,10 @@ class MinimaxPlayer(Player):
 
                 
         return currentScore
+		
 
     def move(self, state):
-        """3
+        """
         Calculates the best move from the given board using the minimax
         algorithm.
         :param state: State, the current state of the board.

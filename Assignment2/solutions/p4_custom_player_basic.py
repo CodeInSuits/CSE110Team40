@@ -14,7 +14,6 @@ class IDMPlayer(Player):
     Also use transposition table for each explored state to speed up time
     """
     
-
     def __init__(self):
         """Called when the Player object is initialized. You can use this to
         store any persistent data you want to store for the  game.
@@ -24,8 +23,7 @@ class IDMPlayer(Player):
         """
         self.TT={} # initialize empty transposition table
         self.bestAction = None# storing best action
-        self.maxDepth = 1 # max depth        
-        
+        self.maxDepth = 1 # max depth                
 
     def Min(self, state, alpha, beta, depth):
         """
@@ -182,7 +180,7 @@ class IDMPlayer(Player):
         possibleMoves = state.actions()
         if(len(possibleMoves) == 0):
             return None
-        bestAction = possibleMoves[0]
+        self.bestAction = possibleMoves[0]
         while (not self.is_time_up):
             bestUtil = -1
             action = possibleMoves[0] # default action
