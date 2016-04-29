@@ -24,7 +24,7 @@ class IDMPlayer(Player):
         self.bestAction = None# storing best action
         self.bestFlag = None # flag if terminal answer has found
         self.maxDepth = 1 # max depth
-        self.EVAL = False # if evaluation function is used
+        self.EVAL = True # if evaluation function is used
         
 
     def Min(self, state, alpha, beta, depth):
@@ -120,27 +120,41 @@ class IDMPlayer(Player):
         # Similar to Max() in part 1, except using alpha-beta pruning
         # and a transposition table to prune braches that are already bad
 
-                
+        # first check if state has been saved in transposition table
+        if state.ser() in self.TT:
+            util,depthX = self.TT[state.ser()]
+            # use stored value if the number of expansion depth left
+            # is not greater than stored one
+            if (depthX >= self.maxDepth - depth):
+                return util
+
+        
         #if terminal state, then return utility of that state
         if(state.is_terminal()):
             # calling utility function with self will always
             # check winning status of our player
             util = state.utility(self)
-            self.TT[state.ser()] = (util,True)
-            return (util, True)
+            self.TT[state.ser()] = (util,self.maxDepth-depth)
+            return util
 
-        # first check if state has been saved in transposition table
-        # but only return stored value if it's optimal value
-        if state.ser() in self.TT:
-            util,flag = self.TT[state.ser()]
-            if (flag == True):
-                return self.TT[state.ser()]
- 
-        # handling tim_up flag
-        if (self.is_time_up()):  
-            print "time up in Max"
-            return (self.evaluate(state,self.row),False)
+        # max depth is only handled in Min()
+        # becuase we define each depth to be a full Min/Max turn
 
+        
+        # Above functions runs pretty fast
+        # So we don't need to worry about time check
+        if self.is_time_up():
+            # Use transposition value if exist
+            # otherwise use evaluation function
+            if state.ser() in self.TT:
+                util,depthX = self.TT[state.ser()]
+            else:
+                # Because time is up so EVAL flag shouldn't matter
+                # This is just for safety check
+                self.EVAl = True
+                util = self.evaluate(state,self.row)
+                self.TT[state.ser()] = (util,0)
+            return util
        
         #else, generate new states
         possibleMoves = state.actions()
@@ -150,28 +164,26 @@ class IDMPlayer(Player):
             # need to switch opponent when calling Min again
             # result function with None action simply returns
             # the same state with opponent
-            util,flag = self.Min(state.result(None),alpha,beta, depth)
-            self.TT[state.ser()] = (util,flag)
-            return (util,flag)
+            util = self.Min(state.result(None),alpha,beta, depth)
+            self.TT[state.ser()] = (util,self.maxDepth - depth)
+            return util
 
         # maximizing the utility
         currentScore = -1
-        currentFlag = None
         for nextMove in possibleMoves:
             newBoard = state.result(nextMove)
-            newScore,flag = self.Min(newBoard, alpha, beta, depth) 
+            newScore = self.Min(newBoard, alpha, beta, depth) 
             if(beta < newScore): # beta pruning
                 return (newScore,flag)
             if(currentScore < newScore):
                 currentScore = newScore
-                currentFlag = flag
             # update alpha if currentScore is larger
             alpha = currentScore if currentScore > alpha else alpha
 
         # only save the non-pruned result to transposition table
         # because pruned states might have states cause different result
-        self.TT[state.ser()] = (currentScore,currentFlag)
-        return (currentScore,currentFlag)
+        self.TT[state.ser()] = (currentScore,self.maxDepth-depth)
+        return currentScore
 
     def evaluate(self, state, my_row):
         """
@@ -216,10 +228,10 @@ class IDMPlayer(Player):
             return None
         self.bestAction = possibleMoves[0]
         self.maxDepth = 1
-        while (not self.is_time_up()):
+        self.EVAL = True # if evaluaete() is called
+        while (not self.is_time_up() and self.EVAL):
         #while (self.maxDepth < 15 and not self.is_time_up()):
             bestUtil = -1
-            curFlag = None
             action = possibleMoves[0] # default action
             # running minimax algorithm with alpha-beta prunign to find best move
             # return action with max min_utility
@@ -231,19 +243,13 @@ class IDMPlayer(Player):
                     print "time status:",self.is_time_up()
                     return self.bestAction
                 newBoard = state.result(nextMove)
-                newScore, flag = self.Min(newBoard, alpha, beta, 0) # We are maximizing the min here
+                newScore = self.Min(newBoard, alpha, beta, 0) # We are maximizing the min here
                 if bestUtil < newScore:
                     bestUtil = newScore
-                    curFlag = flag
                     action = nextMove
                     # update alpha since we are doing maximization
                     alpha = newScore
             self.bestAction = action
-            self.bestFlag = curFlag
-            # terminate search if optimal move found before time limit or depth limit
-            if (self.bestFlag):
-                print "Found result before time"
-                return self.bestAction
                 
             self.maxDepth += 1
         # in case break out of while loop
