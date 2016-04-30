@@ -4,7 +4,11 @@ import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,6 +29,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private Marker currentMarker;
     private TextView namePrompt;
+    private RelativeLayout namePromptLayout;
     private String filename = MainActivity.LOC_FILE_NAME;
 
     @Override
@@ -36,6 +41,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         namePrompt = (TextView) findViewById(R.id.custom_name_prompt);
+        namePromptLayout = (RelativeLayout) findViewById(R.id.custom_name_layout);
+        namePromptLayout.setVisibility(View.GONE);
 
     }
 
@@ -67,6 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(currentMarker != null)
             currentMarker.remove();
         currentMarker = mMap.addMarker(new MarkerOptions().position(latLng));
+        namePromptLayout.setVisibility(View.VISIBLE);
         namePrompt.setText(R.string.add_custom_name);
     }
 
@@ -95,6 +103,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_maps, menu);
+        super.onCreateOptionsMenu(menu);
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_close_map:
+                finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
 
     private void toFile( FavoriteLocation loc ) throws Exception {
         FileOutputStream fos = openFileOutput(filename, Context.MODE_APPEND);

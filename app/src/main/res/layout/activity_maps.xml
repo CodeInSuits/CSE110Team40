@@ -43,10 +43,18 @@
         <Button
             android:text="Save"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:layout_width="@dimen/custom_name_width"
             android:layout_height="@dimen/custom_name_height"
-            android:onClick="saveCustomName"/>
+            android:onClick="saveCustomName"
+            android:id="@+id/button2" />
+
+        <Button
+            android:text="Cancel"
+            android:layout_width="@dimen/custom_name_width"
+            android:layout_height="@dimen/custom_name_height"
+            android:id="@+id/button"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/custom_name" />
     </RelativeLayout>
 
 
