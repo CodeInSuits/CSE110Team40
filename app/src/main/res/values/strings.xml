@@ -7,4 +7,7 @@
     <string name="title_activity_activity_add_partner">activity_add_partner</string>
     <string name="title_activity_maps">Map</string>
     <string name="choose_favorite">Choose a favorite location</string>
+    <string name="problem_saving">Problems saving. Try again.</string>
+    <string name="add_custom_name">(Optional) Add custom name!</string>
+    <string name="pick_loc_first">Must pick a location first</string>
 </resources>
