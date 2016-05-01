@@ -1,13 +1,16 @@
 package com.vapenaysh.jace.myapplication;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,6 +34,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView namePrompt;
     private RelativeLayout namePromptLayout;
     private String filename = MainActivity.LOC_FILE_NAME;
+    private SearchView sV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,15 +111,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_maps, menu);
-        super.onCreateOptionsMenu(menu);
+        sV = (SearchView) menu.findItem(R.id.action_search_map).getActionView();
+        sV.setIconifiedByDefault(true);
+        sV.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                //DO WHATEVS
+                return true;
+
+            }
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                return true;
+            }
+
+        });
+        sV.setQueryHint("Search");
         return true;
     }
+    private void setupSearchView()
+    {
+        sV.setIconifiedByDefault(true);
+        sV.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                //DO WHATEVS
+                return true;
+
+            }
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                return true;
+            }
+
+        });
+        sV.setQueryHint("Search");
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_close_map:
                 finish();
                 return true;
-
+            case R.id.action_search_map:
+                EditText editText = new EditText(this);
+                getActionBar().setCustomView(editText);
             default:
                 return super.onOptionsItemSelected(item);
 
