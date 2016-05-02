@@ -48,7 +48,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private SearchView sV;
     private Location currentLocation;
     private LocationManager locationManager;
-    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
