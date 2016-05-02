@@ -54,7 +54,8 @@
             android:layout_height="@dimen/custom_name_height"
             android:id="@+id/button"
             android:layout_alignParentBottom="true"
-            android:layout_alignEnd="@+id/custom_name" />
+            android:layout_alignEnd="@+id/custom_name"
+            android:onClick="cancelCustomName"/>
     </RelativeLayout>
 
 

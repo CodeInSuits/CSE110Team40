@@ -1,7 +1,12 @@
 package com.vapenaysh.jace.myapplication;
 
-import android.app.SearchManager;
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.widget.SearchView;
@@ -14,6 +19,11 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,12 +32,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
-                                                    GoogleMap.OnMapClickListener {
+        GoogleMap.OnMapClickListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener
+
+{
 
     private GoogleMap mMap;
     private Marker currentMarker;
@@ -35,6 +46,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private RelativeLayout namePromptLayout;
     private String filename = MainActivity.LOC_FILE_NAME;
     private SearchView sV;
+    private Location currentLocation;
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +61,74 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         namePromptLayout = (RelativeLayout) findViewById(R.id.custom_name_layout);
         namePromptLayout.setVisibility(View.GONE);
 
+        mGoogleApiClient = LocationAPIHelper.getApiClient(this, this, this);
+
     }
 
+    /**
+     * for the location tracker, from Google API
+     */
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    /**
+     * for the location tracker, from Google API
+     */
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    /**
+     * for the location tracker, from Google API
+     */
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+        //get rid of a security check compiler warning
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        //start location updates, uses locationListener
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, LocationRequest.create(),this);
+
+        currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if( currentLocation == null ){
+            //ucsd for default
+            Log.v("MapsActivity", "onConnected() using default starting location");
+            setDefaultStartingLocation();
+        }
+
+        moveMap();
+
+    }
+
+    /**
+     * for the location tracker, from Google API
+     */
+    @Override
+    public void onConnectionSuspended(int i) {
+        //fill in
+    }
+
+    /**
+     * for the location tracker, from Google API
+     */
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        //fill in
+        Log.e("MapsActivity", "onConnectedFailed()");
+    }
 
     /**
      * Manipulates the map once available.
@@ -62,13 +141,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.v("MapsActivity", "onMapReady()");
         mMap = googleMap;
-
-        // Add a marker in sd and move the camera
-        LatLng ucsd = new LatLng(32.7157, -117.1611);
-        //mMap.addMarker(new MarkerOptions().position(ucsd).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ucsd, 13));
         mMap.setOnMapClickListener(this);
+
+        /*
+        // Add a marker in sd and move the camera
+        if(currentLocation == null)
+            setDefaultStartingLocation();
+
+        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+        mMap.setOnMapClickListener(this);
+        */
 
 
     }
@@ -106,6 +191,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             MainActivity.locations.add(fave);
 
         }
+    }
+
+    public void cancelCustomName(View view){
+        currentMarker.remove();
+        namePromptLayout.setVisibility(View.GONE);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -173,5 +263,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         fos.write("\n".getBytes());
         Log.v("MapsActivity", "toFile() saved a location successfully!");
         fos.close();
+    }
+
+    /**
+     * make san diego the starting location by default
+     */
+    private void setDefaultStartingLocation(){
+        currentLocation = new Location("default");
+        currentLocation.setLatitude(32.7157);
+        currentLocation.setLongitude(-117.1611);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.v("MapsActivity", "onLocationChanged");
+        currentLocation = location;
+        moveMap();
+    }
+
+    /**
+     * move map's camera to current location
+     */
+    private void moveMap(){
+        if(currentLocation == null)
+            setDefaultStartingLocation();
+
+        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
     }
 }
