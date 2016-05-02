@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -35,8 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.FileOutputStream;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
-        GoogleMap.OnMapClickListener, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener
+        GoogleMap.OnMapClickListener, android.location.LocationListener
 
 {
 
@@ -47,6 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String filename = MainActivity.LOC_FILE_NAME;
     private SearchView sV;
     private Location currentLocation;
+    private LocationManager locationManager;
     GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -61,74 +62,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         namePromptLayout = (RelativeLayout) findViewById(R.id.custom_name_layout);
         namePromptLayout.setVisibility(View.GONE);
 
-        mGoogleApiClient = LocationAPIHelper.getApiClient(this, this, this);
 
     }
 
-    /**
-     * for the location tracker, from Google API
-     */
-    protected void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
-    }
-
-    /**
-     * for the location tracker, from Google API
-     */
-    protected void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
-    /**
-     * for the location tracker, from Google API
-     */
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-        //get rid of a security check compiler warning
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-
-        //start location updates, uses locationListener
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, LocationRequest.create(),this);
-
-        currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if( currentLocation == null ){
-            //ucsd for default
-            Log.v("MapsActivity", "onConnected() using default starting location");
-            setDefaultStartingLocation();
-        }
-
-        moveMap();
-
-    }
-
-    /**
-     * for the location tracker, from Google API
-     */
-    @Override
-    public void onConnectionSuspended(int i) {
-        //fill in
-    }
-
-    /**
-     * for the location tracker, from Google API
-     */
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        //fill in
-        Log.e("MapsActivity", "onConnectedFailed()");
-    }
 
     /**
      * Manipulates the map once available.
@@ -141,20 +77,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.v("MapsActivity", "onMapReady()");
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        /*
-        // Add a marker in sd and move the camera
-        if(currentLocation == null)
-            setDefaultStartingLocation();
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
-        mMap.setOnMapClickListener(this);
-        */
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    100);
+            return;
+        }else if(mMap != null) {
+            Log.d("test2", "outs");
+            mMap.setMyLocationEnabled(true);
 
+        }
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+
+        moveMap();
 
     }
 
@@ -269,17 +219,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * make san diego the starting location by default
      */
     private void setDefaultStartingLocation(){
-        currentLocation = new Location("default");
-        currentLocation.setLatitude(32.7157);
-        currentLocation.setLongitude(-117.1611);
+        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location networkLoc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        if(currentLocation == null && networkLoc != null){
+            currentLocation = networkLoc;
+        }
+        else if( networkLoc != null && networkLoc.getTime() > currentLocation.getTime() ){
+            //network provider has a more recent location
+            currentLocation = networkLoc;
+        }
+        else {
+            currentLocation = new Location("default");
+            currentLocation.setLatitude(32.7157);
+            currentLocation.setLongitude(-117.1611);
+        }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.v("MapsActivity", "onLocationChanged");
-        currentLocation = location;
-        moveMap();
-    }
 
     /**
      * move map's camera to current location
@@ -290,5 +246,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+    }
+
+    /**
+     * for location listener interface
+     * @param location
+     */
+    @Override
+    public void onLocationChanged(Location location) {
+        currentLocation = location;
+        moveMap();
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 }
