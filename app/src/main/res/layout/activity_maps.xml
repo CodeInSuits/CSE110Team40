@@ -5,15 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <fragment
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".7"
-        tools:context="com.vapenaysh.jace.myapplication.MapsActivity" />
-
     <TextView
         android:id="@+id/custom_name_prompt"
         android:layout_width="wrap_content"
@@ -23,11 +14,20 @@
         android:textSize="20sp"
         android:background="#FFFF00"/>
 
+    <fragment
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".7"
+        tools:context="com.vapenaysh.jace.myapplication.MapsActivity" />
+
     <RelativeLayout
         android:id="@+id/custom_name_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".25"
+        android:layout_weight=".2"
         android:paddingLeft="@dimen/custom_name_padding"
         android:paddingRight="@dimen/custom_name_padding">
 
@@ -38,7 +38,7 @@
             android:hint="Pick a custom name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/custom_name_height"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
            />
 
         <Button
