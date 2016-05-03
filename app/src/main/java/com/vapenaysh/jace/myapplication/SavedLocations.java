@@ -30,6 +30,9 @@ public class SavedLocations {
     }
 
     public static boolean addLocation(FavoriteLocation loc){
+        if(locations == null)
+            locations = new HashSet<>();
+
         locations.add(loc);
         return true;
     }
@@ -72,7 +75,7 @@ public class SavedLocations {
         double lat = Double.parseDouble(parts[1]);
         double lon = Double.parseDouble(parts[2]);
         FavoriteLocation loc = new FavoriteLocation(new LatLng(lat, lon), parts[0]);
-        locations.add(loc);
+        addLocation(loc);
         Log.v("SavedLocation", "translateFavoriteLocation() read line successfully");
     }
 }

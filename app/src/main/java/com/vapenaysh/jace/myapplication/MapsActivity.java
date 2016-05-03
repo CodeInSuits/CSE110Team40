@@ -111,6 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapClick(LatLng latLng) {
         if (currentMarker != null)
             currentMarker.remove();
+
         currentMarker = mMap.addMarker(new MarkerOptions().position(latLng));
         namePromptLayout.setVisibility(View.VISIBLE);
         namePrompt.setText(R.string.add_custom_name);
