@@ -2,8 +2,11 @@ package tests;
 
 import android.os.Handler;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.UiThreadTest;
 import android.text.Layout;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,43 +23,63 @@ import org.w3c.dom.Text;
  */
 public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity> {
 
-    MapsActivity mapsActivity;
+    private MapsActivity mapsActivity;
+    private int numLocs;
 
     public TestMapClick(){
         super(MapsActivity.class);
     }
 
-    public void test_ClickOnMap(){
-        mapsActivity = (MapsActivity) getActivity();
+    @Override
+    protected void setUp(){
+        mapsActivity = getActivity();
+        SavedLocations.loadLocations(mapsActivity);
 
-        Handler mainHandler = new Handler(mapsActivity.getMainLooper());
+        numLocs = SavedLocations.getSize();
 
-        Runnable myRunnable = new Runnable() {
+        mapsActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 mapsActivity.onMapClick(new LatLng(32, -117));
-                TextView namePrompt = (TextView) mapsActivity.findViewById(R.id.custom_name_prompt);
-                assertEquals( namePrompt.getText().toString(), "(Optional) Add custom name!" );
 
-                RelativeLayout namePromptLayout = (RelativeLayout) mapsActivity.findViewById(R.id.custom_name_layout);
-                assertEquals(namePromptLayout.getVisibility(), View.VISIBLE);
-            } // This is your code
-        };
-        mainHandler.post(myRunnable);
+            }
+        });
     }
 
+    @UiThreadTest
+    public void test_ClickOnMap(){
+
+
+        TextView namePrompt = (TextView) mapsActivity.findViewById(R.id.custom_name_prompt);
+        RelativeLayout namePromptLayout = (RelativeLayout) mapsActivity.findViewById(R.id.custom_name_layout);
+
+        assertEquals( "(Optional) Add custom name!", namePrompt.getText().toString() );
+
+        assertEquals(View.VISIBLE, namePromptLayout.getVisibility());
+
+    }
+
+    @UiThreadTest
     public void test_SaveName(){
-        int numLocs = SavedLocations.getSize();
-        test_ClickOnMap();
-        mapsActivity.saveCustomName(null);
+        final Button btn = (Button)mapsActivity.findViewById(R.id.cancel_btn);
+
+
+        mapsActivity.saveCustomName(btn);
+
         assertEquals( numLocs+1, SavedLocations.getSize() );
+
+
     }
 
+    @UiThreadTest
     public void test_CancelName(){
-        int numLocs = SavedLocations.getSize();
-        test_ClickOnMap();
-        mapsActivity.cancelCustomName(null);
+        final Button btn = (Button)mapsActivity.findViewById(R.id.save_btn);
+
+
+        mapsActivity.cancelCustomName(btn);
+
         assertEquals( numLocs, SavedLocations.getSize() );
+
     }
 
 
