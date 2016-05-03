@@ -94,7 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     100);
             return;
-        }else if(mMap != null) {
+        } else if (mMap != null) {
             Log.d("test2", "outs");
             mMap.setMyLocationEnabled(true);
 
@@ -109,50 +109,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapClick(LatLng latLng) {
-        if(currentMarker != null)
+        if (currentMarker != null)
             currentMarker.remove();
         currentMarker = mMap.addMarker(new MarkerOptions().position(latLng));
         namePromptLayout.setVisibility(View.VISIBLE);
         namePrompt.setText(R.string.add_custom_name);
     }
 
-    public void saveCustomName(View view){
-        if(currentMarker == null){
+    public void saveCustomName(View view) {
+        if (currentMarker == null) {
             namePrompt.setText(R.string.pick_loc_first);
-        }
-        else{
-            TextView textView = (TextView)findViewById(R.id.custom_name);
+            return;
+        } else {
+            TextView textView = (TextView) findViewById(R.id.custom_name);
             String name = textView.getText().toString();
-            if( name.equals("") ){
+            if (name.equals("")) {
                 name = "Location" + MainActivity.locations.size();
             }
-            namePrompt.setText(name);
 
             FavoriteLocation fave = new FavoriteLocation(currentMarker.getPosition(), name);
             //add to local file for storage
             try {
                 toFile(fave);
-            } catch( Exception e ){
+            } catch (Exception e) {
                 namePrompt.setText(R.string.problem_saving);
+                return;
             }
 
             //add to arraylist for current session
             MainActivity.locations.add(fave);
 
+            //close
+            namePrompt.setText(R.string.saved_successfully);
+            namePromptLayout.setVisibility(View.GONE);
+            currentMarker.remove();
+
+
         }
     }
 
-    public void cancelCustomName(View view){
+    public void cancelCustomName(View view) {
         currentMarker.remove();
         namePromptLayout.setVisibility(View.GONE);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_maps, menu);
         sV = (SearchView) menu.findItem(R.id.action_search_map).getActionView();
         sV.setIconifiedByDefault(true);
-        sV.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+        sV.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String query) {
 
@@ -160,9 +167,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return true;
 
             }
+
             @Override
-            public boolean onQueryTextSubmit(String query)
-            {
+            public boolean onQueryTextSubmit(String query) {
                 return true;
             }
 
@@ -170,10 +177,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         sV.setQueryHint("Search");
         return true;
     }
-    private void setupSearchView()
-    {
+
+    private void setupSearchView() {
         sV.setIconifiedByDefault(true);
-        sV.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+        sV.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String query) {
 
@@ -181,9 +188,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return true;
 
             }
+
             @Override
-            public boolean onQueryTextSubmit(String query)
-            {
+            public boolean onQueryTextSubmit(String query) {
                 return true;
             }
 
@@ -206,7 +213,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void toFile( FavoriteLocation loc ) throws Exception {
+    private void toFile(FavoriteLocation loc) throws Exception {
         FileOutputStream fos = openFileOutput(filename, Context.MODE_APPEND);
         fos.write(loc.toString().getBytes());
         fos.write("\n".getBytes());
@@ -217,7 +224,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /**
      * make san diego the starting location by default
      */
-    private void setDefaultStartingLocation(){
+    private void setDefaultStartingLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Location networkLoc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 

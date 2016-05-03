@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class MainActivity extends Activity implements View.OnClickListener{
@@ -32,7 +33,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     public final static String LOC_FILE_NAME = "CoupleToneLocs.txt";
 
-    public static ArrayList<FavoriteLocation> locations;
+    public static HashSet<FavoriteLocation> locations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         Firebase usernames = firebase.child("usernames");
         usernames.setValue("Test");
 
-        locations = new ArrayList<FavoriteLocation>();
+        locations = new HashSet<>();
         fillLocationsArray();
 
 
@@ -99,7 +100,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 EditText uname = (EditText) findViewById(R.id.email);
                 EditText passw = (EditText) findViewById(R.id.password);
                 //TODO: login logic
-                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+                startActivity(new Intent(MainActivity.this, HomePage.class));
                 break;
             case R.id.register:
                 startActivity(new Intent(MainActivity.this, CreateAccount.class));

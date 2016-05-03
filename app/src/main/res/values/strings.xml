@@ -10,4 +10,9 @@
     <string name="problem_saving">Problems saving. Try again.</string>
     <string name="add_custom_name">(Optional) Add custom name!</string>
     <string name="pick_loc_first">Must pick a location first</string>
+    <string name="title_activity_home_page">HomePage</string>
+    <string name="add_loc_btn">Add a favorite location</string>
+    <string name="partner_settings">Partner settings</string>
+    <string name="see_loc_history">See partner\'s history</string>
+    <string name="saved_successfully">Saved successfully!</string>
 </resources>

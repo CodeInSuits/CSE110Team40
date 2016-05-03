@@ -6,4 +6,7 @@
     <dimen name="custom_name_height">48dp</dimen>
     <dimen name="custom_name_width">128dp</dimen>
     <dimen name="custom_name_padding">8dp</dimen>
+
+    <dimen name="homepage_btn_height">64dp</dimen>
+    <dimen name="homepage_btn_width">256dp</dimen>
 </resources>
