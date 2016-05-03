@@ -31,9 +31,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     //register button
     private Button register;
 
-    public final static String LOC_FILE_NAME = "CoupleToneLocs.txt";
 
-    public static HashSet<FavoriteLocation> locations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +63,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         Firebase usernames = firebase.child("usernames");
         usernames.setValue("Test");
 
-        locations = new HashSet<>();
-        fillLocationsArray();
+        SavedLocations.loadLocations(this);
 
 
     }
@@ -108,43 +105,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
     }
 
-    /** Every time the user starts up the app, populate the array of favorite locations */
-    private void fillLocationsArray(){
-        FileInputStream fis;
-        try {
-            fis = openFileInput(MainActivity.LOC_FILE_NAME);
-        }catch(Exception e){
-            Log.e("MainActivity", "fillLocationsArray() had exception: " + e.toString());
-            return; //return if no file found
-        }
 
-        Scanner input = new Scanner(fis);
-        while( input.hasNextLine() ){
-            translateFavoriteLocation( input.nextLine() );
-        }
 
-        try {
-            fis.close();
-        } catch( Exception e ){
-            Log.e("MainActivity", "fillLocationsArray() had exception: " + e.toString());
-        }
-    }
-
-    /** Take each string of form "name&latitude&longitude" and create a favorite location,
-     *  adding it to the array
-     */
-    private void translateFavoriteLocation( String line ){
-        String[] parts = line.split("&");
-        if( parts.length != 3 ){
-            Log.v("MainActivity", "translateFavoriteLocation() read a"
-                    + "line of location with incorrect number of paramaters");
-            return;
-        }
-
-        double lat = Double.parseDouble(parts[1]);
-        double lon = Double.parseDouble(parts[2]);
-        FavoriteLocation loc = new FavoriteLocation(new LatLng(lat, lon), parts[0]);
-        locations.add(loc);
-        Log.v("MainActivity", "translateFavoriteLocation() read line successfully");
-    }
 }

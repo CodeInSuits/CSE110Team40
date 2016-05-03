@@ -44,7 +44,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker currentMarker;
     private TextView namePrompt;
     private RelativeLayout namePromptLayout;
-    private String filename = MainActivity.LOC_FILE_NAME;
+    private String filename = SavedLocations.LOC_FILE_NAME;
     private SearchView sV;
     private Location currentLocation;
     private LocationManager locationManager;
@@ -124,7 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             TextView textView = (TextView) findViewById(R.id.custom_name);
             String name = textView.getText().toString();
             if (name.equals("")) {
-                name = "Location" + MainActivity.locations.size();
+                name = "Location" + SavedLocations.getSize();
             }
 
             FavoriteLocation fave = new FavoriteLocation(currentMarker.getPosition(), name);
@@ -137,7 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
             //add to arraylist for current session
-            MainActivity.locations.add(fave);
+            SavedLocations.addLocation(fave);
 
             //close
             namePrompt.setText(R.string.saved_successfully);
