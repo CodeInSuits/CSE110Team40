@@ -74,6 +74,8 @@ public class CreateAccount extends Activity implements ProgressGenerator.OnCompl
             email.setEnabled(false);
             username.setEnabled(false);
             password.setEnabled(false);
+            //Create a user object
+            User user = new User(userName, emailAddress, passWord);
 
             //log them in right away
         }
