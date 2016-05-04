@@ -205,27 +205,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         sV.setQueryHint("Search");
         return true;
     }
-
-    private void setupSearchView() {
-        sV.setIconifiedByDefault(true);
-        sV.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextChange(String query) {
-
-                //DO WHATEVS
-                return true;
-
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return true;
-            }
-
-        });
-        sV.setQueryHint("Search");
-    }
-
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_close_map:
