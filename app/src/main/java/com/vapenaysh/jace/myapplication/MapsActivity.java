@@ -3,7 +3,9 @@ package com.vapenaysh.jace.myapplication;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Location;
+import android.location.Geocoder;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,6 +36,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMapClickListener, android.location.LocationListener
@@ -164,13 +170,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onQueryTextChange(String query) {
 
-                //DO WHATEVS
+
                 return true;
 
             }
 
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String query)
+            {
+                //TODO: Test this stuff
+                /*
+                Geocoder geoCoder = new Geocoder(getParent(), Locale.getDefault());
+                ArrayList<MarkerOptions> points = new ArrayList<MarkerOptions>();
+                try
+                {
+                    List<Address> addresses = geoCoder.getFromLocationName(query, 5);
+                    for (Address i : addresses)
+                    {
+                        points.add(new MarkerOptions().position(new LatLng((int) i.getLatitude() * 1E6, (int) i.getLongitude() * 1E6)));
+                    }
+                    for (MarkerOptions mo : points)
+                    {
+                        mMap.addMarker(mo);
+                    }
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+                */
                 return true;
             }
 
@@ -178,27 +205,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         sV.setQueryHint("Search");
         return true;
     }
-
-    private void setupSearchView() {
-        sV.setIconifiedByDefault(true);
-        sV.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextChange(String query) {
-
-                //DO WHATEVS
-                return true;
-
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return true;
-            }
-
-        });
-        sV.setQueryHint("Search");
-    }
-
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_close_map:
