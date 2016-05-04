@@ -7,12 +7,12 @@ public class User {
     protected String userName;
     protected String emailAddress;
     protected String password;
-    protected User partner;
+
     public User(String userName, String emailAddress, String password) {
         this.userName = userName;
         this.emailAddress = emailAddress;
         this.password = password;
-        partner = null;
+
     }
 
     public String getUserName() {
@@ -22,14 +22,9 @@ public class User {
     public String getEmailAddress() {
         return emailAddress;
     }
+
     public String getPassword() {
         return password;
     }
 
-    public User getPartner() {
-        return partner;
-    }
-    public void setPartner(User p) {
-        partner = p;
-    }
 }
