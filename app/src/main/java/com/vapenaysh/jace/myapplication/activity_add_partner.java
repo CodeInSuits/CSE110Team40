@@ -11,4 +11,6 @@ public class activity_add_partner extends Activity {
         setContentView(R.layout.activity_activity_add_partner);
     }
 
+
+
 }

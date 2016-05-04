@@ -14,7 +14,6 @@ public class PartnershipTracker {
         tracker = new HashMap<>();
     }
 
-
     public boolean hasPartner(User self) {
 
         if (tracker.get(self) == null) {
