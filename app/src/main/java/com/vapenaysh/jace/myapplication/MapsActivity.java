@@ -2,6 +2,7 @@ package com.vapenaysh.jace.myapplication;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Location;
@@ -66,8 +67,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         namePrompt = (TextView) findViewById(R.id.custom_name_prompt);
         namePromptLayout = (RelativeLayout) findViewById(R.id.custom_name_layout);
         namePromptLayout.setVisibility(View.GONE);
-
-
     }
 
 
@@ -179,8 +178,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public boolean onQueryTextSubmit(String query)
             {
                 //TODO: Test this stuff
-                /*
-                Geocoder geoCoder = new Geocoder(getParent(), Locale.getDefault());
+
+                Geocoder geoCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                 ArrayList<MarkerOptions> points = new ArrayList<MarkerOptions>();
                 try
                 {
@@ -197,7 +196,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 {
                     e.printStackTrace();
                 }
-                */
+
                 return true;
             }
 
