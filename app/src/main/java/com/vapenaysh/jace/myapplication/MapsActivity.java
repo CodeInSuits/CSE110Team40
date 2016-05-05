@@ -183,7 +183,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public boolean onQueryTextSubmit(String query)
             {
                 //TODO: Test this stuff
-                /*
+
                 Geocoder geoCoder = new Geocoder(getParent(), Locale.getDefault());
                 ArrayList<MarkerOptions> points = new ArrayList<MarkerOptions>();
                 try
@@ -201,7 +201,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 {
                     e.printStackTrace();
                 }
-                */
+
                 return true;
             }
 

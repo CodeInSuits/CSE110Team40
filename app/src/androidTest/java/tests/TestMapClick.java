@@ -30,6 +30,7 @@ public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity>
         super(MapsActivity.class);
     }
 
+    /*
     @Override
     protected void setUp(){
         mapsActivity = getActivity();
@@ -45,6 +46,7 @@ public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity>
             }
         });
     }
+    */
 
     @UiThreadTest
     public void test_ClickOnMap(){
