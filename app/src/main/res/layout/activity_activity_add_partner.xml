@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="PARTNER INFORMATION"
+        android:text="@string/add_partner_title"
         android:id="@+id/title_add_par"
         android:textStyle="bold"
         android:textSize="30sp"
@@ -45,6 +45,9 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="66dp" />
+        android:layout_marginTop="66dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textIsSelectable="true" />
 
 </RelativeLayout>

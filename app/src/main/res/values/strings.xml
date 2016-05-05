@@ -16,4 +16,13 @@
     <string name="see_loc_history">See partner\'s history</string>
     <string name="saved_successfully">Saved successfully!</string>
     <string name="title_activity_remove_partner">remove_partner</string>
+    <string name="partner_info_title">Partner Information</string>
+    <string name="add_partner_title">Add A Partner From Google Account</string>
+    <string name="show_ema">Email:</string>
+    <string name="show_nam">Name:</string>
+    <string name="email_address">Email Address</string>
+    <string name="remove_partner">Remove Partner</string>
+
+
+
 </resources>

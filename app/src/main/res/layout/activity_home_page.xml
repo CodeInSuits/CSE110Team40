@@ -13,13 +13,17 @@
     <Button
         android:id="@+id/add_fave_loc_btn"
         style="@style/HomepageButton"
+        android:textStyle="bold"
         android:text="@string/add_loc_btn"
+        android:textSize="18sp"
         android:onClick="startMapActivity"/>
 
     <Button
         android:id="@+id/partner_setting_btn"
         style="@style/HomepageButton"
         android:layout_below="@id/add_fave_loc_btn"
+        android:textStyle="bold"
+        android:textSize="18sp"
         android:text="@string/partner_settings"
         android:onClick="openPartnerSettings"/>
 
@@ -27,6 +31,8 @@
         android:id="@+id/see_loc_history"
         style="@style/HomepageButton"
         android:layout_below="@id/partner_setting_btn"
+        android:textStyle="bold"
+        android:textSize="18sp"
         android:text="@string/see_loc_history"
         android:onClick="seePartnerHistory"/>
 

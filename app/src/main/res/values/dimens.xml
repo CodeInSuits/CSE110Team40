@@ -9,4 +9,5 @@
 
     <dimen name="homepage_btn_height">64dp</dimen>
     <dimen name="homepage_btn_width">256dp</dimen>
+
 </resources>
