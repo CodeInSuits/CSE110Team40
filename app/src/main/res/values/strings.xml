@@ -15,4 +15,5 @@
     <string name="partner_settings">Partner settings</string>
     <string name="see_loc_history">See partner\'s history</string>
     <string name="saved_successfully">Saved successfully!</string>
+    <string name="title_activity_remove_partner">remove_partner</string>
 </resources>
