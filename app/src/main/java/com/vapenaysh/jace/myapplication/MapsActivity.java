@@ -1,7 +1,9 @@
 package com.vapenaysh.jace.myapplication;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -172,17 +174,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         sV.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String query) {
-
-
                 return true;
-
             }
 
             @Override
             public boolean onQueryTextSubmit(String query)
             {
                 //TODO: Test this stuff
-
 
                 Geocoder geoCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                 ArrayList<MarkerOptions> points = new ArrayList<MarkerOptions>();
@@ -219,7 +217,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 getActionBar().setCustomView(editText);
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -297,6 +294,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onProviderDisabled(String s) {
-
+        new AlertDialog.Builder(getBaseContext())
+                .setTitle("Error")
+                .setMessage("GPS Must be enabled for this application to function.")
+                .setPositiveButton("AIGHT FAM", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }
