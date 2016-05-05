@@ -114,6 +114,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapClick(LatLng latLng) {
+        setMarkerAt(latLng);
+    }
+
+    private void setMarkerAt(LatLng latLng){
         if (currentMarker != null)
             currentMarker.remove();
 
