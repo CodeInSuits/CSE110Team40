@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="PARTNER INFORMATION"
-        android:id="@+id/title"
+        android:id="@+id/title_par_info"
         android:textStyle="bold"
         android:textSize="30sp"
         android:layout_gravity="center_horizontal"
