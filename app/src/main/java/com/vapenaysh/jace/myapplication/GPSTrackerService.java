@@ -15,6 +15,8 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+
 /*WARNING: THIS CLASS IS COMPLETELY UNTESTED*/
 public class GPSTrackerService extends Service implements LocationListener
 {
@@ -24,6 +26,7 @@ public class GPSTrackerService extends Service implements LocationListener
     private Context context;
     private static final long time = 12000;
     private static final float distance = 50;
+    private ArrayList<FavoriteLocation> visitedLocations = new ArrayList<FavoriteLocation>();
     @Override
     public int onStartCommand(Intent i, int flags, int startID)
     {
@@ -115,10 +118,26 @@ public class GPSTrackerService extends Service implements LocationListener
     @Override
     public void onLocationChanged(Location location)
     {
+        LatLng loc = getCurrentLocation();
         LatLng currentLocation = getCurrentLocation();
         for (FavoriteLocation fl : favLocations)
         {
-            //TODO: CHECK WHATEVER
+            HashSet<FavoriteLocation> fll = SavedLocations.getLocations();
+            for (FavoriteLocation fli: fll)
+            {
+                if (visitedLocations.indexOf(fli) != -1)
+                {
+                    if (loc.latitude > fl.getCoord().latitude - 0.01 || loc.latitude < fl.getCoord().latitude + 0.01)
+                    {
+                        if (loc.longitude > fl.getCoord().longitude - 0.01 || loc.longitude < fl.getCoord().longitude + 0.01)
+                        {
+                            Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT" + loc.toString());
+                            //TODO: NOTIFICATION CODE
+                            visitedLocations.add(fli);
+                        }
+                    }
+                }
+            }
         }
     }
 
