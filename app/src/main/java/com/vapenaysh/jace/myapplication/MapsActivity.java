@@ -51,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Marker currentMarker;
+    private ArrayList<Marker> searchMarkers = new ArrayList<Marker>();
     private TextView namePrompt;
     private RelativeLayout namePromptLayout;
     private String filename = SavedLocations.LOC_FILE_NAME;
@@ -86,6 +87,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
         mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+        {
+            @Override
+            public boolean onMarkerClick(Marker marker)
+            {
+                currentMarker = marker;
+                namePromptLayout.setVisibility(View.VISIBLE);
+                namePrompt.setText(R.string.add_custom_name);
+                return true;
+            }
+        });
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
@@ -122,6 +134,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void setMarkerAt(LatLng latLng){
         if (currentMarker != null)
             currentMarker.remove();
+        if (searchMarkers.size() != 0)
+        {
+            for (Marker i : searchMarkers)
+            {
+                i.remove();
+            }
+        }
 
         currentMarker = mMap.addMarker(new MarkerOptions().position(latLng));
         namePromptLayout.setVisibility(View.VISIBLE);
@@ -181,19 +200,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public boolean onQueryTextSubmit(String query)
             {
                 //TODO: Test this stuff
-
+                Log.d("USER SEARCHED", query);
                 Geocoder geoCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                 ArrayList<MarkerOptions> points = new ArrayList<MarkerOptions>();
                 try
                 {
                     List<Address> addresses = geoCoder.getFromLocationName(query, 5);
+                    Log.d("ADRESSES", addresses.get(0).toString());
                     for (Address i : addresses)
                     {
-                        points.add(new MarkerOptions().position(new LatLng((int) i.getLatitude() * 1E6, (int) i.getLongitude() * 1E6)));
+                        points.add(new MarkerOptions().position(new LatLng(i.getLatitude(), i.getLongitude())));
                     }
                     for (MarkerOptions mo : points)
                     {
-                        mMap.addMarker(mo);
+                        searchMarkers.add(mMap.addMarker(mo));
                     }
                 } catch (IOException e)
                 {
@@ -294,6 +314,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onProviderDisabled(String s) {
+        /*
         new AlertDialog.Builder(getBaseContext())
                 .setTitle("Error")
                 .setMessage("GPS Must be enabled for this application to function.")
@@ -303,6 +324,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+                .show();*/
     }
 }
