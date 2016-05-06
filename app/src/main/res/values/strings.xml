@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">CoupleTones</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_create_account">CreateAccount</string>
+    <string name="title_activity_activity_add_partner">activity_add_partner</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="choose_favorite">Choose a favorite location</string>
+    <string name="problem_saving">Problems saving. Try again.</string>
+    <string name="add_custom_name">(Optional) Add custom name!</string>
+    <string name="pick_loc_first">Must pick a location first</string>
+    <string name="title_activity_home_page">HomePage</string>
+    <string name="add_loc_btn">Add a favorite location</string>
+    <string name="partner_settings">Partner settings</string>
+    <string name="see_loc_history">See partner\'s history</string>
+    <string name="saved_successfully">Saved successfully!</string>
+    <string name="title_activity_remove_partner">remove_partner</string>
+    <string name="partner_info_title">Partner Information</string>
+    <string name="add_partner_title">Add A Partner From Google Account</string>
+    <string name="show_ema">Email:</string>
+    <string name="show_nam">Name:</string>
+    <string name="email_address">Email Address</string>
+    <string name="remove_partner">Remove Partner</string>
+
+
+
+</resources>
