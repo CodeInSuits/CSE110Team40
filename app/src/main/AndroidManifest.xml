@@ -17,15 +17,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".CreateAccount"
             android:label="@string/title_activity_create_account" />
         <activity
@@ -54,10 +45,32 @@
             android:name=".HomePage"
             android:label="@string/title_activity_home_page" />
         <activity
-            android:name=".remove_partner"
-            android:label="@string/title_activity_remove_partner" >
+            android:name=".remove"
+            android:label="@string/title_activity_remove_partner" />
+
+        <service
+            android:name=".GPSTrackerService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
         </activity>
-        <activity android:name=".remove" >
+        <activity
+            android:name=".Splash"
+            android:label="@string/title_activity_splash" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

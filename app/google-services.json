@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "1021736687932",
+    "project_id": "team40coupletone"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1021736687932:android:943c582b5eb00697",
+        "android_client_info": {
+          "package_name": "com.vapenaysh.jace.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1021736687932-dvupt4hc1hj0n748rb1urfjdtv90nue9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vapenaysh.jace.myapplication",
+            "certificate_hash": "6511434DC5FC14E6A382669285131388707D5761"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDemMAxnN77ELrOSOzKlf9CXcfsTWTfJgA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -39,12 +39,13 @@
             android:layout_height="wrap_content" />
 
         <com.dd.processbutton.iml.ActionProcessButton
+
             android:id="@+id/create_account"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="Create Account"
+            android:text="Sign Out"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             custom:pb_colorComplete="@color/green_complete"

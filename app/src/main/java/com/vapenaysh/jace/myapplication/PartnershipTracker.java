@@ -10,7 +10,7 @@ public class PartnershipTracker {
     // field
     HashMap<User, User> tracker;
 
-    PartnershipTracker() {
+    public PartnershipTracker() {
         tracker = new HashMap<>();
     }
 

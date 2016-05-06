@@ -1,21 +1,15 @@
 package com.vapenaysh.jace.myapplication;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
-import android.location.Location;
 import android.location.Geocoder;
+import android.location.Location;
 import android.location.LocationManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
-import android.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,13 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -51,6 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Marker currentMarker;
+    private ArrayList<Marker> searchMarkers = new ArrayList<Marker>();
     private TextView namePrompt;
     private RelativeLayout namePromptLayout;
     private String filename = SavedLocations.LOC_FILE_NAME;
@@ -86,6 +77,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
         mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+        {
+            @Override
+            public boolean onMarkerClick(Marker marker)
+            {
+                currentMarker = marker;
+                namePromptLayout.setVisibility(View.VISIBLE);
+                namePrompt.setText(R.string.add_custom_name);
+                return true;
+            }
+        });
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
@@ -110,7 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
-        moveMap();
+        moveMap(currentLocation);
 
     }
 
@@ -122,6 +124,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void setMarkerAt(LatLng latLng){
         if (currentMarker != null)
             currentMarker.remove();
+        if (searchMarkers.size() != 0)
+        {
+            for (Marker i : searchMarkers)
+            {
+                i.remove();
+            }
+        }
 
         currentMarker = mMap.addMarker(new MarkerOptions().position(latLng));
         namePromptLayout.setVisibility(View.VISIBLE);
@@ -148,10 +157,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return;
             }
 
-            //add to arraylist for current session
+            //add to set
             SavedLocations.addLocation(fave);
 
-            //close
+            //close name window
             namePrompt.setText(R.string.saved_successfully);
             namePromptLayout.setVisibility(View.GONE);
             currentMarker.remove();
@@ -180,21 +189,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                //TODO: Test this stuff
-
+                Log.d("USER SEARCHED", query);
                 Geocoder geoCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                ArrayList<MarkerOptions> points = new ArrayList<MarkerOptions>();
+                ArrayList<LatLng> points = new ArrayList<>();
                 try
                 {
                     List<Address> addresses = geoCoder.getFromLocationName(query, 5);
                     for (Address i : addresses)
                     {
-                        points.add(new MarkerOptions().position(new LatLng((int) i.getLatitude() * 1E6, (int) i.getLongitude() * 1E6)));
+                        points.add(new LatLng(i.getLatitude(), i.getLongitude()));
                     }
-                    for (MarkerOptions mo : points)
-                    {
-                        mMap.addMarker(mo);
+
+                    if(points.size() > 0){
+                        LatLng latLng = points.get(0);
+                        Location loc = new Location("name");
+                        loc.setLatitude(latLng.latitude);
+                        loc.setLongitude(latLng.longitude);
+                        moveMap(loc);
+
+                        //only one search result, add flag and go to custom name options
+                        if(points.size() == 1){
+                            setMarkerAt(latLng);
+                        }
+                        else {
+                            namePromptLayout.setVisibility(View.GONE);
+                            namePrompt.setText("Multiple search results");
+                            for (LatLng l : points) {
+                                searchMarkers.add(mMap.addMarker(new MarkerOptions().position(l)));
+                            }
+                        }
                     }
+
+
                 } catch (IOException e)
                 {
                     e.printStackTrace();
@@ -232,7 +258,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /**
      * make san diego the starting location by default
      */
-    private void setDefaultStartingLocation() {
+    private Location getDefaultStartingLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -241,34 +267,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return;
+            return null;
         }
-        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Location networkLoc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        if(currentLocation == null && networkLoc != null){
-            currentLocation = networkLoc;
+        if(loc == null && networkLoc != null){
+            loc = networkLoc;
         }
-        else if( networkLoc != null && networkLoc.getTime() > currentLocation.getTime() ){
+        else if( networkLoc != null && networkLoc.getTime() > loc.getTime() ){
             //network provider has a more recent location
-            currentLocation = networkLoc;
+            loc = networkLoc;
         }
         else {
-            currentLocation = new Location("default");
-            currentLocation.setLatitude(32.7157);
-            currentLocation.setLongitude(-117.1611);
+            loc = new Location("default");
+            loc.setLatitude(32.7157);
+            loc.setLongitude(-117.1611);
         }
+        return loc;
     }
 
 
     /**
      * move map's camera to current location
      */
-    private void moveMap(){
-        if(currentLocation == null)
-            setDefaultStartingLocation();
+    private void moveMap(Location loc){
+        if(loc == null)
+            loc = getDefaultStartingLocation();
 
-        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
     }
 
@@ -279,7 +306,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
         currentLocation = location;
-        moveMap();
+        moveMap(currentLocation);
     }
 
     @Override
@@ -294,6 +321,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onProviderDisabled(String s) {
+        /*
         new AlertDialog.Builder(getBaseContext())
                 .setTitle("Error")
                 .setMessage("GPS Must be enabled for this application to function.")
@@ -303,6 +331,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+                .show();*/
     }
 }

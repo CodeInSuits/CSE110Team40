@@ -41,13 +41,7 @@
             android:layout_marginTop="8dp"
            />
 
-        <Button
-            android:text="Save"
-            android:layout_alignParentBottom="true"
-            android:layout_width="@dimen/custom_name_width"
-            android:layout_height="@dimen/custom_name_height"
-            android:onClick="saveCustomName"
-            android:id="@+id/save_btn" />
+
 
         <Button
             android:text="Cancel"
@@ -55,8 +49,17 @@
             android:layout_height="@dimen/custom_name_height"
             android:id="@+id/cancel_btn"
             android:layout_alignParentBottom="true"
-            android:layout_alignEnd="@+id/custom_name"
             android:onClick="cancelCustomName"/>
+
+        <Button
+            android:text="Save"
+            android:layout_alignParentBottom="true"
+            android:layout_width="@dimen/custom_name_width"
+            android:layout_height="@dimen/custom_name_height"
+            android:onClick="saveCustomName"
+            android:layout_alignEnd="@+id/custom_name"
+
+            android:id="@+id/save_btn" />
     </RelativeLayout>
 
 
