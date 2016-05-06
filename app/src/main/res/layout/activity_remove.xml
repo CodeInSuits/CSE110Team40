@@ -58,23 +58,23 @@
         android:textColor="#f7f7f7"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Name"
-        android:background="#09b687"
         android:layout_gravity="center_horizontal"
         android:layout_alignTop="@+id/show_name"
-        android:layout_alignStart="@+id/partner_name" />
+        android:layout_alignStart="@+id/partner_name"
+        android:layout_alignEnd="@+id/partner_name" />
 
     <EditText
         android:id="@+id/partner_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#f7f7f7"
+        android:textColor="#90c3d4"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/email_address"
-        android:background="#09b687"
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/show_name"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_alignEnd="@+id/partner_name"
+        android:layout_alignStart="@+id/partner_name" />
 
     <Button
         android:id="@+id/remove_partner_button"
