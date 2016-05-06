@@ -1,5 +1,9 @@
 package com.vapenaysh.jace.myapplication;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,13 +12,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -47,6 +53,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     private static final String TAG = "SignInActivity";
 
+    private ImageView imageView;
+    private Animation animation;
+
 
 
     @Override
@@ -60,7 +69,44 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Customize sign-in button. The sign-in button can be displayed in
+        imageView = (ImageView) findViewById(R.id.yinyang);
+        animation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);
+
+        imageView.startAnimation(animation);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                ObjectAnimator fadeOut = ObjectAnimator.ofFloat(imageView, "alpha", 1f, .3f);
+                ObjectAnimator fadeIn = ObjectAnimator.ofFloat(imageView, "alpha", .3f, 1f);
+                fadeIn.setDuration(2000);
+                fadeOut.setDuration(2000);
+                final AnimatorSet mAnimationSet = new AnimatorSet();
+                mAnimationSet.play(fadeIn).after(fadeOut);
+                mAnimationSet.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        mAnimationSet.start();
+                    }
+                });
+                mAnimationSet.start();
+                signInButton.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+
+        // / Customize sign-in button. The sign-in button can be displayed in
         // multiple sizes and color schemes. It can also be contextually
         // rendered based on the requested scopes. For example. a red button may
         // be displayed when Google+ scopes are requested, but a white button
@@ -74,9 +120,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("1021736687932-f73c4tc0pdcdhlrt16b3h3pj7qi0aq1b.apps.googleusercontent.com")
+                .requestEmail()//.requestIdToken("1021736687932-f73c4tc0pdcdhlrt16b3h3pj7qi0aq1b.apps.googleusercontent.com")
                 .requestScopes(new Scope(Scopes.PLUS_LOGIN))
                 .build();
+
+
 
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
@@ -188,8 +236,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
 
         if(requestCode == RC_SIGN_OUT){
-            //Auth.GoogleSignInApi.signOut(mGoogleApiClient);
             Toast.makeText(getApplication(), "Signed out", Toast.LENGTH_SHORT).show();
+            imageView.startAnimation(animation);
 
         }
     }
@@ -206,6 +254,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             Intent intent = new Intent(MainActivity.this, HomePage.class);
             startActivityForResult(intent, RC_SIGN_OUT);
 
+
+            /*** Firebase set up for authentication ***/
+            /*
             Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
                 @Override
                 public void onAuthenticated(AuthData authData) {
@@ -222,13 +273,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             };
 
 
-            firebase.authWithOAuthToken("google",idToken, authResultHandler);
+            firebase.authWithOAuthToken("google",idToken, authResultHandler);*/
 
-
-
-
-
-            /*** Firebase set up for authentication ***/
 
         } else {
 
