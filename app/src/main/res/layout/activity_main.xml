@@ -19,6 +19,7 @@
         android:layout_centerInParent="true"
         android:layout_height="wrap_content">
 
+
         <EditText
 
             android:hint="User name"
@@ -35,7 +36,6 @@
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
 
         <com.dd.processbutton.FlatButton
             android:id="@+id/login"
