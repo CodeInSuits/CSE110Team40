@@ -195,6 +195,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
             String idToken = acct.getIdToken();
             //Toast.makeText(getApplication(),idToken, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(MainActivity.this, HomePage.class));
 
             Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
                 @Override
