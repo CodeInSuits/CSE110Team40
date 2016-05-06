@@ -63,6 +63,7 @@
             android:textColor="@android:color/white"
             custom:pb_colorNormal="#FE8D8D"
             custom:pb_colorPressed="#FC2C2C" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:id="@+id/logo"
@@ -88,14 +89,7 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:src="@drawable/ct"
-        android:layout_above="@+id/linearLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="59dp" />
+
 
 
 </RelativeLayout>
