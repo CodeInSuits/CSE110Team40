@@ -68,7 +68,7 @@ public class activity_add_partner extends Activity {
                 } catch(IOException ex) {
                     msg = "Error: " + ex.getMessage();
                 }
-                id = msg;
+                id = regid;
                 return msg;
             }
 

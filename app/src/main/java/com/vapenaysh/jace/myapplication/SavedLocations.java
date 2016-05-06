@@ -44,7 +44,7 @@ public class SavedLocations {
         try {
             fis = c.openFileInput(LOC_FILE_NAME);
         }catch(Exception e){
-            Log.e("SavedLocations", "loadLocations() had exception: " + e.toString());
+            Log.e("SavedLocations", "loadLocations() had opening exception: " + e.toString());
             return; //return if no file found
         }
 
@@ -56,7 +56,7 @@ public class SavedLocations {
         try {
             fis.close();
         } catch( Exception e ){
-            Log.e("SavedLocations", "loadLocations() had exception: " + e.toString());
+            Log.e("SavedLocations", "loadLocations() had closing exception: " + e.toString());
         }
     }
 
@@ -68,7 +68,7 @@ public class SavedLocations {
         String[] parts = line.split("&");
         if( parts.length != 3 ){
             Log.v("SavedLocation", "translateFavoriteLocation() read a"
-                    + "line of location with incorrect number of paramaters");
+                    + "line of location with incorrect number of parameters");
             return;
         }
 
