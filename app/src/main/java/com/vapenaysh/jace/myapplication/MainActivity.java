@@ -43,6 +43,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     private static final int RC_SIGN_IN = 9001;
 
+    private static final int RC_SIGN_OUT = 9002;
+
     private static final String TAG = "SignInActivity";
 
 
@@ -184,6 +186,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
+
+        if(requestCode == RC_SIGN_OUT){
+            //Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+            Toast.makeText(getApplication(), "Signed out", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
@@ -195,7 +203,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
             String idToken = acct.getIdToken();
             //Toast.makeText(getApplication(),idToken, Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(MainActivity.this, HomePage.class));
+            Intent intent = new Intent(MainActivity.this, HomePage.class);
+            startActivityForResult(intent, RC_SIGN_OUT);
 
             Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
                 @Override

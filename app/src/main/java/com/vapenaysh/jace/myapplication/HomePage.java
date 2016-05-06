@@ -1,11 +1,10 @@
 package com.vapenaysh.jace.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 public class HomePage extends Activity implements View.OnClickListener{
 
@@ -22,6 +21,9 @@ public class HomePage extends Activity implements View.OnClickListener{
         //connect the register button
         Button partner_setting_view = (Button)findViewById(R.id.partner_setting_btn);
         partner_setting_view.setOnClickListener(this);
+
+        Button signout = (Button)findViewById(R.id.logout);
+        signout.setOnClickListener(this);
 
         //connect the register button
         //Button loc_history_view = (Button)findViewById(R.id.see_loc_history);
@@ -48,6 +50,9 @@ public class HomePage extends Activity implements View.OnClickListener{
             // case R.id.see_loc_history:
             // not for MS 1
             // break;
+
+            case R.id.logout:
+                signout();
         }
         //WARNING: UNTESTED CODE
         FavoriteLocationList locationsList = new FavoriteLocationList();
@@ -55,6 +60,11 @@ public class HomePage extends Activity implements View.OnClickListener{
         i.putExtra("FavoriteLocations", locationsList);
         startService(i);
         //WARNING: END UNTESTED CODE
+    }
+
+    public void signout(){
+        finishActivity(1);
+        onBackPressed();
     }
 
     /**
