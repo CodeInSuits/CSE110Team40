@@ -13,12 +13,40 @@
       },
       "oauth_client": [
         {
+          "client_id": "1021736687932-e7d5r2vh397c9cs1qln56h4ionn1c3lt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vapenaysh.jace.myapplication",
+            "certificate_hash": "B2F99AFF8296A1F15FB96D95FF5D7CC8E48494BB"
+          }
+        },
+        {
+          "client_id": "1021736687932-udf7rbn935mispbao4106hpqrdc61oua.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vapenaysh.jace.myapplication",
+            "certificate_hash": "19D5E0C0707F494127B9ED42CB91E67722B24371"
+          }
+        },
+        {
+          "client_id": "1021736687932-03uk8o9fctudo78d6mfuk6p9skeu0h26.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vapenaysh.jace.myapplication",
+            "certificate_hash": "B8302484E038A999049B52E66A3139E7F6CF54DC"
+          }
+        },
+        {
           "client_id": "1021736687932-dvupt4hc1hj0n748rb1urfjdtv90nue9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.vapenaysh.jace.myapplication",
             "certificate_hash": "6511434DC5FC14E6A382669285131388707D5761"
           }
+        },
+        {
+          "client_id": "1021736687932-f73c4tc0pdcdhlrt16b3h3pj7qi0aq1b.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
