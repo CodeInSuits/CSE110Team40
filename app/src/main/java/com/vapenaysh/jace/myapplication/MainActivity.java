@@ -222,8 +222,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             /*** Firebase set up for authentication ***/
 
         } else {
-            // Signed out, show unauthenticated UI.
 
+            Toast.makeText(getApplication(),"Authenticated failed!", Toast.LENGTH_SHORT).show();
         }
     }
     @Override
