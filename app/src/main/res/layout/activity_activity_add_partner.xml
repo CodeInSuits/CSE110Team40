@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Name:"
+        android:textStyle="bold"
         android:id="@+id/textView"
         android:layout_marginTop="36dp"
         android:layout_below="@+id/textView3"
@@ -49,41 +50,45 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Email:"
+        android:textStyle="bold"
         android:id="@+id/textView4"
         android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:paddingTop="5dp" />
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/par_name"
         android:layout_below="@+id/textView"
         android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
+        android:id="@+id/par_email"
         android:layout_below="@+id/textView4"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/editText" />
+        android:layout_alignEnd="@+id/par_name" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="RedID:"
+        android:textStyle="bold"
         android:id="@+id/textView5"
-        android:layout_below="@+id/editText2"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/par_email"
+        android:layout_alignParentStart="true"
+        android:paddingTop="5dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText3"
+        android:id="@+id/par_id"
         android:layout_below="@+id/textView5"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/editText2" />
+        android:layout_alignEnd="@+id/par_email" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -91,19 +96,31 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Your RegID:"
         android:id="@+id/textView7"
-        android:layout_below="@+id/editText3"
+        android:layout_below="@+id/par_id"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="40dp" />
+        android:paddingTop="25dp" />
 
     <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="id"
+        android:id="@+id/self_regId"
+        android:background="#ffffff"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView7"
+        android:layout_alignParentBottom="true" />
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textView8"
+        android:text="Add Partner"
+        android:id="@+id/add_par"
         android:layout_alignTop="@+id/textView7"
-        android:layout_toEndOf="@+id/textView7"
-        android:layout_marginStart="36dp" />
+        android:layout_alignEnd="@+id/self_regId"
+        android:layout_above="@+id/self_regId" />
 
 
 </RelativeLayout>

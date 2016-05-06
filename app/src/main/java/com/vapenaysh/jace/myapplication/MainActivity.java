@@ -61,9 +61,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         // Customize sign-in button. The sign-in button can be displayed in
         // multiple sizes and color schemes. It can also be contextually
         // rendered based on the requested scopes. For example. a red button may
-// be displayed when Google+ scopes are requested, but a white button
-// may be displayed when only basic profile is requested. Try adding the
-// Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
+        // be displayed when Google+ scopes are requested, but a white button
+        // may be displayed when only basic profile is requested. Try adding the
+        // Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
         // difference.
         signInButton = (SignInButton) findViewById(R.id.google_signin);
 
