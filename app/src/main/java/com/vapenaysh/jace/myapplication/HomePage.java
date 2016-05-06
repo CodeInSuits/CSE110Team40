@@ -6,9 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class HomePage extends Activity implements View.OnClickListener{
+import com.dd.processbutton.iml.ActionProcessButton;
 
+import Utility.ProgressGenerator;
 
+public class HomePage extends Activity implements View.OnClickListener, ProgressGenerator.OnCompleteListener{
+
+    private ProgressGenerator progressGenerator;
+    private ActionProcessButton signout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +27,10 @@ public class HomePage extends Activity implements View.OnClickListener{
         Button partner_setting_view = (Button)findViewById(R.id.partner_setting_btn);
         partner_setting_view.setOnClickListener(this);
 
-        Button signout = (Button)findViewById(R.id.logout);
+        progressGenerator = new ProgressGenerator(this);
+        signout = (ActionProcessButton) findViewById(R.id.logout);
+
+        signout.setMode(ActionProcessButton.Mode.PROGRESS);
         signout.setOnClickListener(this);
 
         //connect the register button
@@ -63,8 +71,9 @@ public class HomePage extends Activity implements View.OnClickListener{
     }
 
     public void signout(){
-        finishActivity(1);
-        onBackPressed();
+
+        progressGenerator.start(signout);
+        signout.setEnabled(false);
     }
 
     /**
@@ -92,4 +101,10 @@ public class HomePage extends Activity implements View.OnClickListener{
         //startActivity(new Intent(HomePage.this, History.class));
     }
 
+    @Override
+    public void onComplete() {
+        finishActivity(1);
+        onBackPressed();
+
+    }
 }

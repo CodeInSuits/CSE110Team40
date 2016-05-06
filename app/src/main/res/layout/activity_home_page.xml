@@ -11,22 +11,34 @@
     android:background="#90c3d4"
     tools:context="com.vapenaysh.jace.myapplication.HomePage">
 
-    <Button
-        android:id="@+id/add_fave_loc_btn"
-        style="@style/HomepageButton"
-        android:textStyle="bold"
-        android:text="@string/add_loc_btn"
-        android:textSize="18sp"
-        android:onClick="startMapActivity"/>
 
-    <Button
+
+    <com.dd.processbutton.FlatButton
+        android:layout_marginTop="30dp"
+        android:id="@+id/add_fave_loc_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/passwordinput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_loc_btn"
+        android:onClick="startMapActivity"
+        android:textColor="@android:color/white"
+        custom:pb_colorNormal="#FE8D8D"
+        custom:pb_colorPressed="#FC2C2C" />
+
+    <com.dd.processbutton.FlatButton
         android:id="@+id/partner_setting_btn"
-        style="@style/HomepageButton"
-        android:layout_below="@id/add_fave_loc_btn"
-        android:textStyle="bold"
-        android:textSize="18sp"
         android:text="@string/partner_settings"
-        android:onClick="openPartnerSettings"/>
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/add_fave_loc_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="openPartnerSettings"
+        android:textColor="@android:color/white"
+        custom:pb_colorNormal="#FE8D8D"
+        custom:pb_colorPressed="#FC2C2C" />
 
 
     <!--
@@ -40,17 +52,25 @@
         android:onClick="seePartnerHistory" />
     -->
 
-    <com.dd.processbutton.FlatButton
-        android:id="@+id/logout"
-        android:layout_marginTop="9dp"
+    <com.dd.processbutton.iml.ActionProcessButton
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_width="match_parent"
+        android:id="@+id/logout"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:layout_marginBottom="16dp"
+        android:text="Sign Out"
         android:textColor="@android:color/white"
+        android:textSize="18sp"
+        custom:pb_colorComplete="@color/green_complete"
         custom:pb_colorNormal="#FE8D8D"
-        custom:pb_colorPressed="#FC2C2C" />
+        custom:pb_colorPressed="#FC2C2C"
+        custom:pb_colorProgress="@color/purple_progress"
+        custom:pb_textComplete="Success"
+        custom:pb_textProgress="Loging Out..."
+        custom:pb_textError="Error"
+        custom:pb_colorError="@color/red_error" />
 
 
 </RelativeLayout>
