@@ -112,7 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
-        moveMap();
+        moveMap(currentLocation);
 
     }
 
@@ -191,18 +191,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             {
                 Log.d("USER SEARCHED", query);
                 Geocoder geoCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                ArrayList<MarkerOptions> points = new ArrayList<MarkerOptions>();
+                ArrayList<LatLng> points = new ArrayList<>();
                 try
                 {
                     List<Address> addresses = geoCoder.getFromLocationName(query, 5);
                     for (Address i : addresses)
                     {
-                        points.add(new MarkerOptions().position(new LatLng(i.getLatitude(), i.getLongitude())));
+                        points.add(new LatLng(i.getLatitude(), i.getLongitude()));
                     }
-                    for (MarkerOptions mo : points)
-                    {
-                        searchMarkers.add(mMap.addMarker(mo));
+
+                    if(points.size() > 0){
+                        LatLng latLng = points.get(0);
+                        Location loc = new Location("name");
+                        loc.setLatitude(latLng.latitude);
+                        loc.setLongitude(latLng.longitude);
+                        moveMap(loc);
+
+                        //only one search result, add flag and go to custom name options
+                        if(points.size() == 1){
+                            setMarkerAt(latLng);
+                        }
+                        else {
+                            namePromptLayout.setVisibility(View.GONE);
+                            namePrompt.setText("Multiple search results");
+                            for (LatLng l : points) {
+                                searchMarkers.add(mMap.addMarker(new MarkerOptions().position(l)));
+                            }
+                        }
                     }
+
+
                 } catch (IOException e)
                 {
                     e.printStackTrace();
@@ -240,7 +258,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /**
      * make san diego the starting location by default
      */
-    private void setDefaultStartingLocation() {
+    private Location getDefaultStartingLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -249,34 +267,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return;
+            return null;
         }
-        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         Location networkLoc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        if(currentLocation == null && networkLoc != null){
-            currentLocation = networkLoc;
+        if(loc == null && networkLoc != null){
+            loc = networkLoc;
         }
-        else if( networkLoc != null && networkLoc.getTime() > currentLocation.getTime() ){
+        else if( networkLoc != null && networkLoc.getTime() > loc.getTime() ){
             //network provider has a more recent location
-            currentLocation = networkLoc;
+            loc = networkLoc;
         }
         else {
-            currentLocation = new Location("default");
-            currentLocation.setLatitude(32.7157);
-            currentLocation.setLongitude(-117.1611);
+            loc = new Location("default");
+            loc.setLatitude(32.7157);
+            loc.setLongitude(-117.1611);
         }
+        return loc;
     }
 
 
     /**
      * move map's camera to current location
      */
-    private void moveMap(){
-        if(currentLocation == null)
-            setDefaultStartingLocation();
+    private void moveMap(Location loc){
+        if(loc == null)
+            loc = getDefaultStartingLocation();
 
-        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
     }
 
@@ -287,7 +306,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onLocationChanged(Location location) {
         currentLocation = location;
-        moveMap();
+        moveMap(currentLocation);
     }
 
     @Override
