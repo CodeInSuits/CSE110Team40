@@ -9,11 +9,11 @@ import android.widget.EditText;
 
 public class HomePage extends Activity implements View.OnClickListener{
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-
 
         //connect the register button
         Button map_view = (Button)findViewById(R.id.add_fave_loc_btn);
@@ -49,6 +49,12 @@ public class HomePage extends Activity implements View.OnClickListener{
             // not for MS 1
             // break;
         }
+        //WARNING: UNTESTED CODE
+        FavoriteLocationList locationsList = new FavoriteLocationList();
+        Intent i = new Intent(this, GPSTrackerService.class);
+        i.putExtra("FavoriteLocations", locationsList);
+        startService(i);
+        //WARNING: END UNTESTED CODE
     }
 
     /**
