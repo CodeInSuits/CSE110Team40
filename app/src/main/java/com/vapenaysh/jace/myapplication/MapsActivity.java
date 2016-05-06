@@ -199,14 +199,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                //TODO: Test this stuff
                 Log.d("USER SEARCHED", query);
                 Geocoder geoCoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                 ArrayList<MarkerOptions> points = new ArrayList<MarkerOptions>();
                 try
                 {
                     List<Address> addresses = geoCoder.getFromLocationName(query, 5);
-                    Log.d("ADRESSES", addresses.get(0).toString());
                     for (Address i : addresses)
                     {
                         points.add(new MarkerOptions().position(new LatLng(i.getLatitude(), i.getLongitude())));
