@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
@@ -14,6 +15,8 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
     private ProgressGenerator progressGenerator;
     private ActionProcessButton signout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
     public void signout(){
 
         progressGenerator.start(signout);
+        Toast.makeText(getApplicationContext(), "Save location and partner information", Toast.LENGTH_SHORT).show();
         signout.setEnabled(false);
     }
 
