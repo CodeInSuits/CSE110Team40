@@ -11,7 +11,7 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:gravity="center"
-    android:background="#ffffff"
+    android:background="@drawable/one"
     android:clickable="true">
 
     <!--  android:background="@drawable/one" -->
@@ -81,7 +81,6 @@
         android:id="@+id/imageView"
         android:layout_above="@+id/linearLayout"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ct"
         android:layout_marginBottom="59dp" />
 
 
