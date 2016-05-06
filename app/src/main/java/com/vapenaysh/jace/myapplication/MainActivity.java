@@ -1,26 +1,32 @@
 package com.vapenaysh.jace.myapplication;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
-import com.google.android.gms.common.server.FavaDiagnosticsEntity;
-import com.google.android.gms.maps.model.LatLng;
+import com.firebase.client.FirebaseError;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
 
-public class MainActivity extends Activity implements View.OnClickListener{
+public class MainActivity extends FragmentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
     //backend object
     private Firebase firebase;
@@ -30,6 +36,14 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     //register button
     private Button register;
+
+    SignInButton signInButton;
+
+    private GoogleApiClient mGoogleApiClient;
+
+    private static final int RC_SIGN_IN = 9001;
+
+    private static final String TAG = "SignInActivity";
 
 
 
@@ -43,6 +57,43 @@ public class MainActivity extends Activity implements View.OnClickListener{
         //set up the view
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Customize sign-in button. The sign-in button can be displayed in
+        // multiple sizes and color schemes. It can also be contextually
+        // rendered based on the requested scopes. For example. a red button may
+// be displayed when Google+ scopes are requested, but a white button
+// may be displayed when only basic profile is requested. Try adding the
+// Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
+        // difference.
+        signInButton = (SignInButton) findViewById(R.id.google_signin);
+
+
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("1021736687932-f73c4tc0pdcdhlrt16b3h3pj7qi0aq1b.apps.googleusercontent.com")
+                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                .build();
+
+        // Build a GoogleApiClient with access to the Google Sign-In API and the
+        // options specified by gso.
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        // Customize sign-in button. The sign-in button can be displayed in
+        // multiple sizes and color schemes. It can also be contextually
+        // rendered based on the requested scopes. For example. a red button may
+        // be displayed when Google+ scopes are requested, but a white button
+        // may be displayed when only basic profile is requested. Try adding the
+        // Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
+        // difference.
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        signInButton.setScopes(gso.getScopeArray());
+
+        signInButton.setOnClickListener(this);
 
         //connect the login button
         login = (Button)findViewById(R.id.login);
@@ -59,6 +110,16 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         //connect to the server
         firebase = new Firebase("https://coupletone.firebaseio.com/");
+        firebase.addAuthStateListener(new Firebase.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(AuthData authData) {
+                if (authData != null) {
+                    Toast.makeText(getApplication(), "I am in", Toast.LENGTH_LONG).show();
+                } else {
+                    // user is not logged in
+                }
+            }
+        });
 
         Firebase usernames = firebase.child("usernames");
         usernames.setValue("Test");
@@ -102,9 +163,72 @@ public class MainActivity extends Activity implements View.OnClickListener{
             case R.id.register:
                 startActivity(new Intent(MainActivity.this, CreateAccount.class));
                 break;
+            case R.id.google_signin:
+                signIn();
+                break;
         }
     }
 
 
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            Toast.makeText(getApplication(),getString(R.string.signed_in_fmt, acct.getDisplayName()), Toast.LENGTH_SHORT).show();
+
+            String idToken = acct.getIdToken();
+            //Toast.makeText(getApplication(),idToken, Toast.LENGTH_SHORT).show();
+
+            Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
+                @Override
+                public void onAuthenticated(AuthData authData) {
+                    Toast.makeText(getApplication(),"Authenticated successfully with payload authData", Toast.LENGTH_SHORT).show();
+                    // Authenticated successfully with payload authData
+                }
+                @Override
+                public void onAuthenticationError(FirebaseError firebaseError) {
+                    // Authenticated failed with error firebaseError
+                    if(firebaseError.getCode() == FirebaseError.UNKNOWN_ERROR){
+                        Toast.makeText(getApplication(),"Authenticated failed with error firebaseError", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            };
+
+
+            firebase.authWithOAuthToken("google",idToken, authResultHandler);
+
+
+
+
+
+            /*** Firebase set up for authentication ***/
+
+        } else {
+            // Signed out, show unauthenticated UI.
+
+        }
+    }
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Toast.makeText(getApplicationContext(), "Something wrong", Toast.LENGTH_LONG).show();
+
+
+    }
 }
