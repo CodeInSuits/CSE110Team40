@@ -85,7 +85,11 @@ public class GPSTrackerService extends Service implements LocationListener
                     Log.d("Note", "GPS Enabled");
                 }
                 if (locManager != null) {
-                    Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    Location location = null;
+                    if (gps)
+                        location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    else if (net)
+                        location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     if (location != null) {
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
