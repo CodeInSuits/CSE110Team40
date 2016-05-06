@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/custom_name_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_favorite"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:background="#FFFF00"/>
+
+    <fragment
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".7"
+        tools:context="com.vapenaysh.jace.myapplication.MapsActivity" />
+
+    <RelativeLayout
+        android:id="@+id/custom_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".2"
+        android:paddingLeft="@dimen/custom_name_padding"
+        android:paddingRight="@dimen/custom_name_padding">
+
+
+
+        <EditText
+            android:id="@+id/custom_name"
+            android:hint="Pick a custom name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/custom_name_height"
+            android:layout_marginTop="8dp"
+           />
+
+        <Button
+            android:text="Save"
+            android:layout_alignParentBottom="true"
+            android:layout_width="@dimen/custom_name_width"
+            android:layout_height="@dimen/custom_name_height"
+            android:onClick="saveCustomName"
+            android:id="@+id/save_btn" />
+
+        <Button
+            android:text="Cancel"
+            android:layout_width="@dimen/custom_name_width"
+            android:layout_height="@dimen/custom_name_height"
+            android:id="@+id/cancel_btn"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/custom_name"
+            android:onClick="cancelCustomName"/>
+    </RelativeLayout>
+
+
+</LinearLayout>
