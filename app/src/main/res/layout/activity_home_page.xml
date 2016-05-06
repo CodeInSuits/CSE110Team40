@@ -27,6 +27,8 @@
         android:text="@string/partner_settings"
         android:onClick="openPartnerSettings"/>
 
+
+    <!--
     <Button
         android:id="@+id/see_loc_history"
         style="@style/HomepageButton"
@@ -34,6 +36,8 @@
         android:textStyle="bold"
         android:textSize="18sp"
         android:text="@string/see_loc_history"
-        android:onClick="seePartnerHistory"/>
+        android:onClick="seePartnerHistory" />
+    -->
+
 
 </RelativeLayout>
