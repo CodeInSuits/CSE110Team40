@@ -1,3 +1,4 @@
+
 package com.vapenaysh.jace.myapplication;
 
 import android.os.Bundle;
@@ -21,11 +22,12 @@ import java.io.IOException;
 public class AddPartner extends Activity implements View.OnClickListener {
 
     Button btnRegId;
-    EditText tvRegId;
+    TextView tvRegId;
     GoogleCloudMessaging gcm;
     String regid;
     String id;
-    String PROJECT_NUMBER = "1021736687932";
+    String PROJECT_NUMBER = Constants.PROJECT_NUMBER;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_activity_add_partner);
 
         btnRegId = (Button) findViewById(R.id.get_self_id);
-        tvRegId = (EditText)findViewById(R.id.self_regId);
+        tvRegId = (TextView)findViewById(R.id.self_regId);
 
         btnRegId.setOnClickListener(this);
         //tvRegId.setText(id);
@@ -44,9 +46,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
 
         // register everything and update partnership
         /*
-
         success -> if the entered email does not a partner yet
-
         if (success){
             set the button to show partner added and redirect user to homepage
         } else {
