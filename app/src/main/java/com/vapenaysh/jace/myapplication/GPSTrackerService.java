@@ -123,26 +123,24 @@ public class GPSTrackerService extends Service implements LocationListener
         LatLng loc = getCurrentLocation();
 
         //check if user is close to a favorite location
-        for (FavoriteLocation fl : favLocations.getLocations())
+        HashSet<FavoriteLocation> fll = favLocations.getLocations();
+        for (FavoriteLocation fli: fll)
         {
-            HashSet<FavoriteLocation> fll = favLocations.getLocations();
-            for (FavoriteLocation fli: fll)
+            if (loc.latitude > fli.getCoord().latitude - 0.01 || loc.latitude < fli.getCoord().latitude + 0.01)
             {
-                //not already in the list of visited locations
-                if (visitedLocations.indexOf(fli) != -1)
+                if (loc.longitude > fli.getCoord().longitude - 0.01 || loc.longitude < fli.getCoord().longitude + 0.01)
                 {
-                    if (loc.latitude > fl.getCoord().latitude - 0.01 || loc.latitude < fl.getCoord().latitude + 0.01)
+                    Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT" + loc.toString());
+                    //TODO: NOTIFICATION CODE
+                    //not already in the list of visited locations
+                    if (visitedLocations.indexOf(fli) == -1)
                     {
-                        if (loc.longitude > fl.getCoord().longitude - 0.01 || loc.longitude < fl.getCoord().longitude + 0.01)
-                        {
-                            Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT" + loc.toString());
-                            //TODO: NOTIFICATION CODE
-                            visitedLocations.add(fli);
-                        }
+                        visitedLocations.add(fli);
                     }
                 }
             }
         }
+
     }
 
     @Override
