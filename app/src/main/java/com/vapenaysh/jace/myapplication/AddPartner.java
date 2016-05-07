@@ -21,12 +21,11 @@ import java.io.IOException;
 public class AddPartner extends Activity implements View.OnClickListener {
 
     Button btnRegId;
-    TextView tvRegId;
+    EditText tvRegId;
     GoogleCloudMessaging gcm;
     String regid;
     String id;
     String PROJECT_NUMBER = "1021736687932";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_activity_add_partner);
 
         btnRegId = (Button) findViewById(R.id.get_self_id);
-        tvRegId = (TextView)findViewById(R.id.self_regId);
+        tvRegId = (EditText)findViewById(R.id.self_regId);
 
         btnRegId.setOnClickListener(this);
         //tvRegId.setText(id);
