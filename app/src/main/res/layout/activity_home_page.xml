@@ -21,7 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_loc_btn"
-        android:onClick="startMapActivity"
         android:textColor="@android:color/white"
         custom:pb_colorNormal="#FE8D8D"
         custom:pb_colorPressed="#FC2C2C" />
@@ -35,7 +34,6 @@
         android:layout_centerVertical="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="openPartnerSettings"
         android:textColor="@android:color/white"
         custom:pb_colorNormal="#FE8D8D"
         custom:pb_colorPressed="#FC2C2C" />
@@ -68,7 +66,7 @@
         custom:pb_colorPressed="#FC2C2C"
         custom:pb_colorProgress="@color/purple_progress"
         custom:pb_textComplete="Success"
-        custom:pb_textProgress="Loging Out..."
+        custom:pb_textProgress="Logging Out..."
         custom:pb_textError="Error"
         custom:pb_colorError="@color/red_error" />
 

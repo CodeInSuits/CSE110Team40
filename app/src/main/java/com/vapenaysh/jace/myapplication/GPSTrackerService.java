@@ -21,7 +21,7 @@ import java.util.HashSet;
 public class GPSTrackerService extends Service implements LocationListener
 {
 
-    private ArrayList<FavoriteLocation> favLocations;
+    private FavoriteLocationList favLocations;
     protected LocationManager locManager;
     private Context context;
     private static final long time = 12000;
@@ -30,22 +30,24 @@ public class GPSTrackerService extends Service implements LocationListener
     @Override
     public int onStartCommand(Intent i, int flags, int startID)
     {
-        this.favLocations = ((FavoriteLocationList) i.getParcelableExtra("FavoriteLocations")).getList();
+        this.favLocations = i.getParcelableExtra("FavoriteLocations");
         this.context = getApplicationContext();
         getCurrentLocation();
         return 0;
     }
+
     public void addFavLocation(FavoriteLocation newFavLocation)
     {
-        favLocations.add(newFavLocation);
+        favLocations.addLocation(newFavLocation, this);
     }
+
     public boolean removeFavLocation(FavoriteLocation remFavLocation)
     {
-        for (FavoriteLocation i : favLocations)
+        for (FavoriteLocation i : favLocations.getLocations())
         {
-            if (i.getCoord().equals(remFavLocation.getCoord()))
+            if (i.equals(remFavLocation))
             {
-                favLocations.remove(i);
+                favLocations.removeLocation(i, this);
                 return true;
             }
         }
@@ -119,12 +121,14 @@ public class GPSTrackerService extends Service implements LocationListener
     public void onLocationChanged(Location location)
     {
         LatLng loc = getCurrentLocation();
-        LatLng currentLocation = getCurrentLocation();
-        for (FavoriteLocation fl : favLocations)
+
+        //check if user is close to a favorite location
+        for (FavoriteLocation fl : favLocations.getLocations())
         {
-            HashSet<FavoriteLocation> fll = SavedLocations.getLocations();
+            HashSet<FavoriteLocation> fll = favLocations.getLocations();
             for (FavoriteLocation fli: fll)
             {
+                //not already in the list of visited locations
                 if (visitedLocations.indexOf(fli) != -1)
                 {
                     if (loc.latitude > fl.getCoord().latitude - 0.01 || loc.latitude < fl.getCoord().latitude + 0.01)

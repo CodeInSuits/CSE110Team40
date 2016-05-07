@@ -63,6 +63,7 @@
             android:textColor="@android:color/white"
             custom:pb_colorNormal="#FE8D8D"
             custom:pb_colorPressed="#FC2C2C" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:id="@+id/logo"
@@ -88,6 +89,7 @@
 
 
     </LinearLayout>
+
 
 
 

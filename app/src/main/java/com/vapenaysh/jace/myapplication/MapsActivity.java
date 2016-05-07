@@ -44,10 +44,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<Marker> searchMarkers = new ArrayList<Marker>();
     private TextView namePrompt;
     private RelativeLayout namePromptLayout;
-    private String filename = SavedLocations.LOC_FILE_NAME;
+    private String filename = FavoriteLocationList.LOC_FILE_NAME;
     private SearchView sV;
     private Location currentLocation;
     private LocationManager locationManager;
+    private FavoriteLocationList favoriteLocationList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +57,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
         mapFragment.getMapAsync(this);
         namePrompt = (TextView) findViewById(R.id.custom_name_prompt);
         namePromptLayout = (RelativeLayout) findViewById(R.id.custom_name_layout);
         namePromptLayout.setVisibility(View.GONE);
+
+        favoriteLocationList = getIntent().getParcelableExtra("FavoriteLocations");
     }
 
 
@@ -109,8 +113,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
+        /*
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        */
 
         moveMap(currentLocation);
 
@@ -145,20 +151,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             TextView textView = (TextView) findViewById(R.id.custom_name);
             String name = textView.getText().toString();
             if (name.equals("")) {
-                name = "Location" + SavedLocations.getSize();
+                name = "Location" + favoriteLocationList.getSize();
             }
 
             FavoriteLocation fave = new FavoriteLocation(currentMarker.getPosition(), name);
-            //add to local file for storage
+
+            //add to local file for storage and current session's location set
             try {
-                toFile(fave);
+                favoriteLocationList.addLocation(fave, this);
             } catch (Exception e) {
                 namePrompt.setText(R.string.problem_saving);
                 return;
             }
-
-            //add to set
-            SavedLocations.addLocation(fave);
 
             //close name window
             namePrompt.setText(R.string.saved_successfully);
@@ -247,14 +251,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void toFile(FavoriteLocation loc) throws Exception {
-        FileOutputStream fos = openFileOutput(filename, Context.MODE_APPEND);
-        fos.write(loc.toString().getBytes());
-        fos.write("\n".getBytes());
-        Log.v("MapsActivity", "toFile() saved a location successfully!");
-        fos.close();
-    }
-
     /**
      * make san diego the starting location by default
      */
@@ -305,8 +301,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onLocationChanged(Location location) {
+        /*
         currentLocation = location;
         moveMap(currentLocation);
+        */
     }
 
     @Override

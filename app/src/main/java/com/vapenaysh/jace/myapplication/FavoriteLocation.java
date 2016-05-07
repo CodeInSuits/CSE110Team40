@@ -28,6 +28,18 @@ public class FavoriteLocation {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FavoriteLocation that = (FavoriteLocation) o;
+
+        if (coord != null ? !coord.equals(that.coord) : that.coord != null) return false;
+        return name != null ? name.equals(that.name) : that.name == null;
+
+    }
+
+    @Override
     public String toString() {
         return name + "&" + coord.latitude + "&" + coord.longitude;
     }

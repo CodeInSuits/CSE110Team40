@@ -9,12 +9,16 @@ import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
+import java.util.HashSet;
+
 import Utility.ProgressGenerator;
 
 public class HomePage extends Activity implements View.OnClickListener, ProgressGenerator.OnCompleteListener{
 
     private ProgressGenerator progressGenerator;
     private ActionProcessButton signout;
+    private FavoriteLocationList locationsList;
+
 
 
     @Override
@@ -36,6 +40,15 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         signout.setMode(ActionProcessButton.Mode.PROGRESS);
         signout.setOnClickListener(this);
 
+
+        //get the saved locations from the file and store locally
+        locationsList = new FavoriteLocationList(this);
+        //WARNING: UNTESTED CODE
+        Intent i = new Intent(this, GPSTrackerService.class);
+        i.putExtra("FavoriteLocations", locationsList);
+
+        startService(i);
+
         //connect the register button
         //Button loc_history_view = (Button)findViewById(R.id.see_loc_history);
         //loc_history_view.setOnClickListener(this);
@@ -44,9 +57,13 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
     @Override
     public void onClick(View v) {
+        //loads all the saved locations
+
         switch (v.getId()){
             case R.id.add_fave_loc_btn:
-                startActivity(new Intent(HomePage.this, MapsActivity.class));
+                Intent i = new Intent(this, MapsActivity.class);
+                i.putExtra("FavoriteLocations", locationsList);
+                startActivity(i);
                 break;
 
             case R.id.partner_setting_btn:
@@ -65,12 +82,8 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
             case R.id.logout:
                 signout();
         }
-        //WARNING: UNTESTED CODE
-        FavoriteLocationList locationsList = new FavoriteLocationList();
-        Intent i = new Intent(this, GPSTrackerService.class);
-        i.putExtra("FavoriteLocations", locationsList);
-        startService(i);
-        //WARNING: END UNTESTED CODE
+
+
     }
 
     public void signout(){
@@ -78,31 +91,6 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         progressGenerator.start(signout);
         Toast.makeText(getApplicationContext(), "Save location and partner information", Toast.LENGTH_SHORT).show();
         signout.setEnabled(false);
-    }
-
-    /**
-     * button onclick method
-     * @param view
-     */
-    public void startMapActivity(View view){
-        startActivity(new Intent(HomePage.this, MapsActivity.class));
-    }
-
-    /**
-     * button onclick method
-     * @param view
-     */
-    public void openPartnerSettings(View view){
-        startActivity(new Intent(HomePage.this, AddPartner.class));
-    }
-
-    /**
-     * button onclick method
-     * @param view
-     */
-    public void seePartnerHistory(View view){
-        //TODO after adding partner history part
-        //startActivity(new Intent(HomePage.this, History.class));
     }
 
     @Override
