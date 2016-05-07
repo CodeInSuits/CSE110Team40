@@ -81,20 +81,6 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                ObjectAnimator fadeOut = ObjectAnimator.ofFloat(imageView, "alpha", 1f, .3f);
-                ObjectAnimator fadeIn = ObjectAnimator.ofFloat(imageView, "alpha", .3f, 1f);
-                fadeIn.setDuration(2000);
-                fadeOut.setDuration(2000);
-                final AnimatorSet mAnimationSet = new AnimatorSet();
-                mAnimationSet.play(fadeIn).after(fadeOut);
-                mAnimationSet.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        mAnimationSet.start();
-                    }
-                });
-                mAnimationSet.start();
                 signInButton.setVisibility(View.VISIBLE);
 
             }
@@ -104,6 +90,20 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
 
             }
         });
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(imageView, "alpha", 1f, .3f);
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(imageView, "alpha", .3f, 1f);
+        fadeIn.setDuration(2000);
+        fadeOut.setDuration(2000);
+        final AnimatorSet mAnimationSet = new AnimatorSet();
+        mAnimationSet.play(fadeIn).after(fadeOut);
+        mAnimationSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mAnimationSet.start();
+            }
+        });
+        mAnimationSet.start();
 
 
         // / Customize sign-in button. The sign-in button can be displayed in
@@ -239,38 +239,6 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
         if(requestCode == RC_SIGN_OUT){
             Toast.makeText(getApplication(), "Signed out", Toast.LENGTH_SHORT).show();
             imageView.startAnimation(animation);
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    ObjectAnimator fadeOut = ObjectAnimator.ofFloat(imageView, "alpha", 1f, .3f);
-                    ObjectAnimator fadeIn = ObjectAnimator.ofFloat(imageView, "alpha", .3f, 1f);
-                    fadeIn.setDuration(2000);
-                    fadeOut.setDuration(2000);
-                    final AnimatorSet mAnimationSet = new AnimatorSet();
-                    mAnimationSet.play(fadeIn).after(fadeOut);
-                    mAnimationSet.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            mAnimationSet.start();
-                        }
-                    });
-                    mAnimationSet.start();
-                    signInButton.setVisibility(View.VISIBLE);
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-
         }
     }
 
