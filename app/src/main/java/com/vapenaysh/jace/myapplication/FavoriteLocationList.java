@@ -1,11 +1,19 @@
 package com.vapenaysh.jace.myapplication;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by Jerry on 5/5/16.
@@ -13,29 +21,32 @@ import java.util.ArrayList;
  */
 public class FavoriteLocationList implements Parcelable
 {
-    ArrayList<FavoriteLocation> locations;
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+    private static HashSet<FavoriteLocation> locations;
+    public final static String LOC_FILE_NAME = Constants.LOC_FILE_NAME;
+    private final boolean NEW_FILE = true;
+
     public FavoriteLocationList(Parcel in)
     {
-        locations = new ArrayList<FavoriteLocation>();
+        locations = new HashSet<>();
         while (in.dataAvail() > 0)
         {
             locations.add(new FavoriteLocation(new LatLng(in.readDouble(), in.readDouble()), in.readString()));
         }
     }
-    public FavoriteLocationList(ArrayList<FavoriteLocation> in)
-    {
-        for (FavoriteLocation fl : in)
-            locations.add(fl);
-    }
+
+    //default constructor create empty hashset
     public FavoriteLocationList()
     {
-        locations = new ArrayList<FavoriteLocation>();
+        locations = new HashSet<>();
     }
-    public ArrayList<FavoriteLocation> getList()
+
+    //constructor that also loads previous locations
+    public FavoriteLocationList(Context c){
+        locations = FavoriteLocationList.loadLocations(c);
+    }
+
+
+    public HashSet<FavoriteLocation> getLocations()
     {
         return locations;
     }
@@ -50,6 +61,7 @@ public class FavoriteLocationList implements Parcelable
             dest.writeString(l.getName());
         }
     }
+
     public static final Parcelable.Creator<FavoriteLocationList> CREATOR
             = new Parcelable.Creator<FavoriteLocationList>() {
         public FavoriteLocationList createFromParcel(Parcel in) {
@@ -61,4 +73,99 @@ public class FavoriteLocationList implements Parcelable
         }
     };
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public int getSize(){
+        return locations.size();
+    }
+
+    public boolean addLocation(FavoriteLocation loc, Context c){
+        boolean added = locations.add(loc);
+        if(added){
+            locationToFile(loc, FavoriteLocationList.LOC_FILE_NAME, c, false);
+        }
+        return added;
+    }
+
+    public boolean removeLocation(FavoriteLocation loc, Context c){
+        boolean removed = locations.remove(loc);
+        if(removed){
+            writeLocations(locations, c);
+        }
+        return removed;
+    }
+
+    //write all the locations to a new file i.e. rewriting the file after a remove
+    private void writeLocations(Iterable<FavoriteLocation> list, Context c){
+        for(FavoriteLocation loc : list){
+            locationToFile(loc, FavoriteLocationList.LOC_FILE_NAME, c, NEW_FILE);
+        }
+    }
+
+    private void locationToFile(FavoriteLocation loc, String filename, Context c, boolean newfile) {
+        try {
+            if(newfile){
+                c.deleteFile(filename);
+            }
+
+            FileOutputStream fos = c.openFileOutput(filename, Context.MODE_APPEND);
+            fos.write(loc.toString().getBytes());
+            fos.write("\n".getBytes());
+            Log.v("FavoriteLocationList", "locationToFile() saved " + loc.getName() + " successfully!");
+            fos.close();
+        }catch(Exception e){
+            Toast.makeText(c, "Problems saving " + loc.getName(), Toast.LENGTH_SHORT).show();
+            Log.e("FavoriteLocationList", "locationToFile() had errors saving.");
+
+        }
+    }
+
+    /** Every time the user starts up the app, populate the array of favorite locations */
+    public static HashSet<FavoriteLocation> loadLocations(Context c) {
+        FileInputStream fis;
+        HashSet<FavoriteLocation> set = new HashSet<>();
+
+        try {
+            fis = c.openFileInput(LOC_FILE_NAME);
+        } catch (Exception e) {
+            Log.e("SavedLocations", "loadLocations() had opening exception: " + e.toString());
+            return null; //return if no file found
+        }
+
+        Scanner input = new Scanner(fis);
+        while (input.hasNextLine()) {
+            translateFavoriteLocation(input.nextLine(), set);
+        }
+
+        try {
+            fis.close();
+        } catch (Exception e) {
+            Log.e("SavedLocations", "loadLocations() had closing exception: " + e.toString());
+        }
+
+        return set;
+    }
+
+    /** Take each string of form "name&latitude&longitude" and create a favorite location,
+     *  adding it to the array
+     */
+    private static void translateFavoriteLocation( String line, HashSet<FavoriteLocation> set ){
+        String[] parts = line.split("&");
+        if( parts.length != 3 ){
+            Log.v("SavedLocation", "translateFavoriteLocation() read a "
+                    + "line of location with incorrect number of parameters");
+            return;
+        }
+
+        double lat = Double.parseDouble(parts[1]);
+        double lon = Double.parseDouble(parts[2]);
+        FavoriteLocation loc = new FavoriteLocation(new LatLng(lat, lon), parts[0]);
+        set.add(loc);
+        Log.v("SavedLocation", "translateFavoriteLocation() read " + loc.getName() + " successfully");
+    }
 }
+
+

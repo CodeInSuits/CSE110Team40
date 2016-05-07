@@ -17,6 +17,8 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
     private ProgressGenerator progressGenerator;
     private ActionProcessButton signout;
+    private FavoriteLocationList locationsList;
+
 
 
     @Override
@@ -38,6 +40,15 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         signout.setMode(ActionProcessButton.Mode.PROGRESS);
         signout.setOnClickListener(this);
 
+
+        //get the saved locations from the file and store locally
+        locationsList = new FavoriteLocationList(this);
+        //WARNING: UNTESTED CODE
+        Intent i = new Intent(this, GPSTrackerService.class);
+        i.putExtra("FavoriteLocations", locationsList);
+
+        startService(i);
+
         //connect the register button
         //Button loc_history_view = (Button)findViewById(R.id.see_loc_history);
         //loc_history_view.setOnClickListener(this);
@@ -46,9 +57,13 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
     @Override
     public void onClick(View v) {
+        //loads all the saved locations
+
         switch (v.getId()){
             case R.id.add_fave_loc_btn:
-                startActivity(new Intent(HomePage.this, MapsActivity.class));
+                Intent i = new Intent(this, MapsActivity.class);
+                i.putExtra("FavoriteLocations", locationsList);
+                startActivity(i);
                 break;
 
             case R.id.partner_setting_btn:
@@ -67,13 +82,8 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
             case R.id.logout:
                 signout();
         }
-        //WARNING: UNTESTED CODE
-        FavoriteLocationList locationsList = new FavoriteLocationList();
-        Intent i = new Intent(this, GPSTrackerService.class);
-        i.putExtra("FavoriteLocations", locationsList);
 
-        startService(i);
-        //WARNING: END UNTESTED CODE
+
     }
 
     public void signout(){
