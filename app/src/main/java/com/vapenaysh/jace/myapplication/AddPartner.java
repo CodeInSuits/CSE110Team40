@@ -17,7 +17,7 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 
 
-public class activity_add_partner extends Activity {
+public class AddPartner extends Activity {
 
     GoogleCloudMessaging gcm;
     String regid;

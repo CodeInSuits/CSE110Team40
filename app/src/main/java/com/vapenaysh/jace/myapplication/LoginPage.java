@@ -32,7 +32,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
+public class LoginPage extends FragmentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
     //backend object
     private Firebase firebase;
@@ -208,10 +208,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 EditText uname = (EditText) findViewById(R.id.email);
                 EditText passw = (EditText) findViewById(R.id.password);
                 //TODO: login logic
-                startActivity(new Intent(MainActivity.this, HomePage.class));
+                startActivity(new Intent(LoginPage.this, HomePage.class));
                 break;
             case R.id.register:
-                startActivity(new Intent(MainActivity.this, CreateAccount.class));
+                startActivity(new Intent(LoginPage.this, CreateAccount.class));
                 break;
             case R.id.google_signin:
                 signIn();
@@ -251,7 +251,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
             String idToken = acct.getIdToken();
             //Toast.makeText(getApplication(),idToken, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this, HomePage.class);
+            Intent intent = new Intent(LoginPage.this, HomePage.class);
             startActivityForResult(intent, RC_SIGN_OUT);
 
 
