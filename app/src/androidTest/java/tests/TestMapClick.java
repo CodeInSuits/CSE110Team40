@@ -1,22 +1,9 @@
 package tests;
 
-import android.os.Handler;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
-import android.text.Layout;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.vapenaysh.jace.myapplication.MainActivity;
 import com.vapenaysh.jace.myapplication.MapsActivity;
-import com.vapenaysh.jace.myapplication.R;
-import com.vapenaysh.jace.myapplication.SavedLocations;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by Matt on 5/1/16.

@@ -32,7 +32,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
+public class LoginPage extends FragmentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
     //backend object
     private Firebase firebase;
@@ -81,20 +81,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                ObjectAnimator fadeOut = ObjectAnimator.ofFloat(imageView, "alpha", 1f, .3f);
-                ObjectAnimator fadeIn = ObjectAnimator.ofFloat(imageView, "alpha", .3f, 1f);
-                fadeIn.setDuration(2000);
-                fadeOut.setDuration(2000);
-                final AnimatorSet mAnimationSet = new AnimatorSet();
-                mAnimationSet.play(fadeIn).after(fadeOut);
-                mAnimationSet.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        mAnimationSet.start();
-                    }
-                });
-                mAnimationSet.start();
                 signInButton.setVisibility(View.VISIBLE);
 
             }
@@ -104,6 +90,20 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
             }
         });
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(imageView, "alpha", 1f, .3f);
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(imageView, "alpha", .3f, 1f);
+        fadeIn.setDuration(2000);
+        fadeOut.setDuration(2000);
+        final AnimatorSet mAnimationSet = new AnimatorSet();
+        mAnimationSet.play(fadeIn).after(fadeOut);
+        mAnimationSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mAnimationSet.start();
+            }
+        });
+        mAnimationSet.start();
 
 
         // / Customize sign-in button. The sign-in button can be displayed in
@@ -208,10 +208,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 EditText uname = (EditText) findViewById(R.id.email);
                 EditText passw = (EditText) findViewById(R.id.password);
                 //TODO: login logic
-                startActivity(new Intent(MainActivity.this, HomePage.class));
+                startActivity(new Intent(LoginPage.this, HomePage.class));
                 break;
             case R.id.register:
-                startActivity(new Intent(MainActivity.this, CreateAccount.class));
+                startActivity(new Intent(LoginPage.this, CreateAccount.class));
                 break;
             case R.id.google_signin:
                 signIn();
@@ -222,6 +222,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        imageView.clearAnimation();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
@@ -238,7 +239,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         if(requestCode == RC_SIGN_OUT){
             Toast.makeText(getApplication(), "Signed out", Toast.LENGTH_SHORT).show();
             imageView.startAnimation(animation);
-
         }
     }
 
@@ -251,7 +251,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
             String idToken = acct.getIdToken();
             //Toast.makeText(getApplication(),idToken, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this, HomePage.class);
+            Intent intent = new Intent(LoginPage.this, HomePage.class);
             startActivityForResult(intent, RC_SIGN_OUT);
 
 

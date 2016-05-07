@@ -51,10 +51,10 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
             case R.id.partner_setting_btn:
 
-                if (true) { // TO DO if user does not have a partner, then activity_add_partner
-                    startActivity(new Intent(HomePage.this, activity_add_partner.class));
+                if (true) { // TO DO if user does not have a partner, then AddPartner
+                    startActivity(new Intent(HomePage.this, AddPartner.class));
                 } else {
-                    startActivity(new Intent(HomePage.this, remove.class));
+                    startActivity(new Intent(HomePage.this, RemovePartner.class));
                 }
                 break;
 
@@ -93,7 +93,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
      * @param view
      */
     public void openPartnerSettings(View view){
-        startActivity(new Intent(HomePage.this, activity_add_partner.class));
+        startActivity(new Intent(HomePage.this, AddPartner.class));
     }
 
     /**
