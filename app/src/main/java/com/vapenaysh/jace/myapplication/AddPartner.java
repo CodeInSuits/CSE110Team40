@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,21 +18,26 @@ import org.w3c.dom.Text;
 import java.io.IOException;
 
 
-public class AddPartner extends Activity {
+public class AddPartner extends Activity implements View.OnClickListener {
 
+    Button btnRegId;
+    TextView tvRegId;
     GoogleCloudMessaging gcm;
     String regid;
     String id;
-    String PROJECT_NUMBER = "123";
+    String PROJECT_NUMBER = "1021736687932";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_add_partner);
 
-        getRegId();
-        TextView self_reg_id = (TextView)findViewById(R.id.self_regId);
-        self_reg_id.setText(id);
+        btnRegId = (Button) findViewById(R.id.get_self_id);
+        tvRegId = (TextView)findViewById(R.id.self_regId);
+
+        btnRegId.setOnClickListener(this);
+        //tvRegId.setText(id);
 
         EditText uname = (EditText) findViewById(R.id.par_name);
         EditText uemail = (EditText) findViewById(R.id.par_email);
@@ -64,18 +70,27 @@ public class AddPartner extends Activity {
                     regid = gcm.register(PROJECT_NUMBER);
                     msg = "Device registered, registration ID=" + regid;
                     Log.i("GCM", "!!!!! " + regid);
+                    id = regid;
 
                 } catch(IOException ex) {
                     msg = "Error: " + ex.getMessage();
+                    id = msg;
                 }
-                id = msg;
+
                 return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg){
+                tvRegId.setText(id);
             }
 
         }.execute(null, null, null);
     }
 
-
-
+    @Override
+    public void onClick(View v){
+        getRegId();
+    }
 
 }
