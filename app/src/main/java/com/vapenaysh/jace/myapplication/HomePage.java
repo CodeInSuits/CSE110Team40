@@ -9,8 +9,6 @@ import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
-import java.util.HashSet;
-
 import Utility.ProgressGenerator;
 
 public class HomePage extends Activity implements View.OnClickListener, ProgressGenerator.OnCompleteListener{
@@ -34,6 +32,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         Button partner_setting_view = (Button)findViewById(R.id.partner_setting_btn);
         partner_setting_view.setOnClickListener(this);
 
+        //sign out button
         progressGenerator = new ProgressGenerator(this);
         signout = (ActionProcessButton) findViewById(R.id.logout);
 
@@ -81,6 +80,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
             case R.id.logout:
                 signout();
+                break;
         }
 
 

@@ -16,6 +16,8 @@ public class TestLoginFunc extends ActivityInstrumentationTestCase2<LoginPage> {
 
     public void test_first(){
         loginPage = getActivity();
+
+
     }
 
 
