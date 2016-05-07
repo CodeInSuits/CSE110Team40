@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
 
+import java.util.HashSet;
+
 import Utility.ProgressGenerator;
 
 public class HomePage extends Activity implements View.OnClickListener, ProgressGenerator.OnCompleteListener{
@@ -69,6 +71,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         FavoriteLocationList locationsList = new FavoriteLocationList();
         Intent i = new Intent(this, GPSTrackerService.class);
         i.putExtra("FavoriteLocations", locationsList);
+
         startService(i);
         //WARNING: END UNTESTED CODE
     }
@@ -78,31 +81,6 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         progressGenerator.start(signout);
         Toast.makeText(getApplicationContext(), "Save location and partner information", Toast.LENGTH_SHORT).show();
         signout.setEnabled(false);
-    }
-
-    /**
-     * button onclick method
-     * @param view
-     */
-    public void startMapActivity(View view){
-        startActivity(new Intent(HomePage.this, MapsActivity.class));
-    }
-
-    /**
-     * button onclick method
-     * @param view
-     */
-    public void openPartnerSettings(View view){
-        startActivity(new Intent(HomePage.this, AddPartner.class));
-    }
-
-    /**
-     * button onclick method
-     * @param view
-     */
-    public void seePartnerHistory(View view){
-        //TODO after adding partner history part
-        //startActivity(new Intent(HomePage.this, History.class));
     }
 
     @Override

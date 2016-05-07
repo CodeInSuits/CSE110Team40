@@ -35,10 +35,12 @@ public class GPSTrackerService extends Service implements LocationListener
         getCurrentLocation();
         return 0;
     }
+
     public void addFavLocation(FavoriteLocation newFavLocation)
     {
         favLocations.add(newFavLocation);
     }
+
     public boolean removeFavLocation(FavoriteLocation remFavLocation)
     {
         for (FavoriteLocation i : favLocations)

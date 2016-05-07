@@ -174,6 +174,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
         Firebase usernames = firebase.child("usernames");
         usernames.setValue("Test");
 
+        //load favorite locations into app for current session
         SavedLocations.loadLocations(this);
 
 

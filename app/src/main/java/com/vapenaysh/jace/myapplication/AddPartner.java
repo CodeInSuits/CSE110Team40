@@ -25,7 +25,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
     GoogleCloudMessaging gcm;
     String regid;
     String id;
-    String PROJECT_NUMBER = "1021736687932";
+    String PROJECT_NUMBER = Constants.PROJECT_NUMBER;
 
 
     @Override

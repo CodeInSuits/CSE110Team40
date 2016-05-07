@@ -14,7 +14,7 @@ import java.util.Scanner;
  */
 public class SavedLocations {
     private static HashSet<FavoriteLocation> locations;
-    public final static String LOC_FILE_NAME = "CoupleToneLocs.txt";
+    public final static String LOC_FILE_NAME = Constants.LOC_FILE_NAME;
 
     public static HashSet<FavoriteLocation> getLocations(){
         if( locations == null ) {
@@ -67,7 +67,7 @@ public class SavedLocations {
     private static void translateFavoriteLocation( String line ){
         String[] parts = line.split("&");
         if( parts.length != 3 ){
-            Log.v("SavedLocation", "translateFavoriteLocation() read a"
+            Log.v("SavedLocation", "translateFavoriteLocation() read a "
                     + "line of location with incorrect number of parameters");
             return;
         }
