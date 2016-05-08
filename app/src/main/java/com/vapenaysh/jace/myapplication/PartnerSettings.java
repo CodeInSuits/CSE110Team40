@@ -8,7 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class RemovePartner extends Activity {
+public class PartnerSettings extends Activity {
+
+    private static String name;
+    private static String number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +35,19 @@ public class RemovePartner extends Activity {
         });
 
         SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        String name = share.getString("partner_name", "N/A");
-        String number = share.getString("phone_number", "N/A");
+        name = share.getString("partner_name", "N/A");
+        number = share.getString("phone_number", "N/A");
         name_partner.setText(name);
         number_partner.setText(number);
 
+    }
+
+    public static String getName(){
+        return name;
+    }
+
+    public static String getNumber(){
+        return number;
     }
 
 
