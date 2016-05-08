@@ -136,7 +136,10 @@ public class GPSTrackerService extends Service implements LocationListener
                         if (loc.longitude > fl.getCoord().longitude - 0.01 || loc.longitude < fl.getCoord().longitude + 0.01)
                         {
                             Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT" + loc.toString());
-                            //TODO: NOTIFICATION CODE
+
+                            // NOTIFICATION CODE
+                            //com.vapenaysh.jace.myapplication.SentSMS.sendSms(loc.toString());
+
                             visitedLocations.add(fli);
                         }
                     }
