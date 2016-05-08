@@ -1,6 +1,10 @@
 package com.vapenaysh.jace.myapplication.tests;
 
+import android.content.Intent;
+import android.os.IBinder;
 import android.test.ServiceTestCase;
+import android.test.suitebuilder.annotation.MediumTest;
+import android.test.suitebuilder.annotation.SmallTest;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.vapenaysh.jace.myapplication.GPSTrackerService;
@@ -18,6 +22,22 @@ public class TestGPSTrackerService extends ServiceTestCase<GPSTrackerService>{
 
     public void test_onLocationChange() throws Exception {
         setUp();
+    }
+
+    @SmallTest
+    public void testStartable() {
+        Intent startIntent = new Intent();
+        startIntent.setClass(getContext(), GPSTrackerService.class);
+        startService(startIntent);
+    }
+
+    @MediumTest
+    public void testBindable() {
+        Intent startIntent = new Intent();
+        startIntent.setClass(getContext(), GPSTrackerService.class);
+        IBinder service = bindService(startIntent);
+        assertNotNull(service);
+        assertNotNull(((GPSTrackerService.LocalBinder)service).getService());
     }
     public void test_LocationInRange() throws Exception
     {

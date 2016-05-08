@@ -33,7 +33,7 @@ public class GPSTrackerService extends Service implements LocationListener
 
     public class LocalBinder extends Binder
     {
-        GPSTrackerService getService()
+        public Service getService()
         {
             return GPSTrackerService.this;
         }
