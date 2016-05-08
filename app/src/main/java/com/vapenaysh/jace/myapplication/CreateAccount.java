@@ -73,6 +73,7 @@ public class CreateAccount extends Activity implements ProgressGenerator.OnCompl
             dialog.show();
         }
         else{
+
             //Store to the dataBase
 
             progressGenerator.start(createAccount);

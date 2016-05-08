@@ -1,5 +1,6 @@
 package com.vapenaysh.jace.myapplication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,7 +20,7 @@ import java.util.Scanner;
  * Created by Jerry on 5/5/16.
  * WARNING: THIS CLASS IS COMPLETELY UNTESTED
  */
-public class FavoriteLocationList implements Parcelable
+public class FavoriteLocationList extends Activity implements Parcelable
 {
     private static HashSet<FavoriteLocation> locations;
     public final static String LOC_FILE_NAME = Constants.LOC_FILE_NAME;
