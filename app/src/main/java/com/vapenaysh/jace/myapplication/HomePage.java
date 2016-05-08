@@ -75,7 +75,11 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
                     startActivity(new Intent(HomePage.this, RemovePartner.class));
                 }
                 break;
+            case R.id.button_SMS:
 
+                com.vapenaysh.jace.myapplication.SentSMS.sendSms("CSE Lab");
+
+                break;
             // case R.id.see_loc_history:
             // not for MS 1
             // break;
