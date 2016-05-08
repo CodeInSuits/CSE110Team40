@@ -1,7 +1,9 @@
 package tests;
 
+import android.location.Location;
 import android.test.ServiceTestCase;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.vapenaysh.jace.myapplication.GPSTrackerService;
 
 /**
@@ -17,5 +19,17 @@ public class TestGPSTrackerService extends ServiceTestCase<GPSTrackerService>{
 
     public void test_onLocationChange() throws Exception {
         setUp();
+    }
+    public void test_LocationInRange() throws Exception
+    {
+        LatLng one = new LatLng(1, 1);
+        LatLng two = new LatLng(1.5, 1.5);
+        boolean shouldbetrue = gpsTrackerService.LocationInRange(one, two);
+        assertEquals(shouldbetrue, true);
+
+        LatLng three = new LatLng(1, 1);
+        LatLng four = new LatLng(3.5, 1.5);
+        boolean shouldbefalse = gpsTrackerService.LocationInRange(three, four);
+        assertEquals(shouldbefalse, false);
     }
 }

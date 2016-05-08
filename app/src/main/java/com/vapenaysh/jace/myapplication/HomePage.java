@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -81,12 +80,13 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
                 if (isSingle()) { // TO DO if user does not have a partner, then AddPartner
                     startActivity(new Intent(HomePage.this, AddPartner.class));
                 } else {
-                    startActivity(new Intent(HomePage.this, RemovePartner.class));
+                    startActivity(new Intent(HomePage.this, PartnerSettings.class));
                 }
                 break;
             case R.id.button_SMS:
 
-                String msg = com.vapenaysh.jace.myapplication.SentSMS.sendSms("CSE Lab");
+                SentSMS sentSMS = new SentSMS();
+                String msg = sentSMS.sendSms("CSE Lab");
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
                 break;

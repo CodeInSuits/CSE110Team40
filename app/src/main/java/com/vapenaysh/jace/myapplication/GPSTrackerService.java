@@ -7,14 +7,19 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.IInterface;
+import android.os.Parcel;
+import android.os.RemoteException;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.FileDescriptor;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -28,6 +33,17 @@ public class GPSTrackerService extends Service implements LocationListener
     private static final long TIME = 5*60*1000;
     private static final float DISTANCE = 50;
     private HashSet<FavoriteLocation> visitedLocations = new HashSet<>();
+
+    private final IBinder GPSBinder = new LocalBinder();
+
+    public class LocalBinder extends Binder
+    {
+        GPSTrackerService getService()
+        {
+            return GPSTrackerService.this;
+        }
+    }
+
     @Override
     public int onStartCommand(Intent i, int flags, int startID)
     {
@@ -99,7 +115,8 @@ public class GPSTrackerService extends Service implements LocationListener
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        return GPSBinder;
+        //throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
@@ -126,7 +143,18 @@ public class GPSTrackerService extends Service implements LocationListener
                 visitedLocations.remove(fli); //not within range anymore
             }
         }
+    }
 
+    public boolean LocationInRange(LatLng loc, LatLng fli)
+    {
+        if (loc.latitude > fli.latitude - 0.01 || loc.latitude < fli.latitude + 0.01)
+        {
+            if (loc.longitude > fli.longitude - 0.01 || loc.longitude < fli.longitude + 0.01)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

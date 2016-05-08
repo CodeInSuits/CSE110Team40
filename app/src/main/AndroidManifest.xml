@@ -60,7 +60,7 @@
             android:name=".HomePage"
             android:label="@string/app_name" />
         <activity
-            android:name=".RemovePartner"
+            android:name=".PartnerSettings"
             android:label="@string/app_name" />
 
         <service
