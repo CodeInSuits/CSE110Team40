@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -89,6 +90,13 @@ public class FavoriteLocationList extends Activity implements Parcelable
         return added;
     }
 
+    public void removeAllLocations(Context c){
+        c.deleteFile(LOC_FILE_NAME);
+        locations = new HashSet<>();
+        Log.v("FavoriteLocationList", "Deleted locations file");
+
+    }
+
     public boolean removeLocation(FavoriteLocation loc, Context c){
         boolean removed = locations.remove(loc);
         if(removed){
@@ -130,7 +138,7 @@ public class FavoriteLocationList extends Activity implements Parcelable
         try {
             fis = c.openFileInput(LOC_FILE_NAME);
         } catch (Exception e) {
-            Log.e("SavedLocations", "loadLocations() had opening exception: " + e.toString());
+            Log.e("FavoriteLocationList", "loadLocations() had opening exception: " + e.toString());
             return null; //return if no file found
         }
 
@@ -142,7 +150,7 @@ public class FavoriteLocationList extends Activity implements Parcelable
         try {
             fis.close();
         } catch (Exception e) {
-            Log.e("SavedLocations", "loadLocations() had closing exception: " + e.toString());
+            Log.e("FavoriteLocationList", "loadLocations() had closing exception: " + e.toString());
         }
 
         return set;
@@ -154,7 +162,7 @@ public class FavoriteLocationList extends Activity implements Parcelable
     private static void translateFavoriteLocation( String line, HashSet<FavoriteLocation> set ){
         String[] parts = line.split("&");
         if( parts.length != 3 ){
-            Log.v("SavedLocation", "translateFavoriteLocation() read a "
+            Log.v("FavoriteLocationList", "translateFavoriteLocation() read a "
                     + "line of location with incorrect number of parameters");
             return;
         }
@@ -163,7 +171,7 @@ public class FavoriteLocationList extends Activity implements Parcelable
         double lon = Double.parseDouble(parts[2]);
         FavoriteLocation loc = new FavoriteLocation(new LatLng(lat, lon), parts[0]);
         set.add(loc);
-        Log.v("SavedLocation", "translateFavoriteLocation() read " + loc.getName() + " successfully");
+        Log.v("FavoriteLocationList", "translateFavoriteLocation() read " + loc.getName() + " successfully");
     }
 }
 

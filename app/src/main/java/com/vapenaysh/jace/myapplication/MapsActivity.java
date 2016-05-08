@@ -31,11 +31,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
-        GoogleMap.OnMapClickListener, android.location.LocationListener
+        GoogleMap.OnMapClickListener,
+        GoogleMap.OnMarkerClickListener
 
 {
 
@@ -45,15 +47,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private ArrayList<Marker> searchMarkers = new ArrayList<Marker>();
 
+    private HashSet<FavoriteLocation> savedLocations;
+
     private TextView namePrompt;
 
     private RelativeLayout namePromptLayout;
 
-    private String filename = FavoriteLocationList.LOC_FILE_NAME;
-
     private SearchView sV;
-
-    private Location currentLocation;
 
     private LocationManager locationManager;
 
@@ -68,11 +68,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(this);
+
         namePrompt = (TextView) findViewById(R.id.custom_name_prompt);
         namePromptLayout = (RelativeLayout) findViewById(R.id.custom_name_layout);
         namePromptLayout.setVisibility(View.GONE);
 
         favoriteLocationList = getIntent().getParcelableExtra("FavoriteLocations");
+
+        //previously saved, retrieved from the file
+        savedLocations = favoriteLocationList.getLocations();
     }
 
 
@@ -90,21 +94,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
-        {
-            @Override
-            public boolean onMarkerClick(Marker marker)
-            {
-                currentMarker = marker;
-                namePromptLayout.setVisibility(View.VISIBLE);
-                namePrompt.setText(R.string.add_custom_name);
-                return true;
-            }
-        });
+        mMap.setOnMarkerClickListener(this);
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -122,23 +117,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
-        /*
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-        */
+        addSavedLocationMarkers();
 
-        moveMap(currentLocation);
+        moveMap(null);
 
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
+        if(currentMarker != null)
+            currentMarker.remove();
         setMarkerAt(latLng);
     }
 
     private void setMarkerAt(LatLng latLng){
         if (currentMarker != null)
-            //currentMarker.remove();
+            currentMarker.remove();
+
         if (searchMarkers.size() != 0)
         {
             for (Marker i : searchMarkers)
@@ -169,6 +164,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //add to local file for storage and current session's location set
             try {
                 favoriteLocationList.addLocation(fave, this);
+                savedLocations.add(fave);
+
+                currentMarker.setTitle(name);
+                currentMarker.setSnippet(getSnippetString(currentMarker));
+
+                currentMarker = null; //so that the old marker stays on the map
+
                 String saved = "Save location: Name: " + name + " at Location: " + location.latitude + ", " + location.longitude;
                 Toast.makeText(getApplicationContext(),saved,Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
@@ -179,7 +181,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //close name window
             namePrompt.setText(R.string.saved_successfully);
             namePromptLayout.setVisibility(View.GONE);
-            //currentMarker.remove();
 
 
         }
@@ -221,7 +222,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Location loc = new Location("name");
                         loc.setLatitude(latLng.latitude);
                         loc.setLongitude(latLng.longitude);
-                        moveMap(loc);
+                        moveMap(latLng);
 
                         //only one search result, add flag and go to custom name options
                         if(points.size() == 1){
@@ -299,48 +300,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /**
      * move map's camera to current location
      */
-    private void moveMap(Location loc){
-        if(loc == null)
-            loc = getDefaultStartingLocation();
+    private void moveMap(LatLng latLng){
+        if(latLng == null) {
+            Location loc = getDefaultStartingLocation();
+            latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
+        }
 
-        LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
     }
 
     /**
-     * for location listener interface
-     * @param location
+     * add markers for all the previous saved locations so the user knows where they already added
+     */
+    private void addSavedLocationMarkers(){
+        for( FavoriteLocation loc : savedLocations){
+            Marker m = mMap.addMarker(new MarkerOptions().position(loc.getCoord()));
+            m.setTitle("SAVED: " + loc.getName());
+            m.setSnippet( getSnippetString(m) );
+        }
+    }
+
+
+    /**
+     * when clicking on a marker
      */
     @Override
-    public void onLocationChanged(Location location) {
-        /*
-        currentLocation = location;
-        moveMap(currentLocation);
-        */
+    public boolean onMarkerClick(Marker marker)
+    {
+        //isnt a marker that was previously saved
+        if(marker.getTitle() == null) {
+            currentMarker = marker;
+            namePromptLayout.setVisibility(View.VISIBLE);
+            namePrompt.setText(R.string.add_custom_name);
+        }
+        else{
+            marker.showInfoWindow();
+            moveMap( marker.getPosition() );
+        }
+        return true;
     }
 
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-        /*
-        new AlertDialog.Builder(getBaseContext())
-                .setTitle("Error")
-                .setMessage("GPS Must be enabled for this application to function.")
-                .setPositiveButton("AIGHT FAM", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();*/
+    private String getSnippetString(Marker marker){
+        LatLng latLng = marker.getPosition();
+        //round coord to three decimal places
+        double lat = (double)Math.round(latLng.latitude * 1000d) / 1000d;
+        double lon = (double)Math.round(latLng.longitude * 1000d) / 1000d;
+        return "Latitude: " + lat + "/Longitude: " + lon;
     }
 }
