@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,7 +29,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,14 +40,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 {
 
     private GoogleMap mMap;
+
     private Marker currentMarker;
+
     private ArrayList<Marker> searchMarkers = new ArrayList<Marker>();
+
     private TextView namePrompt;
+
     private RelativeLayout namePromptLayout;
+
     private String filename = FavoriteLocationList.LOC_FILE_NAME;
+
     private SearchView sV;
+
     private Location currentLocation;
+
     private LocationManager locationManager;
+
     private FavoriteLocationList favoriteLocationList;
 
     @Override
@@ -129,7 +138,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void setMarkerAt(LatLng latLng){
         if (currentMarker != null)
-            currentMarker.remove();
+            //currentMarker.remove();
         if (searchMarkers.size() != 0)
         {
             for (Marker i : searchMarkers)
@@ -154,11 +163,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 name = "Location" + favoriteLocationList.getSize();
             }
 
-            FavoriteLocation fave = new FavoriteLocation(currentMarker.getPosition(), name);
+            LatLng location = currentMarker.getPosition();
+            FavoriteLocation fave = new FavoriteLocation(location, name);
 
             //add to local file for storage and current session's location set
             try {
                 favoriteLocationList.addLocation(fave, this);
+                String saved = "Save location: Name: " + name + " at Location: " + location.latitude + ", " + location.longitude;
+                Toast.makeText(getApplicationContext(),saved,Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 namePrompt.setText(R.string.problem_saving);
                 return;
@@ -167,7 +179,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //close name window
             namePrompt.setText(R.string.saved_successfully);
             namePromptLayout.setVisibility(View.GONE);
-            currentMarker.remove();
+            //currentMarker.remove();
 
 
         }

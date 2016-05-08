@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CSE110Team40.iml" filepath="$PROJECT_DIR$/CSE110Team40.iml" />
-      <module fileurl="file://$PROJECT_DIR$/CoupleTones.iml" filepath="$PROJECT_DIR$/CoupleTones.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CSE110A.iml" filepath="$PROJECT_DIR$/CSE110A.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
