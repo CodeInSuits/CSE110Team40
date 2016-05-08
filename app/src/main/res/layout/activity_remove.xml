@@ -90,4 +90,5 @@
         android:layout_toEndOf="@+id/show_email"
         android:layout_alignStart="@+id/partner_name" />
 
+
 </RelativeLayout>

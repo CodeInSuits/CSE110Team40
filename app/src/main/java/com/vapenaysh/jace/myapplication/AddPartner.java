@@ -1,6 +1,9 @@
 
 package com.vapenaysh.jace.myapplication;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -27,7 +31,8 @@ public class AddPartner extends Activity implements View.OnClickListener {
     String regid;
     String id;
     String PROJECT_NUMBER = Constants.PROJECT_NUMBER;
-
+    EditText uname;
+    EditText uemail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +45,14 @@ public class AddPartner extends Activity implements View.OnClickListener {
         btnRegId.setOnClickListener(this);
         //tvRegId.setText(id);
 
-        EditText uname = (EditText) findViewById(R.id.par_name);
-        EditText uemail = (EditText) findViewById(R.id.par_email);
-        EditText uid = (EditText) findViewById(R.id.par_id);
+        uname = (EditText) findViewById(R.id.par_name);
+        uemail = (EditText) findViewById(R.id.par_email);
+
+        //EditText uid = (EditText) findViewById(R.id.par_id);
 
         // register everything and update partnership
         /*
+
         success -> if the entered email does not a partner yet
         if (success){
             set the button to show partner added and redirect user to homepage
@@ -54,6 +61,19 @@ public class AddPartner extends Activity implements View.OnClickListener {
         }
         */
     }
+
+    public void addPar(){
+
+        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = share.edit();
+        editor.putString("partner_name",uname.getText().toString());
+        editor.putString("phone_number",uemail.getText().toString());
+        editor.commit();
+        Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
+
+
+    }
+
 
     public void getRegId() {
         new AsyncTask<Void, Void, String>() {
@@ -89,7 +109,16 @@ public class AddPartner extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v){
-        getRegId();
+
+        switch (v.getId()) {
+            case R.id.get_self_id:
+                getRegId();
+                break;
+            case R.id.add_par:
+                addPar();
+                break;
+        }
+
     }
 
 }

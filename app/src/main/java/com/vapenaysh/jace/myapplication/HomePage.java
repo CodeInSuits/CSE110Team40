@@ -1,7 +1,9 @@
 package com.vapenaysh.jace.myapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -67,7 +69,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
             case R.id.partner_setting_btn:
 
-                if (true) { // TO DO if user does not have a partner, then AddPartner
+                if (isSingle()) { // TO DO if user does not have a partner, then AddPartner
                     startActivity(new Intent(HomePage.this, AddPartner.class));
                 } else {
                     startActivity(new Intent(HomePage.this, RemovePartner.class));
@@ -83,6 +85,22 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
                 break;
         }
 
+
+    }
+
+    public boolean isSingle(){
+        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        String name = share.getString("partner_name", "N/A");
+        String number = share.getString("phone_number", "N/A");
+
+        if(name.equals("N/A") || number.equals("N/A")) {
+            Toast.makeText(this,"No Partner Found", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        else {
+            Toast.makeText(this,"Partner Found", Toast.LENGTH_LONG).show();
+            return false;
+        }
 
     }
 
