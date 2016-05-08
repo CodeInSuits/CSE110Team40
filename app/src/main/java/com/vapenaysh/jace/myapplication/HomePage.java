@@ -48,7 +48,11 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         Intent i = new Intent(this, GPSTrackerService.class);
         i.putExtra("FavoriteLocations", locationsList);
 
-        startService(i);
+
+        if(!isSingle()){
+            startService(i);
+        }
+
 
         //connect the register button
         //Button loc_history_view = (Button)findViewById(R.id.see_loc_history);
