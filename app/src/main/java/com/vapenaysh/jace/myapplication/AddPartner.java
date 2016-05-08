@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -68,6 +69,8 @@ public class AddPartner extends Activity implements View.OnClickListener {
         editor.putString("partner_name",uname.getText().toString());
         editor.putString("phone_number",uemail.getText().toString());
         editor.commit();
+        Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
+
 
     }
 
