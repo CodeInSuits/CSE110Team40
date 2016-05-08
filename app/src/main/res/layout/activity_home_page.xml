@@ -70,5 +70,13 @@
         custom:pb_textError="Error"
         custom:pb_colorError="@color/red_error" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test button for SMS"
+        android:id="@+id/button_SMS"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
 
 </RelativeLayout>
