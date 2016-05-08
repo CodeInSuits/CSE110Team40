@@ -10,17 +10,12 @@ import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.IInterface;
-import android.os.Parcel;
-import android.os.RemoteException;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.FileDescriptor;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /*WARNING: THIS CLASS IS COMPLETELY UNTESTED*/
@@ -132,10 +127,14 @@ public class GPSTrackerService extends Service implements LocationListener
             double distanceBetween = calculateDistanceBetween(latLng, fli.getCoord());
             Log.v("TESTING LOCATION" + fli.toString(), "distance between: " + distanceBetween);
             if( distanceBetween < .1 )  {
+
                 Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT" + latLng.toString());
                 //TODO: NOTIFICATION CODE
                 //com.vapenaysh.jace.myapplication.SentSMS.sendSms(loc.toString());
                 //not already in the list of visited locations
+
+
+
                 visitedLocations.add(fli);
                 Toast.makeText(getApplicationContext(), "Visited a favorite location", Toast.LENGTH_SHORT).show();
             }
