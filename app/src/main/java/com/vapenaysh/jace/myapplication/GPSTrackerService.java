@@ -25,22 +25,26 @@ public class GPSTrackerService extends Service implements LocationListener
     private FavoriteLocationList favLocations;
     protected LocationManager locManager;
     private Context context;
-    private static final long time = 12000;
-    private static final float distance = 50;
+    private static final long TIME = 5*60*1000;
+    private static final float DISTANCE = 50;
     private HashSet<FavoriteLocation> visitedLocations = new HashSet<>();
     @Override
     public int onStartCommand(Intent i, int flags, int startID)
     {
         this.favLocations = i.getParcelableExtra("FavoriteLocations");
         this.context = getApplicationContext();
-        getCurrentLocation();
+        setupLocationTracking();
         return 0;
     }
 
-    public LatLng getCurrentLocation()
+    /**
+     *
+     * @return location representing the starting location
+     */
+    public Location setupLocationTracking()
     {
-        Log.d("NOTE", "ATTEMPTING TO GET LOCATION");
-        LatLng latlng = null;
+        Location location = null;
+        Log.d("NOTE", "ATTEMPTING TO SETUP");
         try
         {
             boolean net;
@@ -53,37 +57,35 @@ public class GPSTrackerService extends Service implements LocationListener
 
             if (!net  && !gps)
             {
-                Log.d("ERROR", "ENABLE UR STUFF BUD");
+                Log.d("ERROR", "ENABLE UR GPS AND NETWORK LOCATION PROVIDERS BUD");
             }
             else
             {
 
                 if (ContextCompat.checkSelfPermission( context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                    Log.d("ERROR", "CHECK UR PERMS BRUH");
+                    Log.d("ERROR", "CHECK UR COURSE LOCATION PERMS BRUH");
+
                 if (net)
                 {
-                    locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, this);
+                    locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TIME, DISTANCE, this);
                     Log.d("Note", "Network Enabled");
                 }
+
                 if (ContextCompat.checkSelfPermission( context, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED)
-                    Log.d("ERROR", "CHECK UR PERMS BRUH");
+                    Log.d("ERROR", "CHECK UR FINE LOCATION PERMS BRUH");
+
                 if (gps)
                 {
-                    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, this);
+                    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME, DISTANCE, this);
                     Log.d("Note", "GPS Enabled");
                 }
+
                 if (locManager != null) {
-                    Location location = null;
                     if (gps)
                         location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     else if (net)
                         location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    if (location != null) {
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                        Log.d("LOCATION FOUND", latitude + " " + longitude);
-                        latlng = new LatLng(latitude, longitude);
-                    }
+
                 }
             }
         }
@@ -91,7 +93,7 @@ public class GPSTrackerService extends Service implements LocationListener
         {
             Log.d("YOU DIED", e.toString());
         }
-        return latlng;
+        return location;
     }
 
     @Override
@@ -103,20 +105,22 @@ public class GPSTrackerService extends Service implements LocationListener
     @Override
     public void onLocationChanged(Location location)
     {
-        LatLng loc = getCurrentLocation();
-
+        Log.v("GPSTrackerService", "Location changed");
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         //check if user is close to a favorite location
         HashSet<FavoriteLocation> fll = favLocations.getLocations();
         for (FavoriteLocation fli: fll)
         {
             //within .1 miles
-            if( calculateDistanceBetween(loc, fli.getCoord()) < .1 )  {
-                Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT" + loc.toString());
+            double distanceBetween = calculateDistanceBetween(latLng, fli.getCoord());
+            Log.v("TESTING LOCATION" + fli.toString(), "distance between: " + distanceBetween);
+            if( distanceBetween < .1 )  {
+                Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT" + latLng.toString());
                 //TODO: NOTIFICATION CODE
                 //com.vapenaysh.jace.myapplication.SentSMS.sendSms(loc.toString());
                 //not already in the list of visited locations
                 visitedLocations.add(fli);
-                Toast.makeText(getApplicationContext(), "Visited a favorite location", Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), "Visited a favorite location", Toast.LENGTH_SHORT).show();
             }
             else{
                 visitedLocations.remove(fli); //not within range anymore
@@ -141,19 +145,30 @@ public class GPSTrackerService extends Service implements LocationListener
     }
 
     /**
-     * http://andrew.hedges.name/experiments/haversine/ for formula
+     * https://www.geodatasource.com/developers/java for formula
      * @param loc1
      * @param loc2
      * @return
      */
     private double calculateDistanceBetween(LatLng loc1, LatLng loc2){
-        int EARTH_RADIUS = 3961;
-        double dlon = loc2.latitude - loc1.latitude;
-        double dlat = loc2.longitude - loc1.longitude;
-        double a = Math.pow(Math.sin(dlat/2), 2);
-        a += Math.cos(loc1.latitude) * Math.cos(loc2.latitude) * Math.pow(Math.sin(dlon/2), 2);
-        double c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a) );
-        return EARTH_RADIUS * c;
+        double theta = loc1.longitude - loc2.longitude;
+        double dist = Math.sin(deg2rad(loc1.latitude)) * Math.sin(deg2rad(loc2.latitude))
+                + Math.cos(deg2rad(loc1.latitude)) * Math.cos(deg2rad(loc2.latitude)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+
+        return (dist);
+    }
+
+
+    private static double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+
+    private static double rad2deg(double rad) {
+        return (rad * 180 / Math.PI);
     }
 }
 

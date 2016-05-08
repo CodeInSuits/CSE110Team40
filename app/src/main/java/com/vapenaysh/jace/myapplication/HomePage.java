@@ -47,16 +47,14 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         signout.setMode(ActionProcessButton.Mode.PROGRESS);
         signout.setOnClickListener(this);
 
-
         //get the saved locations from the file and store locally
         locationsList = new FavoriteLocationList(this);
 
-        //WARNING: UNTESTED CODE
-        Intent i = new Intent(this, GPSTrackerService.class);
-        i.putExtra("FavoriteLocations", locationsList);
-
-
-        if(!isSingle()){
+        if(isSingle()){
+        //if(!isSingle()){
+            //WARNING: UNTESTED CODE
+            Intent i = new Intent(this, GPSTrackerService.class);
+            i.putExtra("FavoriteLocations", locationsList);
             startService(i);
         }
 
