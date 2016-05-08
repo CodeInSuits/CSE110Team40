@@ -22,15 +22,15 @@ import java.io.IOException;
 
 public class AddPartner extends Activity implements View.OnClickListener {
 
-    Button btnRegId;
-    Button addPar;
-    TextView tvRegId;
-    GoogleCloudMessaging gcm;
-    String regid;
-    String id;
-    String PROJECT_NUMBER = Constants.PROJECT_NUMBER;
-    EditText uname;
-    EditText phone;
+    private Button btnRegId;
+    private Button addPar;
+    private TextView tvRegId;
+    private GoogleCloudMessaging gcm;
+    private String regid;
+    private String id;
+    private String PROJECT_NUMBER = Constants.PROJECT_NUMBER;
+    private EditText uname;
+    private EditText phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +87,6 @@ public class AddPartner extends Activity implements View.OnClickListener {
             Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
             finish();
         }
-
-
     }
 
 
@@ -137,5 +135,14 @@ public class AddPartner extends Activity implements View.OnClickListener {
         }
 
     }
+
+    public String getUname(){
+        return uname.getText().toString();
+    }
+
+    public String getPhone(){
+        return phone.getText().toString();
+    }
+
 
 }
