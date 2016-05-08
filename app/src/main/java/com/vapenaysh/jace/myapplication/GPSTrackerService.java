@@ -142,7 +142,7 @@ public class GPSTrackerService extends Service implements LocationListener
         HashSet<FavoriteLocation> fll = favLocations.getLocations();
         for (FavoriteLocation fli: fll)
         {
-            if (LocationInRange(loc, fli))
+            if (LocationInRange(loc, fli.getCoord()))
             {
                 if (visitedLocations.indexOf(fli) == -1)
                 {
@@ -161,11 +161,11 @@ public class GPSTrackerService extends Service implements LocationListener
         }
     }
 
-    public boolean LocationInRange(LatLng loc, FavoriteLocation fli)
+    public boolean LocationInRange(LatLng loc, LatLng fli)
     {
-        if (loc.latitude > fli.getCoord().latitude - 0.01 || loc.latitude < fli.getCoord().latitude + 0.01)
+        if (loc.latitude > fli.latitude - 0.01 || loc.latitude < fli.latitude + 0.01)
         {
-            if (loc.longitude > fli.getCoord().longitude - 0.01 || loc.longitude < fli.getCoord().longitude + 0.01)
+            if (loc.longitude > fli.longitude - 0.01 || loc.longitude < fli.longitude + 0.01)
             {
                 return true;
             }
