@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -54,11 +53,13 @@ public class FavoriteLocationList extends Activity implements Parcelable
     @Override
     public void writeToParcel(Parcel dest, int flags)
     {
-        for (FavoriteLocation l : locations)
-        {
-            dest.writeDouble(l.getCoord().latitude);
-            dest.writeDouble(l.getCoord().longitude);
-            dest.writeString(l.getName());
+        if(locations != null){
+            for (FavoriteLocation l : locations)
+            {
+                dest.writeDouble(l.getCoord().latitude);
+                dest.writeDouble(l.getCoord().longitude);
+                dest.writeString(l.getName());
+            }
         }
     }
 
