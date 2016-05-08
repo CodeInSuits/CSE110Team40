@@ -13,7 +13,7 @@ public class SentSMS {
 
     public static String number;
 
-    public static void sendSms(String loc){
+    public static String sendSms(String loc){
 
 
        // SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
@@ -22,11 +22,11 @@ public class SentSMS {
         number = "5556";
         String notif = "Your partner is nearby ";
         String message = notif + loc;
-              //  com.vapenaysh.jace.myapplication.AddPartner.getName() +
+        //  com.vapenaysh.jace.myapplication.AddPartner.getName() +
         //        notif + "";
 
         SmsManager manager = SmsManager.getDefault();
         manager.sendTextMessage(number,null,message, null, null);
+        return message;
     }
-
 }

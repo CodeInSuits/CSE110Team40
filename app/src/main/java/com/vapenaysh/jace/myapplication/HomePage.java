@@ -34,6 +34,11 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         Button partner_setting_view = (Button)findViewById(R.id.partner_setting_btn);
         partner_setting_view.setOnClickListener(this);
 
+
+        //connect the sms button
+        Button sms_button = (Button) findViewById(R.id.button_SMS);
+        sms_button.setOnClickListener(this);
+
         //sign out button
         progressGenerator = new ProgressGenerator(this);
         signout = (ActionProcessButton) findViewById(R.id.logout);
@@ -81,7 +86,8 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
                 break;
             case R.id.button_SMS:
 
-                com.vapenaysh.jace.myapplication.SentSMS.sendSms("CSE Lab");
+                String msg = com.vapenaysh.jace.myapplication.SentSMS.sendSms("CSE Lab");
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
                 break;
             // case R.id.see_loc_history:
