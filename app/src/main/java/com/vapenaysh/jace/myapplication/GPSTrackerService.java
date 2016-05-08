@@ -134,7 +134,10 @@ public class GPSTrackerService extends Service implements LocationListener
             if( distanceBetween < .1 )  {
                 Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT" + latLng.toString());
                 //TODO: NOTIFICATION CODE
-                //com.vapenaysh.jace.myapplication.SentSMS.sendSms(loc.toString());
+
+                SentSMS msg = new SentSMS();
+                msg.sendSms(latLng.toString());
+
                 //not already in the list of visited locations
                 visitedLocations.add(fli);
                 Toast.makeText(getApplicationContext(), "Visited a favorite location", Toast.LENGTH_SHORT).show();

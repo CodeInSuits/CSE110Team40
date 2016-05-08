@@ -1,12 +1,8 @@
-package tests;
+package com.vapenaysh.jace.myapplication.tests;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.Button;
-import com.dd.processbutton.FlatButton;
-import com.dd.processbutton.ProcessButton;
-import com.dd.processbutton.iml.ActionProcessButton;
+
 import com.vapenaysh.jace.myapplication.HomePage;
-import com.vapenaysh.jace.myapplication.R;
 
 /**
  * Created by adamabadilla on 5/7/16.
