@@ -13,6 +13,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1021736687932-ng4drgdilud0oafem2cdag2a48ikgafv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vapenaysh.jace.myapplication",
+            "certificate_hash": "BE3BC46936FDBA9B5E6334780857589A6DE302E6"
+          }
+        },
+        {
+          "client_id": "1021736687932-bcjj5igcbgg5pi17tqlo3mb992bn0cmt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vapenaysh.jace.myapplication",
+            "certificate_hash": "0F222A9536A64C25DD0C9851A23D267A882C440C"
+          }
+        },
+        {
           "client_id": "1021736687932-e7d5r2vh397c9cs1qln56h4ionn1c3lt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

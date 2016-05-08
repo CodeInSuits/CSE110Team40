@@ -1,8 +1,6 @@
 package com.vapenaysh.jace.myapplication;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.telephony.SmsManager;
 
 /**
@@ -19,7 +17,7 @@ public class SentSMS {
        // SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
        // number = share.getString("phone_number", "N/A");
 
-        number = "5556";
+        number = "6505551212";
         String notif = "Your partner is nearby ";
         String message = notif + loc;
               //  com.vapenaysh.jace.myapplication.AddPartner.getName() +
