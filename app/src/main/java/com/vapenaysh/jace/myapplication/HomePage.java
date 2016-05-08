@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -34,6 +35,11 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         Button partner_setting_view = (Button)findViewById(R.id.partner_setting_btn);
         partner_setting_view.setOnClickListener(this);
 
+
+        //connect the sms button
+        Button sms_button = (Button) findViewById(R.id.button_SMS);
+        sms_button.setOnClickListener(this);
+
         //sign out button
         progressGenerator = new ProgressGenerator(this);
         signout = (ActionProcessButton) findViewById(R.id.logout);
@@ -44,11 +50,16 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
         //get the saved locations from the file and store locally
         locationsList = new FavoriteLocationList(this);
+
         //WARNING: UNTESTED CODE
         Intent i = new Intent(this, GPSTrackerService.class);
         i.putExtra("FavoriteLocations", locationsList);
 
-        startService(i);
+
+        if(!isSingle()){
+            startService(i);
+        }
+
 
         //connect the register button
         //Button loc_history_view = (Button)findViewById(R.id.see_loc_history);
@@ -75,7 +86,12 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
                     startActivity(new Intent(HomePage.this, RemovePartner.class));
                 }
                 break;
+            case R.id.button_SMS:
 
+                String msg = com.vapenaysh.jace.myapplication.SentSMS.sendSms("CSE Lab");
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
+                break;
             // case R.id.see_loc_history:
             // not for MS 1
             // break;
@@ -116,5 +132,14 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         finishActivity(1);
         onBackPressed();
 
+    }
+
+    /**
+     * delete the locations file of all saved locations
+     * @param view
+     */
+    public void removeAllLocations(View view){
+        locationsList.removeAllLocations(this);
+        Toast.makeText(getApplicationContext(), "Removed all saved favorite locations.", Toast.LENGTH_SHORT).show();
     }
 }
