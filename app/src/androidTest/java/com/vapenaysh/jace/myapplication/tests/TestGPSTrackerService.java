@@ -1,6 +1,5 @@
-package tests;
+package com.vapenaysh.jace.myapplication.tests;
 
-import android.location.Location;
 import android.test.ServiceTestCase;
 
 import com.google.android.gms.maps.model.LatLng;

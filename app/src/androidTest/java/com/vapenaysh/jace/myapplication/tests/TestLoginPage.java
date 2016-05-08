@@ -1,4 +1,4 @@
-package tests;
+package com.vapenaysh.jace.myapplication.tests;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;

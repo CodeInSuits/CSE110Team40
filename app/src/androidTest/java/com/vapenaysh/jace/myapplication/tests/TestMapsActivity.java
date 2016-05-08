@@ -1,12 +1,10 @@
-package tests;
+package com.vapenaysh.jace.myapplication.tests;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.*;
 
 import com.vapenaysh.jace.myapplication.MapsActivity;
 import com.vapenaysh.jace.myapplication.R;
-
-import junit.framework.Test;
 
 /**
  * Created by adamabadilla on 5/7/16.

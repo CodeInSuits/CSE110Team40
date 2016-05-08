@@ -1,4 +1,4 @@
-package tests;
+package com.vapenaysh.jace.myapplication.tests;
 
 import android.test.ActivityInstrumentationTestCase2;
 import com.vapenaysh.jace.myapplication.CreateAccount;
@@ -72,10 +72,5 @@ public class TestCreateAccount extends ActivityInstrumentationTestCase2<CreateAc
         assertNotNull(create);
         assertNotNull(createButton);
     }
-
-
-
-
-
     
 }

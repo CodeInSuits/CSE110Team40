@@ -130,7 +130,10 @@ public class GPSTrackerService extends Service implements LocationListener
 
                 Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT" + latLng.toString());
                 //TODO: NOTIFICATION CODE
-                //com.vapenaysh.jace.myapplication.SentSMS.sendSms(loc.toString());
+
+                SentSMS msg = new SentSMS();
+                msg.sendSms(latLng.toString());
+
                 //not already in the list of visited locations
 
 
