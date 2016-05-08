@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -159,6 +158,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
 
 
         //connect to the server
+        /**** firebase as backend - MS2
         firebase = new Firebase("https://coupletone.firebaseio.com/");
         firebase.addAuthStateListener(new Firebase.AuthStateListener() {
             @Override
@@ -173,6 +173,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
 
         Firebase usernames = firebase.child("usernames");
         usernames.setValue("Test");
+         ****/
 
 
     }

@@ -118,6 +118,4 @@ public class AddPartner extends Activity implements View.OnClickListener {
 
     }
 
-
-
 }

@@ -23,7 +23,6 @@
         <EditText
 
             android:hint="User name"
-
             android:id="@+id/usernameinput"
             android:layout_width="match_parent"
             android:visibility="gone"
@@ -69,6 +68,7 @@
             android:id="@+id/logo"
             android:layout_height="wrap_content"
             android:src="@drawable/ct"/>
+
         <com.google.android.gms.common.SignInButton
             android:visibility="invisible"
             android:layout_gravity="center"

@@ -14,6 +14,12 @@ import com.dd.processbutton.iml.ActionProcessButton;
 
 import Utility.ProgressGenerator;
 
+/**
+ *
+ * This is for milestone 2 perhaps
+ *
+ */
+
 public class CreateAccount extends Activity implements ProgressGenerator.OnCompleteListener{
 
     private EditText username;
