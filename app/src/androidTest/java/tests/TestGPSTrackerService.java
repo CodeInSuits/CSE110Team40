@@ -24,12 +24,12 @@ public class TestGPSTrackerService extends ServiceTestCase<GPSTrackerService>{
     {
         LatLng one = new LatLng(1, 1);
         LatLng two = new LatLng(1.5, 1.5);
-        boolean shouldbetrue = gpsTrackerService.LocationInRange(one, two);
+        boolean shouldbetrue = gpsTrackerService.calculateDistanceBetween(one, two) < .1;
         assertEquals(shouldbetrue, true);
 
         LatLng three = new LatLng(1, 1);
         LatLng four = new LatLng(3.5, 1.5);
-        boolean shouldbefalse = gpsTrackerService.LocationInRange(three, four);
+        boolean shouldbefalse = gpsTrackerService.calculateDistanceBetween(three, four) < .1;
         assertEquals(shouldbefalse, false);
     }
 }

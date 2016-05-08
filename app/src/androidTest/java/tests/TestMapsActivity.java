@@ -1,4 +1,4 @@
-package Test_Files;
+package tests;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.*;

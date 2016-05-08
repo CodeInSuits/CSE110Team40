@@ -145,18 +145,6 @@ public class GPSTrackerService extends Service implements LocationListener
         }
     }
 
-    public boolean LocationInRange(LatLng loc, LatLng fli)
-    {
-        if (loc.latitude > fli.latitude - 0.01 || loc.latitude < fli.latitude + 0.01)
-        {
-            if (loc.longitude > fli.longitude - 0.01 || loc.longitude < fli.longitude + 0.01)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
 
@@ -178,7 +166,7 @@ public class GPSTrackerService extends Service implements LocationListener
      * @param loc2
      * @return
      */
-    private double calculateDistanceBetween(LatLng loc1, LatLng loc2){
+    public double calculateDistanceBetween(LatLng loc1, LatLng loc2){
         double theta = loc1.longitude - loc2.longitude;
         double dist = Math.sin(deg2rad(loc1.latitude)) * Math.sin(deg2rad(loc2.latitude))
                 + Math.cos(deg2rad(loc1.latitude)) * Math.cos(deg2rad(loc2.latitude)) * Math.cos(deg2rad(theta));

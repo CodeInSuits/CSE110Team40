@@ -56,7 +56,7 @@ public class PartnershipTracker {
         return false;
     }
 
-    public boolean removeParnter(User self){
+    public boolean removePartner(User self){
 
         if(hasPartner(self)){
             User partner = tracker.get(self);
