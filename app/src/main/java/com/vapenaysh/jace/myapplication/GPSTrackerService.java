@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -26,7 +27,7 @@ public class GPSTrackerService extends Service implements LocationListener
     private Context context;
     private static final long time = 12000;
     private static final float distance = 50;
-    private ArrayList<FavoriteLocation> visitedLocations = new ArrayList<FavoriteLocation>();
+    private HashSet<FavoriteLocation> visitedLocations = new HashSet<>();
     @Override
     public int onStartCommand(Intent i, int flags, int startID)
     {
@@ -34,24 +35,6 @@ public class GPSTrackerService extends Service implements LocationListener
         this.context = getApplicationContext();
         getCurrentLocation();
         return 0;
-    }
-
-    public void addFavLocation(FavoriteLocation newFavLocation)
-    {
-        favLocations.addLocation(newFavLocation, this);
-    }
-
-    public boolean removeFavLocation(FavoriteLocation remFavLocation)
-    {
-        for (FavoriteLocation i : favLocations.getLocations())
-        {
-            if (i.equals(remFavLocation))
-            {
-                favLocations.removeLocation(i, this);
-                return true;
-            }
-        }
-        return false;
     }
 
     public LatLng getCurrentLocation()
@@ -126,19 +109,17 @@ public class GPSTrackerService extends Service implements LocationListener
         HashSet<FavoriteLocation> fll = favLocations.getLocations();
         for (FavoriteLocation fli: fll)
         {
-            if (loc.latitude > fli.getCoord().latitude - 0.01 || loc.latitude < fli.getCoord().latitude + 0.01)
-            {
-                if (loc.longitude > fli.getCoord().longitude - 0.01 || loc.longitude < fli.getCoord().longitude + 0.01)
-                {
-                    Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT" + loc.toString());
-                    //TODO: NOTIFICATION CODE
-                    //com.vapenaysh.jace.myapplication.SentSMS.sendSms(loc.toString());
-                    //not already in the list of visited locations
-                    if (visitedLocations.indexOf(fli) == -1)
-                    {
-                        visitedLocations.add(fli);
-                    }
-                }
+            //within .1 miles
+            if( calculateDistanceBetween(loc, fli.getCoord()) < .1 )  {
+                Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT" + loc.toString());
+                //TODO: NOTIFICATION CODE
+                //com.vapenaysh.jace.myapplication.SentSMS.sendSms(loc.toString());
+                //not already in the list of visited locations
+                visitedLocations.add(fli);
+                Toast.makeText(getApplicationContext(), "Visited a favorite location", Toast.LENGTH_SHORT);
+            }
+            else{
+                visitedLocations.remove(fli); //not within range anymore
             }
         }
 
@@ -157,6 +138,22 @@ public class GPSTrackerService extends Service implements LocationListener
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    /**
+     * http://andrew.hedges.name/experiments/haversine/ for formula
+     * @param loc1
+     * @param loc2
+     * @return
+     */
+    private double calculateDistanceBetween(LatLng loc1, LatLng loc2){
+        int EARTH_RADIUS = 3961;
+        double dlon = loc2.latitude - loc1.latitude;
+        double dlat = loc2.longitude - loc1.longitude;
+        double a = Math.pow(Math.sin(dlat/2), 2);
+        a += Math.cos(loc1.latitude) * Math.cos(loc2.latitude) * Math.pow(Math.sin(dlon/2), 2);
+        double c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a) );
+        return EARTH_RADIUS * c;
     }
 }
 
