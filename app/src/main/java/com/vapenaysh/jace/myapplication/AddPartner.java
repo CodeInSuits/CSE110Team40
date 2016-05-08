@@ -1,15 +1,14 @@
 
 package com.vapenaysh.jace.myapplication;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
-
-import com.google.android.gms.gcm.GoogleCloudMessaging;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,21 +17,20 @@ import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 
 
 public class AddPartner extends Activity implements View.OnClickListener {
 
     Button btnRegId;
+    Button addPar;
     TextView tvRegId;
     GoogleCloudMessaging gcm;
     String regid;
     String id;
     String PROJECT_NUMBER = Constants.PROJECT_NUMBER;
     EditText uname;
-    EditText uemail;
+    EditText phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +38,15 @@ public class AddPartner extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_activity_add_partner);
 
         btnRegId = (Button) findViewById(R.id.get_self_id);
+        addPar = (Button) findViewById(R.id.add_par);
         tvRegId = (TextView)findViewById(R.id.self_regId);
 
         btnRegId.setOnClickListener(this);
+        addPar.setOnClickListener(this);
         //tvRegId.setText(id);
 
         uname = (EditText) findViewById(R.id.par_name);
-        uemail = (EditText) findViewById(R.id.par_email);
+        phone = (EditText) findViewById(R.id.par_phone);
 
         //EditText uid = (EditText) findViewById(R.id.par_id);
 
@@ -63,13 +63,30 @@ public class AddPartner extends Activity implements View.OnClickListener {
     }
 
     public void addPar(){
-
         SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = share.edit();
-        editor.putString("partner_name",uname.getText().toString());
-        editor.putString("phone_number",uemail.getText().toString());
-        editor.commit();
-        Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
+        String name = uname.getText().toString();
+        String phoneNumber = phone.getText().toString();
+        if(name.equals("") || phoneNumber.equals("")){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(AddPartner.this);
+            dialog.setTitle("Empty Fields");
+            dialog.setMessage("Please complete the form");
+            dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+
+                }
+            });
+            dialog.show();
+        }
+        else{
+            editor.putString("partner_name",name);
+            editor.putString("phone_number",phoneNumber);
+            editor.commit();
+            Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
 
     }

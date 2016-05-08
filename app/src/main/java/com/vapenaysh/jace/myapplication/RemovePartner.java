@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -14,8 +15,21 @@ public class RemovePartner extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remove);
 
-        TextView name_partner = (TextView) findViewById(R.id.partner_email);
-        TextView number_partner = (TextView)findViewById(R.id.partner_name);
+        TextView name_partner = (TextView) findViewById(R.id.show_name);
+        TextView number_partner = (TextView)findViewById(R.id.show_phone);
+        Button remove_partner = (Button) findViewById(R.id.remove_partner_button);
+
+        remove_partner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences remove = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+                SharedPreferences.Editor removeEditor = remove.edit();
+                removeEditor.remove("partner_name");
+                removeEditor.remove("phone_number");
+                removeEditor.commit();
+                finish();
+            }
+        });
 
         SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         String name = share.getString("partner_name", "N/A");

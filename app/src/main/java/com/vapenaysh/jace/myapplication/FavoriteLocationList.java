@@ -12,9 +12,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 
 /**
