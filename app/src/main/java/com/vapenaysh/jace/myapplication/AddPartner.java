@@ -82,7 +82,11 @@ public class AddPartner extends Activity implements View.OnClickListener {
         }
         else{
             editor.putString("partner_name",name);
+            PartnerSettings.setName(name);
+
             editor.putString("phone_number",phoneNumber);
+            PartnerSettings.setNumber(phoneNumber);
+
             editor.commit();
             Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
             finish();

@@ -135,9 +135,6 @@ public class GPSTrackerService extends Service implements LocationListener
                 msg.sendSms(fli);
 
                 //not already in the list of visited locations
-
-
-
                 visitedLocations.add(fli);
                 Toast.makeText(getApplicationContext(), "Visited a favorite location", Toast.LENGTH_SHORT).show();
             }
