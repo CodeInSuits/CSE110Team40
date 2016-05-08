@@ -189,6 +189,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void cancelCustomName(View view) {
         currentMarker.remove();
         namePromptLayout.setVisibility(View.GONE);
+        namePrompt.setText("Choose a favorite location.");
     }
 
     @Override
