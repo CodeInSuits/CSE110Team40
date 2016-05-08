@@ -127,12 +127,12 @@ public class GPSTrackerService extends Service implements LocationListener
             double distanceBetween = calculateDistanceBetween(latLng, fli.getCoord());
             Log.v("TESTING LOCATION" + fli.toString(), "distance between: " + distanceBetween);
             if( distanceBetween < .1 )  {
+                Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT " + latLng.toString());
 
-                Log.e("NOTIFICATION", "FOUND FAVORITE LOCATION AT" + latLng.toString());
                 //TODO: NOTIFICATION CODE
 
                 SentSMS msg = new SentSMS();
-                msg.sendSms(latLng.toString());
+                msg.sendSms(fli);
 
                 //not already in the list of visited locations
 
