@@ -11,7 +11,7 @@ public class SentSMS{
 
     public static String number;
 
-    public String sendSms(String loc){
+    public String sendSms(FavoriteLocation loc){
 
 
         //SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
@@ -19,7 +19,7 @@ public class SentSMS{
 
         number = com.vapenaysh.jace.myapplication.PartnerSettings.getNumber();
         String notif = "Your partner is nearby ";
-        String message = notif + loc;
+        String message = notif + loc.getName();
         //  com.vapenaysh.jace.myapplication.AddPartner.getName() +
         //        notif + "";
 

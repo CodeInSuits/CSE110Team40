@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
+import com.google.android.gms.maps.model.LatLng;
 
 import Utility.ProgressGenerator;
 
@@ -86,7 +87,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
             case R.id.button_SMS:
 
                 SentSMS sentSMS = new SentSMS();
-                String msg = sentSMS.sendSms("CSE Lab");
+                String msg = sentSMS.sendSms(new FavoriteLocation(new LatLng(1,1), "test"));
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
                 break;

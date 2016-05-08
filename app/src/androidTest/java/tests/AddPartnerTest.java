@@ -1,6 +1,9 @@
-package com.vapenaysh.jace.myapplication;
+package tests;
 
 import android.test.suitebuilder.annotation.MediumTest;
+
+import com.vapenaysh.jace.myapplication.AddPartner;
+import com.vapenaysh.jace.myapplication.Constants;
 
 import junit.framework.TestCase;
 
