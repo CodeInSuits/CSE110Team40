@@ -25,10 +25,6 @@ public class TestAddPartner_Scenario1 extends ActivityInstrumentationTestCase2<A
         super(AddPartner.class);
     }
 
-    // Setting up the given part
-    public void setUp() {
-
-    }
 
     public void testEditText_Name() {
 
