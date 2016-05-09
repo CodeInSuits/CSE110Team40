@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import static junit.framework.Assert.*;
@@ -44,17 +45,16 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
         TextView name = (TextView) addPartner.findViewById(R.id.textView);
         assertNotNull(name);
         String partnerName = name.getText().toString();
-        assertEquals("Name:",partnerName);
+        assertEquals("Name:", partnerName);
     }
     public void test_textViewPhone() {
         addPartner = getActivity();
         TextView phone = (TextView) addPartner.findViewById(R.id.textView4);
         assertNotNull(phone);
         String partnerPhone = phone.getText().toString();
-        assertEquals("Phone Number:",partnerPhone);
+        assertEquals("Phone Number:", partnerPhone);
     }
 
-<<<<<<< HEAD
     // Test Name Text Edit Field
     @UiThreadTest
     public void test_nameTextEdit() {
@@ -89,7 +89,7 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
     }
 
     // Test the button for RegId
-    public void test_RegID(){
+    public void test_getRegIDScenario(){
 
         addPartner = getActivity();
 
@@ -139,14 +139,14 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
         // Simulate press
         addPartnerButton.callOnClick();
 
-        assertEquals(AddPartner.getUname(),"Esther");
-        assertEquals(AddPartner.getPhone(),"5556");
-=======
+        assertEquals(AddPartner.getUname(), "Esther");
+        assertEquals(AddPartner.getPhone(), "5556");
+    }
+
     public void test_addPartnerButton() {
         addPartner = getActivity();
         Button button = (Button) addPartner.findViewById(R.id.add_par);
         button.callOnClick();
         assertNotNull(button);
->>>>>>> b10cfbea811c7e77afb5d3a57fe67512a2537442
     }
 }

@@ -62,8 +62,8 @@ public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity>
 
     }
 
-    @UiThreadTest
-    public void test_CancelName(){
+    //@UiThreadTest
+    //public void test_CancelName(){
         /*
         final Button btn = (Button)mapsActivity.findViewById(R.id.save_btn);
 
@@ -72,6 +72,6 @@ public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity>
 
         assertEquals( numLocs, SavedLocations.getSize() );
         */
-    }
+    //}
 
 }
