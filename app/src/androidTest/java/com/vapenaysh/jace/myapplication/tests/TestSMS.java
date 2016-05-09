@@ -15,9 +15,11 @@ import static junit.framework.Assert.assertEquals;
  * Works as of 5/8 4:56PM
  *
  * Created by XuanpeiEstherOuyang on 5/8/16.
- * Testing the functionality of SentSMS.java
  *
- * [Scenario 4.3]
+ * Testing the functionality of SentSMS.java and Scenario for sending notification
+ *
+ * Scenario 1
+ *
  * I arrive at one of my favorite locations
  * Given that I have a partner
  * And have set the location as one of my favorites,

@@ -11,7 +11,10 @@ import junit.framework.TestCase;
  * Works as of 5/8 5:11pm
  *
  * Created by adamabadilla on 5/8/16.
- * Testing the fuctionality of FavoriteLocation.java
+ *
+ * Unit Testing the fuctionality of FavoriteLocation.java
+ *
+ * Scenario Testing is performed in TestGPDTrackerService
  */
 
 public class TestFavoriteLocation extends TestCase {

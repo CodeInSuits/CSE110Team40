@@ -60,7 +60,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/show_name"
+        android:id="@+id/show_phone"
         android:textSize="30sp"
         android:layout_alignEnd="@+id/remove_partner_button"
         android:layout_above="@+id/remove_partner_button" />
@@ -68,7 +68,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/show_phone"
+        android:id="@+id/show_name"
         android:textSize="30sp"
         android:layout_alignBottom="@+id/phone_partner"
         android:layout_alignEnd="@+id/remove_partner_button" />

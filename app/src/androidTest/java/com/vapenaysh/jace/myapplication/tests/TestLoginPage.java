@@ -2,6 +2,7 @@ package com.vapenaysh.jace.myapplication.tests;
 
 import android.os.CountDownTimer;
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -11,7 +12,8 @@ import com.vapenaysh.jace.myapplication.R;
 /**
  * Created by adamabadilla on 5/7/16.
  *
- * User tries registering with their Google Account
+ * Scenario 1: User tries registering with their Google Account
+ *
  * Given that the user has a google account
  * And didn’t log in the app before
  * When the user tries to log in
@@ -42,13 +44,6 @@ public class TestLoginPage extends ActivityInstrumentationTestCase2<LoginPage> {
         // Login Box exists
         assertNotNull(googleSignIn);
 
-
-
-
-        assertTrue(googleSignIn.getVisibility() == View.VISIBLE);
-
-
-
         new CountDownTimer(3500, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -59,8 +54,6 @@ public class TestLoginPage extends ActivityInstrumentationTestCase2<LoginPage> {
 
             }
         }.start();
-
-
 
 
     }

@@ -16,6 +16,4 @@ public class TestFavoriteLocationList extends ActivityInstrumentationTestCase2<F
 
     }
 
-
-
 }

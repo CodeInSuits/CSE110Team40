@@ -17,7 +17,27 @@ import java.util.HashSet;
 /**
  * Tests scenarios involving map clicking and added a location with a custom/default name
  * Created by Matt on 5/1/16.
+ *
+ * Scneario 1 The location is given a customized name when it is set via tapping on the map
+ *
+ * Given that the user taps a coordinate/address on the map
+ * When the user selects the coordinate,
+ * And the user enters a name for the favorite location
+ * Then the location should be added to the list of favorites with the name the user entered
+ * and a default notification sound associated with the location.
+ * And the location on the map will be marked with a red pin and location name
+ *
+ * Scenario 2 The location is given a default name when it is set via tapping on the map
+ *
+ * Given that the user taps a coordinate/address on the map
+ * When the user selects the coordinate,
+ * And the user doesn’t enter a name for the favorite location
+ * Then the location should be added to the list of favorites with an enumerated default name
+ * (such as “Location 1”) and a default notification sound associated with the location.
+ * And the location on the map will be marked with a red pin and location name
+ *
  */
+
 public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity> {
 
     private MapsActivity mapsActivity;

@@ -1,6 +1,7 @@
 package com.vapenaysh.jace.myapplication.tests;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.UiThreadTest;
 import android.widget.TextView;
 import android.widget.Button;
 import com.vapenaysh.jace.myapplication.PartnerSettings;
@@ -48,41 +49,53 @@ public class TestRemovePartner extends ActivityInstrumentationTestCase2<PartnerS
     }
 
     // Test Name Text Edit Field
+    @UiThreadTest
     public void test_nameTextEdit() {
 
         removePartner = getActivity();
 
         // Check Name Text Field
         TextView nameLabel = (TextView) removePartner.findViewById(R.id.show_name);
-        String name = nameLabel.getText().toString();
-        assertEquals(removePartner.getName(), name);
 
+        // Given Partner Added
+        nameLabel.setText("Esther");
+
+        assertEquals(nameLabel.getText().toString(), "Esther");
     }
 
 
     // Test Name Text Edit Field
+    @UiThreadTest
     public void test_numberTextEdit() {
 
         removePartner = getActivity();
 
         // Check Phone Text Field
         TextView phoneLabel = (TextView) removePartner.findViewById(R.id.show_phone);
-        String phone = phoneLabel.getText().toString();
-        assertEquals(removePartner.getNumber(), phone);
+
+        // Given Partner Added
+        phoneLabel.setText("5556");
+
+        assertEquals(phoneLabel.getText().toString(), "5556");
 
     }
 
     // Test the scenario 1 for removing partner
+    @UiThreadTest
     public void testRemoveScenario(){
 
         removePartner = getActivity();
 
+        // Given Partner Added
+
         // Get the Name Text Field
         TextView nameLabel = (TextView) removePartner.findViewById(R.id.show_name);
+        nameLabel.setText("Esther");
         String name = nameLabel.getText().toString();
 
         // Get the Phone Number Text Field
         TextView phoneLabel = (TextView) removePartner.findViewById(R.id.show_phone);
+        phoneLabel.setText("5556");
         String phone = phoneLabel.getText().toString();
 
         assertEquals(removePartner.getName(), name);
