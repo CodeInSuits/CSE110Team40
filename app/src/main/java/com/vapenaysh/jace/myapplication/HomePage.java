@@ -79,7 +79,9 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
             case R.id.partner_setting_btn:
 
                 if (isSingle()) {
-                    startActivity(new Intent(HomePage.this, AddPartner.class));
+                    Intent i2 = new Intent(this, AddPartner.class);
+                    i2.putExtra("FavoriteLocations", locationsList);
+                    startActivity(i2);
                 } else {
                     startActivity(new Intent(HomePage.this, PartnerSettings.class));
                 }

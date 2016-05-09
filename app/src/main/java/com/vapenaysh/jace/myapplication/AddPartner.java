@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
     private EditText phone;
     private static String username;
     private static String userphone;
+    private FavoriteLocationList favoriteLocationList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,9 @@ public class AddPartner extends Activity implements View.OnClickListener {
 
         uname = (EditText) findViewById(R.id.par_name);
         phone = (EditText) findViewById(R.id.par_phone);
+
+        favoriteLocationList = getIntent().getParcelableExtra("FavoriteLocations");
+
 
         //EditText uid = (EditText) findViewById(R.id.par_id);
 
@@ -87,6 +92,8 @@ public class AddPartner extends Activity implements View.OnClickListener {
             editor.putString("phone_number",phoneNumber);
             PartnerSettings.setNumber(phoneNumber);
             userphone = phoneNumber;
+
+            startTracking();
 
             editor.commit();
             Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
@@ -147,6 +154,12 @@ public class AddPartner extends Activity implements View.OnClickListener {
 
     public static String getPhone(){
         return userphone;
+    }
+
+    private void startTracking(){
+        Intent i = new Intent(this, GPSTrackerService.class);
+        i.putExtra("FavoriteLocations", favoriteLocationList);
+        startService(i);
     }
 
 

@@ -42,6 +42,7 @@ public class GPSTrackerService extends Service implements LocationListener
     @Override
     public int onStartCommand(Intent i, int flags, int startID)
     {
+        Toast.makeText(getApplicationContext(), "Tracking started", Toast.LENGTH_SHORT).show();
         //Parse data from intent
         this.favLocations = i.getParcelableExtra("FavoriteLocations");
         if (this.favLocations == null)
@@ -129,6 +130,8 @@ public class GPSTrackerService extends Service implements LocationListener
         HashSet<FavoriteLocation> fll = favLocations.getLocations();
         for (FavoriteLocation fli: fll)
         {
+            //TODO only do below checks if not in visitedLocations
+
             //within .1 miles
             double distanceBetween = calculateDistanceBetween(latLng, fli.getCoord());
             Log.v("TESTING LOCATION" + fli.toString(), "distance between: " + distanceBetween);

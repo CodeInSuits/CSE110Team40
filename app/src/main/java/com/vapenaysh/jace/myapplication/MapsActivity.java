@@ -299,6 +299,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             loc.setLatitude(32.7157);
             loc.setLongitude(-117.1611);
         }
+
         return loc;
     }
 
