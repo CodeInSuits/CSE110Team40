@@ -45,6 +45,7 @@ public class TestGPSTrackerService extends ServiceTestCase<GPSTrackerService>{
     //Testing math function which calculates distances between points.
     public void test_calculateDistanceBetween() throws Exception
     {
+
         LatLng one = new LatLng(1, 1);
         LatLng two = new LatLng(1, 1);
         boolean shouldbetrue = gpsTrackerService.calculateDistanceBetween(one, two) < .1;
@@ -53,6 +54,6 @@ public class TestGPSTrackerService extends ServiceTestCase<GPSTrackerService>{
         LatLng three = new LatLng(1, 1);
         LatLng four = new LatLng(3.5, 1.5);
         boolean shouldbefalse = gpsTrackerService.calculateDistanceBetween(three, four) < .1;
-        assertEquals(shouldbefalse, false);
+        assertEquals(shouldbefalse, false);*/
     }
 }

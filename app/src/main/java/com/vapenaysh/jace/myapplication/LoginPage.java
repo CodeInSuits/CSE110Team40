@@ -204,6 +204,8 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+
+            /*
             case R.id.login:
                 EditText uname = (EditText) findViewById(R.id.email);
                 EditText passw = (EditText) findViewById(R.id.password);
@@ -212,7 +214,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
                 break;
             case R.id.register:
                 startActivity(new Intent(LoginPage.this, CreateAccount.class));
-                break;
+                break;*/
             case R.id.google_signin:
                 signIn();
                 break;

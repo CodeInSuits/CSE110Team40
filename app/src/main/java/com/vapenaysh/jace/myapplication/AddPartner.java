@@ -27,6 +27,8 @@ public class AddPartner extends Activity implements View.OnClickListener {
     private String PROJECT_NUMBER = Constants.PROJECT_NUMBER;
     private EditText uname;
     private EditText phone;
+    private static String username;
+    private static String userphone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +82,11 @@ public class AddPartner extends Activity implements View.OnClickListener {
         else{
             editor.putString("partner_name",name);
             PartnerSettings.setName(name);
+            username = name;
 
             editor.putString("phone_number",phoneNumber);
             PartnerSettings.setNumber(phoneNumber);
+            userphone = phoneNumber;
 
             editor.commit();
             Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
@@ -137,12 +141,12 @@ public class AddPartner extends Activity implements View.OnClickListener {
 
     }
 
-    public String getUname(){
-        return uname.getText().toString();
+    public static String getUname(){
+        return username;
     }
 
-    public String getPhone(){
-        return phone.getText().toString();
+    public static String getPhone(){
+        return userphone;
     }
 
 
