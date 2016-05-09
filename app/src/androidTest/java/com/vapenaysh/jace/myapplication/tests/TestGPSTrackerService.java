@@ -54,6 +54,6 @@ public class TestGPSTrackerService extends ServiceTestCase<GPSTrackerService>{
         LatLng three = new LatLng(1, 1);
         LatLng four = new LatLng(3.5, 1.5);
         boolean shouldbefalse = gpsTrackerService.calculateDistanceBetween(three, four) < .1;
-        assertEquals(shouldbefalse, false);*/
+        assertEquals(shouldbefalse, false);
     }
 }

@@ -20,6 +20,7 @@ import com.vapenaysh.jace.myapplication.R;
 import java.util.HashSet;
 
 /**
+ * Tests scenarios involving map clicking and added a location with a custom/default name
  * Created by Matt on 5/1/16.
  */
 public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity> {
