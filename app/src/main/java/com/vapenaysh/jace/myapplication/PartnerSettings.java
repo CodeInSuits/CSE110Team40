@@ -32,6 +32,7 @@ public class PartnerSettings extends Activity {
         remove_partner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: on removePartner, stop the service
                 SharedPreferences remove = getSharedPreferences("MyData", Context.MODE_PRIVATE);
                 SharedPreferences.Editor removeEditor = remove.edit();
                 removeEditor.remove("partner_name");
