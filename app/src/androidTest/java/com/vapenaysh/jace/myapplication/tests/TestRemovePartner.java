@@ -92,8 +92,8 @@ public class TestRemovePartner extends ActivityInstrumentationTestCase2<PartnerS
         removePartnerButton.callOnClick();
 
         // name and phone should be "N/A" now
-        assertEquals(removePartner.getName(), "N/A");
-        assertEquals(removePartner.getNumber(), "N/A");
+        assertEquals("N/A",removePartner.getName());
+        assertEquals("N/A",removePartner.getNumber());
     }
 
 }

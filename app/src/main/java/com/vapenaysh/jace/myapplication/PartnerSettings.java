@@ -36,6 +36,8 @@ public class PartnerSettings extends Activity {
                 SharedPreferences.Editor removeEditor = remove.edit();
                 removeEditor.remove("partner_name");
                 removeEditor.remove("phone_number");
+                name = "N/A";
+                number = "N/A";
                 removeEditor.commit();
                 finish();
             }

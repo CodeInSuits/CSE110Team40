@@ -26,6 +26,6 @@ public class SentSMS{
 
         SmsManager manager = SmsManager.getDefault();
         manager.sendTextMessage(number,null,message, null, null);
-        return "sending " + message + number;
+        return message;
     }
 }

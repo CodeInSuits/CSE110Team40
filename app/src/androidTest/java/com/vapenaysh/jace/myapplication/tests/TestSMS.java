@@ -1,5 +1,7 @@
 package com.vapenaysh.jace.myapplication.tests;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.vapenaysh.jace.myapplication.FavoriteLocation;
 import com.vapenaysh.jace.myapplication.SentSMS;
@@ -42,6 +44,8 @@ public class TestSMS extends TestCase {
 
         FavoriteLocation favLoc = new FavoriteLocation(new LatLng(1,1), "CSE Lab");
         String msg = sentSMS_obj.sendSms(favLoc);
+        Log.e("LOCA",msg);
+
         assertEquals("Your partner is nearby CSE Lab", msg);
     }
 
@@ -72,7 +76,7 @@ public class TestSMS extends TestCase {
     // Test sendSMS formatting function - String Object
     public void test_sendSms_withlocation5() {
 
-        FavoriteLocation favLoc = new FavoriteLocation(new LatLng(1,1), new String("Library Walk"));
+        FavoriteLocation favLoc = new FavoriteLocation(new LatLng(1,1), "Library Walk");
         String msg = sentSMS_obj.sendSms(favLoc);
         assertEquals("Your partner is nearby Library Walk", msg);
     }

@@ -22,8 +22,6 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
     private String name;
     private String number;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +111,17 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         this.number = share.getString("phone_number", "N/A");
     }
 
-    //Checks if current user is single, and reports information to UI and return value.
+    // isSingle method without making toast
+    public boolean isSingleForTest(String parName, String parNumber){
+        if(parName.equals("N/A") || parNumber.equals("N/A")) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    // Checks if current user is single, and reports information to UI and return value.
     public boolean isSingle(String parName, String parNumber){
 
         if(parName.equals("N/A") || parNumber.equals("N/A")) {
@@ -124,7 +132,6 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
             Toast.makeText(this,"Partner Found", Toast.LENGTH_LONG).show();
             return false;
         }
-
     }
 
     //Signs the user out.
