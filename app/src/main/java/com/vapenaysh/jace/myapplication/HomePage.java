@@ -34,9 +34,11 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         partner_setting_view.setOnClickListener(this);
 
 
-        //connect the sms button
+        /*
+        //connect the test sms button
         Button sms_button = (Button) findViewById(R.id.button_SMS);
         sms_button.setOnClickListener(this);
+        */
 
         //sign out button
         progressGenerator = new ProgressGenerator(this);
@@ -82,6 +84,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
                     startActivity(new Intent(HomePage.this, PartnerSettings.class));
                 }
                 break;
+            /*
             case R.id.button_SMS:
 
                 SentSMS sentSMS = new SentSMS();
@@ -89,6 +92,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
                 break;
+                */
             // case R.id.see_loc_history:
             // not for MS 1
             // break;
