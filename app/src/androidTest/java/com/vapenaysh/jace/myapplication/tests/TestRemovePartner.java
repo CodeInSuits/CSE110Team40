@@ -71,7 +71,7 @@ public class TestRemovePartner extends ActivityInstrumentationTestCase2<PartnerS
     }
 
 
-    public void test_removeScenario(){
+    public void testRemoveScenario(){
 
         removePartner = getActivity();
 
