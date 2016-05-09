@@ -76,6 +76,17 @@ public class TestLoginPage extends ActivityInstrumentationTestCase2<LoginPage> {
 
     }
 
+    public void test_yinyangGraphic() {
+
+        loginPage = getActivity();
+
+        // Check animation graphic is displayed
+        ImageView yinyangGraphic = (ImageView) loginPage.findViewById(R.id.yinyang);
+        assertTrue(yinyangGraphic.getVisibility() == View.VISIBLE);
+
+
+    }
+
 
 
 }
