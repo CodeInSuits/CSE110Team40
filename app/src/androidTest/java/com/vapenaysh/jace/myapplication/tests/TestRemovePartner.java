@@ -7,8 +7,7 @@ import com.vapenaysh.jace.myapplication.PartnerSettings;
 import com.vapenaysh.jace.myapplication.R;
 
 /**
- * Created by adamabadilla
- *            XuanpeiEstherOuyang on 5/7/16.
+ * Created by XuanpeiEstherOuyang on 5/7/16.
  *
  * Testing the functionality of RemovePartner.java
  *
@@ -18,8 +17,9 @@ import com.vapenaysh.jace.myapplication.R;
  * Then I will be unpaired with the previous paired partner after clicking on the remove partner
  * button and return back to Homepage.
  *
- *  Tests: Remove Button functionality
- *         TextEdit functionality
+ *
+ * Tests: Remove Button functionality
+ *        TextEdit functionality
  *
  */
 

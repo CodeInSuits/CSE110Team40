@@ -20,6 +20,9 @@ public class TestGPSTrackerService extends ServiceTestCase<GPSTrackerService>{
         super(GPSTrackerService.class);
         gpsTrackerService = new GPSTrackerService();
     }
+
+    //Scenario: Get notification when the partner gets close
+    //Testing starting a GPSTrackerService
     @SmallTest
     public void test_Startable() {
         Intent startIntent = new Intent();
@@ -27,6 +30,8 @@ public class TestGPSTrackerService extends ServiceTestCase<GPSTrackerService>{
         startService(startIntent);
     }
 
+    //Scenario: Get notification when the partner gets close
+    //Testing Binding for GPSTrackerService
     @MediumTest
     public void test_Bindable() {
         Intent startIntent = new Intent();
@@ -37,7 +42,7 @@ public class TestGPSTrackerService extends ServiceTestCase<GPSTrackerService>{
     }
 
     //Scenario: Get notification when the partner gets close
-    //Background code
+    //Testing math function which calculates distances between points.
     public void test_calculateDistanceBetween() throws Exception
     {
         LatLng one = new LatLng(1, 1);

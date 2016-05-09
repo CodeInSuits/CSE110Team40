@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import static junit.framework.Assert.*;
@@ -15,10 +14,7 @@ import com.vapenaysh.jace.myapplication.PartnershipTracker;
 import com.vapenaysh.jace.myapplication.R;
 
 /**
- * Created by bijanfarahani
- *            XuanpeiEstherOuyang on 5/7/16.
- *
- * Testing the functionality of AddPartner.java
+ * Created by bijanfarahani on 5/8/16.
  *
  * Scenario 1: User does not have a partner but wants to add one
  * Given that I does not have a partner already,
@@ -32,8 +28,8 @@ import com.vapenaysh.jace.myapplication.R;
  * Then I can click on the RegId
  *
  */
-public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner> {
 
+public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner> {
     AddPartner addPartner;
 
     // Constructor
@@ -43,50 +39,22 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
         super(AddPartner.class);
     }
 
-    // Test add Partner Button
-    public void test_addPartnerButton() {
-
-        addPartner = getActivity();
-
-        //Check remove partner button
-        Button addPartnerButton = (Button) addPartner.findViewById(R.id.add_par);
-
-        // Simulate press
-        addPartnerButton.callOnClick();
-        assertNotNull(addPartnerButton);
-    }
-
-    // Test getRegID Button
-    public void test_getRegIdButton() {
-
-        addPartner = getActivity();
-
-        //Check remove partner button
-        Button getIDButton = (Button) addPartner.findViewById(R.id.get_self_id);
-
-        // Simulate press
-        getIDButton.callOnClick();
-        assertNotNull(getIDButton);
-    }
-
     public void test_textViewName() {
-
         addPartner = getActivity();
         TextView name = (TextView) addPartner.findViewById(R.id.textView);
         assertNotNull(name);
         String partnerName = name.getText().toString();
-        assertEquals("Name:", partnerName);
+        assertEquals("Name:",partnerName);
     }
-
     public void test_textViewPhone() {
-
         addPartner = getActivity();
         TextView phone = (TextView) addPartner.findViewById(R.id.textView4);
         assertNotNull(phone);
         String partnerPhone = phone.getText().toString();
-        assertEquals("Phone Number:", partnerPhone);
+        assertEquals("Phone Number:",partnerPhone);
     }
 
+<<<<<<< HEAD
     // Test Name Text Edit Field
     @UiThreadTest
     public void test_nameTextEdit() {
@@ -173,5 +141,12 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
 
         assertEquals(AddPartner.getUname(),"Esther");
         assertEquals(AddPartner.getPhone(),"5556");
+=======
+    public void test_addPartnerButton() {
+        addPartner = getActivity();
+        Button button = (Button) addPartner.findViewById(R.id.add_par);
+        button.callOnClick();
+        assertNotNull(button);
+>>>>>>> b10cfbea811c7e77afb5d3a57fe67512a2537442
     }
 }
