@@ -18,6 +18,7 @@ public class PartnerSettings extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remove);
 
+        //Instantiate widgets
         TextView name_partner = (TextView) findViewById(R.id.show_name);
         TextView number_partner = (TextView)findViewById(R.id.show_phone);
         Button remove_partner = (Button) findViewById(R.id.remove_partner_button);

@@ -123,6 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    //If the user clicks the map, a marker will be set on that location.
     @Override
     public void onMapClick(LatLng latLng) {
         if(currentMarker != null)
@@ -130,6 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setMarkerAt(latLng);
     }
 
+    //Method for setting the marker at a specific LatLng location. Updates the UI.
     private void setMarkerAt(LatLng latLng){
         if (currentMarker != null)
             currentMarker.remove();
@@ -147,6 +149,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         namePrompt.setText(R.string.add_custom_name);
     }
 
+    //Saves a custom name to the list of favorite locations.
     public void saveCustomName(View view) {
         if (currentMarker == null) {
             namePrompt.setText(R.string.pick_loc_first);
@@ -192,12 +195,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         namePrompt.setText(R.string.choose_favorite);
     }
 
+    //Search bar code
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_maps, menu);
         sV = (SearchView) menu.findItem(R.id.action_search_map).getActionView();
         sV.setIconifiedByDefault(true);
+        //Listener which responds whenever the user types enter into the search bar
         sV.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String query) {
@@ -217,7 +222,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     {
                         points.add(new LatLng(i.getLatitude(), i.getLongitude()));
                     }
-
+                    //Place found data points on the map
                     if(points.size() > 0){
                         LatLng latLng = points.get(0);
                         Location loc = new Location("name");
@@ -341,6 +346,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return true;
     }
 
+    //Get readable location from marker
     private String getSnippetString(Marker marker){
         LatLng latLng = marker.getPosition();
         //round coord to three decimal places

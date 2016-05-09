@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by Matt on 4/29/16.
+ * FavoriteLocation class - stores a LatLng and a custom name for the location.
  */
 public class FavoriteLocation {
 
@@ -29,6 +30,7 @@ public class FavoriteLocation {
         return coord;
     }
 
+    //Equals comparator for direct comparison.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
