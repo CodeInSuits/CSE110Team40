@@ -45,7 +45,7 @@ public class TestLoginPage extends ActivityInstrumentationTestCase2<LoginPage> {
 
 
 
-        assertTrue(googleSignIn.getVisibility() == View.VISIBLE);
+        assertTrue(googleSignIn.getVisibility() == View.INVISIBLE);
 
 
 
