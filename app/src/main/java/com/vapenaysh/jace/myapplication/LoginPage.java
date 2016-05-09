@@ -43,14 +43,16 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
 
     SignInButton signInButton;
 
+    //google api client
     private GoogleApiClient mGoogleApiClient;
 
+    //start activity results
     private static final int RC_SIGN_IN = 9001;
-
     private static final int RC_SIGN_OUT = 9002;
 
     private static final String TAG = "SignInActivity";
 
+    //UI to make the app prettier
     private ImageView imageView;
     private Animation animation;
 
@@ -72,6 +74,8 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
 
         //Yin-yang ball animation
         imageView.startAnimation(animation);
+
+        //start the animation and make log in button visible
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -89,6 +93,8 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
 
             }
         });
+
+        //make the yinyang sign to fade in and fade out
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(imageView, "alpha", 1f, .3f);
         ObjectAnimator fadeIn = ObjectAnimator.ofFloat(imageView, "alpha", .3f, 1f);
         fadeIn.setDuration(2000);
@@ -102,6 +108,8 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
                 mAnimationSet.start();
             }
         });
+
+        //start the animation
         mAnimationSet.start();
 
 
@@ -221,6 +229,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
     }
 
 
+    // sign in method
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         imageView.clearAnimation();
@@ -243,6 +252,8 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
         }
     }
 
+
+    //log in with google account
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
