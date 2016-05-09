@@ -14,14 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-
 import java.io.IOException;
 
-
 public class AddPartner extends Activity implements View.OnClickListener {
-
     private Button btnRegId;
     private Button addPar;
     private TextView tvRegId;

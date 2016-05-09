@@ -1,5 +1,7 @@
 package com.vapenaysh.jace.myapplication.tests;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.vapenaysh.jace.myapplication.HomePage;
@@ -30,7 +32,7 @@ public class TestHomePage extends ActivityInstrumentationTestCase2<HomePage> {
     // Test Add Partner Button functionality
     public void test_addPartner() {
 
-        //homePage = getActivity();
+        homePage = getActivity();
 
         //Check remove partner button
         //ProcessButton addPartnerButton = (ProcessButton) homePage.findViewById(R.id.partner_setting_btn);
@@ -39,6 +41,7 @@ public class TestHomePage extends ActivityInstrumentationTestCase2<HomePage> {
         //addPartnerButton.callOnClick();
         //assertNull(addPartnerButton);
         assertTrue(true);
+
 
     }
 
