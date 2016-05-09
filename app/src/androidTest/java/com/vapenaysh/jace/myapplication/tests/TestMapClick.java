@@ -3,17 +3,12 @@ package com.vapenaysh.jace.myapplication.tests;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.vapenaysh.jace.myapplication.FavoriteLocation;
 import com.vapenaysh.jace.myapplication.FavoriteLocationList;
-import com.vapenaysh.jace.myapplication.HomePage;
 import com.vapenaysh.jace.myapplication.MapsActivity;
 import com.vapenaysh.jace.myapplication.R;
 
