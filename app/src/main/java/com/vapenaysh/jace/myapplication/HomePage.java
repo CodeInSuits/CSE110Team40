@@ -50,8 +50,8 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         //get the saved locations from the file and store locally
         locationsList = new FavoriteLocationList(this);
 
-        if(isSingle()){
-        //if(!isSingle()){
+        if(!isSingle()){
+            setUpPartnerSettings();
             //WARNING: UNTESTED CODE
             Intent i = new Intent(this, GPSTrackerService.class);
             i.putExtra("FavoriteLocations", locationsList);
@@ -140,5 +140,14 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
     public void removeAllLocations(View view){
         locationsList.removeAllLocations(this);
         Toast.makeText(getApplicationContext(), "Removed all saved favorite locations.", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setUpPartnerSettings(){
+        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        String name = share.getString("partner_name", "N/A");
+        String number = share.getString("phone_number", "N/A");
+        PartnerSettings.setNumber(number);
+        PartnerSettings.setName(name);
+
     }
 }
