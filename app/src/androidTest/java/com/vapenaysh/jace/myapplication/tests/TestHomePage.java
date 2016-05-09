@@ -52,6 +52,9 @@ public class TestHomePage extends ActivityInstrumentationTestCase2<HomePage> {
     // JUnit test for isSingle method
     public void test_isSingle(){
 
+        HomePage hp = new HomePage();
+        assertTrue(hp.isSingle("name","5556"));
+        assertFalse(hp.isSingle("N/A","N/A"));
     }
 
     // Test adding partner scenario
