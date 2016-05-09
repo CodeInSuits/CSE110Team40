@@ -19,8 +19,8 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
     private ProgressGenerator progressGenerator;
     private ActionProcessButton signout;
     private FavoriteLocationList locationsList;
-
-
+    private String name;
+    private String number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         //get the saved locations from the file and store locally
         locationsList = new FavoriteLocationList(this);
 
-        if(!isSingle()){
+        if(!isSingle(this.name, this.number)){
             setUpPartnerSettings();
             //WARNING: UNTESTED CODE
             Intent i = new Intent(this, GPSTrackerService.class);
@@ -77,8 +77,8 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
                 break;
 
             case R.id.partner_setting_btn:
-
-                if (isSingle()) { // TO DO if user does not have a partner, then AddPartner
+                getPartnerInformation();
+                if (isSingle(this.name, this.number)) {
                     startActivity(new Intent(HomePage.this, AddPartner.class));
                 } else {
                     startActivity(new Intent(HomePage.this, PartnerSettings.class));
@@ -103,13 +103,28 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
     }
 
-    //Checks if current user is single, and reports information to UI and return value.
-    public boolean isSingle(){
-        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        String name = share.getString("partner_name", "N/A");
-        String number = share.getString("phone_number", "N/A");
+    // getting the information of partner from Shared Preference and update the instance variables
+    public void getPartnerInformation() {
 
-        if(name.equals("N/A") || number.equals("N/A")) {
+        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        this.name = share.getString("partner_name", "N/A");
+        this.number = share.getString("phone_number", "N/A");
+    }
+
+    // isSingle method without making toast
+    public boolean isSingleForTest(String parName, String parNumber){
+        if(parName.equals("N/A") || parNumber.equals("N/A")) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    // Checks if current user is single, and reports information to UI and return value.
+    public boolean isSingle(String parName, String parNumber){
+
+        if(parName.equals("N/A") || parNumber.equals("N/A")) {
             Toast.makeText(this,"No Partner Found", Toast.LENGTH_LONG).show();
             return true;
         }
@@ -117,7 +132,6 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
             Toast.makeText(this,"Partner Found", Toast.LENGTH_LONG).show();
             return false;
         }
-
     }
 
     //Signs the user out.
