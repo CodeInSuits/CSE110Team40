@@ -15,6 +15,13 @@ import static junit.framework.Assert.assertEquals;
  * Created by XuanpeiEstherOuyang on 5/8/16.
  * Testing the functionality of SentSMS.java
  *
+ * [Scenario 4.3]
+ * I arrive at one of my favorite locations
+ * Given that I have a partner
+ * And have set the location as one of my favorites,
+ * When I am less than 1/10 of a mile away from that location,
+ * Then my partner will be notified with my visit by a text and a sound
+ *
  */
 
 public class TestSMS extends TestCase {

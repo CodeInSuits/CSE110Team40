@@ -7,11 +7,11 @@ import com.vapenaysh.jace.myapplication.PartnerSettings;
 import com.vapenaysh.jace.myapplication.R;
 
 /**
- * Created by adamabadilla
- *            XuanpeiEstherOuyang on 5/7/16.
+ * Created by XuanpeiEstherOuyang on 5/7/16.
  *
  * Testing the functionality of RemovePartner.java
  *
+ *  [Scenario 7.1]
  *  Given that I have a partner
  *  When I click on remove button in the partner panel
  *  Then I will be unpaired with the previous paired partner after confirming the removal of the partner.
