@@ -18,33 +18,32 @@ public class TestGPSTrackerService extends ServiceTestCase<GPSTrackerService>{
 
     public TestGPSTrackerService() {
         super(GPSTrackerService.class);
+        gpsTrackerService = new GPSTrackerService();
     }
-
-    public void test_onLocationChange() throws Exception {
-        setUp();
-    }
-
     @SmallTest
-    public void testStartable() {
+    public void test_Startable() {
         Intent startIntent = new Intent();
-        startIntent.setClass(getContext(), GPSTrackerService.class);
+        startIntent.setClass(getSystemContext(), GPSTrackerService.class);
         startService(startIntent);
     }
 
     @MediumTest
-    public void testBindable() {
+    public void test_Bindable() {
         Intent startIntent = new Intent();
         startIntent.setClass(getContext(), GPSTrackerService.class);
         IBinder service = bindService(startIntent);
         assertNotNull(service);
         assertNotNull(((GPSTrackerService.LocalBinder)service).getService());
     }
-    public void test_LocationInRange() throws Exception
+
+    //Scenario: Get notification when the partner gets close
+    //Background code
+    public void test_calculateDistanceBetween() throws Exception
     {
         LatLng one = new LatLng(1, 1);
-        LatLng two = new LatLng(1.5, 1.5);
+        LatLng two = new LatLng(1, 1);
         boolean shouldbetrue = gpsTrackerService.calculateDistanceBetween(one, two) < .1;
-        assertEquals(shouldbetrue, true);
+        assertEquals(true, shouldbetrue);
 
         LatLng three = new LatLng(1, 1);
         LatLng four = new LatLng(3.5, 1.5);
