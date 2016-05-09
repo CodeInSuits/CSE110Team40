@@ -38,7 +38,17 @@ public class TestLoginPage extends ActivityInstrumentationTestCase2<LoginPage> {
 
         // Simulate Login
         final View googleSignIn = loginPage.findViewById(R.id.google_signin);
-        assertTrue(googleSignIn.getVisibility() == View.INVISIBLE);
+
+        // Login Box exists
+        assertNotNull(googleSignIn);
+
+
+
+
+        assertTrue(googleSignIn.getVisibility() == View.VISIBLE);
+
+
+
         new CountDownTimer(3500, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -50,8 +60,7 @@ public class TestLoginPage extends ActivityInstrumentationTestCase2<LoginPage> {
             }
         }.start();
 
-        // Login Box exists
-        assertNotNull(googleSignIn);
+
 
 
     }
@@ -64,6 +73,13 @@ public class TestLoginPage extends ActivityInstrumentationTestCase2<LoginPage> {
         // Check logo graphic is displayed
         ImageView logoGraphic = (ImageView) loginPage.findViewById(R.id.logo);
         assertTrue(logoGraphic.getVisibility() == View.VISIBLE);
+
+    }
+
+
+    public void test_signIn() {
+
+        loginPage = getActivity();
 
     }
 
