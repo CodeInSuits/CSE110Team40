@@ -33,7 +33,7 @@ public class TestRemovePartner extends ActivityInstrumentationTestCase2<PartnerS
 
 
     // Test Remove Partner Button
-    public void test_removePartner_button() {
+    public void test_removePartnerButton() {
 
         removePartner = getActivity();
 
@@ -59,7 +59,7 @@ public class TestRemovePartner extends ActivityInstrumentationTestCase2<PartnerS
 
 
     // Test Name Text Edit Field
-    public void test_NumberTextEdit() {
+    public void test_numberTextEdit() {
 
         removePartner = getActivity();
 
@@ -71,7 +71,7 @@ public class TestRemovePartner extends ActivityInstrumentationTestCase2<PartnerS
     }
 
 
-    public void testRemoveScenario(){
+    public void test_removeScenario(){
 
         removePartner = getActivity();
 
