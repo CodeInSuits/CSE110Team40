@@ -63,10 +63,6 @@ public class TestFavoriteLocation extends TestCase {
 
     }
 
-
-
-
-
 }
 
 

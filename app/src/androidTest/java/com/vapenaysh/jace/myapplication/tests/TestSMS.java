@@ -44,7 +44,6 @@ public class TestSMS extends TestCase {
 
         FavoriteLocation favLoc = new FavoriteLocation(new LatLng(1,1), "CSE Lab");
         String msg = sentSMS_obj.sendSms(favLoc);
-        Log.e("LOCA",msg);
 
         assertEquals("Your partner is nearby CSE Lab", msg);
     }
