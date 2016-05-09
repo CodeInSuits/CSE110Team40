@@ -29,6 +29,7 @@ public class GcmMessageHandler extends IntentService {
     protected void onHandleIntent(Intent intent){
         Bundle extras = intent.getExtras();
 
+        //Get information from intent
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
         String messageType = gcm.getMessageType(intent);
         mes = extras.getString("title");

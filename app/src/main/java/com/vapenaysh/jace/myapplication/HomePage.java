@@ -105,13 +105,15 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
     }
 
-    public void getPartnerInformation(){
+    // getting the information of partner from Shared Preference and update the instance variables
+    public void getPartnerInformation() {
 
         SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         this.name = share.getString("partner_name", "N/A");
         this.number = share.getString("phone_number", "N/A");
     }
 
+    //Checks if current user is single, and reports information to UI and return value.
     public boolean isSingle(String parName, String parNumber){
 
         if(parName.equals("N/A") || parNumber.equals("N/A")) {
@@ -125,6 +127,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
     }
 
+    //Signs the user out.
     public void signout(){
 
         progressGenerator.start(signout);
@@ -148,6 +151,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         Toast.makeText(getApplicationContext(), "Removed all saved favorite locations.", Toast.LENGTH_SHORT).show();
     }
 
+    //Creates sharedpreferences from app data
     private void setUpPartnerSettings(){
         SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         String name = share.getString("partner_name", "N/A");

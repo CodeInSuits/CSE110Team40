@@ -16,7 +16,8 @@ import java.util.Scanner;
 
 /**
  * Created by Jerry on 5/5/16.
- * WARNING: THIS CLASS IS COMPLETELY UNTESTED
+ * Parcelable class containing a list of favorite locations which can be passed around in Intents
+ * as well as write out to a file.
  */
 public class FavoriteLocationList extends Activity implements Parcelable
 {
@@ -29,6 +30,7 @@ public class FavoriteLocationList extends Activity implements Parcelable
         locations = new HashSet<>();
         while (in.dataAvail() > 0)
         {
+            //Data is stored latitude, longitude, and name
             locations.add(new FavoriteLocation(new LatLng(in.readDouble(), in.readDouble()), in.readString()));
         }
     }
@@ -83,6 +85,7 @@ public class FavoriteLocationList extends Activity implements Parcelable
         return locations.size();
     }
 
+    //Wrapper for the HashSet to add a new location
     public boolean addLocation(FavoriteLocation loc, Context c){
         boolean added = locations.add(loc);
         if(added){

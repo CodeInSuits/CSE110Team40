@@ -7,13 +7,14 @@ import java.util.HashMap;
  */
 public class PartnershipTracker {
 
-    // field
+    // hashmap of current user
     HashMap<User, User> tracker;
 
     public PartnershipTracker() {
         tracker = new HashMap<>();
     }
 
+    // Does the user have a partner?
     public boolean hasPartner(User self) {
 
         if (tracker.get(self) == null) {
