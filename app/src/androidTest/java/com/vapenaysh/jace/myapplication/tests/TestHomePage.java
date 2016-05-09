@@ -3,8 +3,10 @@ package com.vapenaysh.jace.myapplication.tests;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.Button;
 
 import com.vapenaysh.jace.myapplication.HomePage;
+import com.vapenaysh.jace.myapplication.R;
 
 /**
  * Created by adamabadilla
@@ -54,59 +56,58 @@ public class TestHomePage extends ActivityInstrumentationTestCase2<HomePage> {
 
         HomePage hp = new HomePage();
         assertFalse(hp.isSingleForTest("name", "5556"));
-        assertTrue(hp.isSingleForTest("N/A","N/A"));
+        assertTrue(hp.isSingleForTest("N/A", "N/A"));
     }
 
-    /*
+
     // Test adding partner scenario
     public void test_PartnerSettingsScenario() {
 
-
         homePage = getActivity();
 
-        //Check remove partner button
-        //ProcessButton addPartnerButton = (ProcessButton) homePage.findViewById(R.id.partner_setting_btn);
+        //Check Add New Location button
+        Button parSettingButton = (Button) homePage.findViewById(R.id.partner_setting_btn);
 
         // Simulate press
-        //addPartnerButton.callOnClick();
-        //assertNull(addPartnerButton);
-        //assertTrue(true);
-
+        parSettingButton.callOnClick();
+        assertNotNull(parSettingButton);
     }
 
     // Test add new favorite location scenario
     public void test_addFavoriteLocationScenario() {
 
-        //homePage = getActivity();
+        homePage = getActivity();
 
         //Check Add New Location button
-        //ProcessButton addNewLocation = (ProcessButton) homePage.findViewById(R.id.add_fave_loc_btn);
+        Button addLocButton = (Button) homePage.findViewById(R.id.add_fave_loc_btn);
 
         // Simulate press
-        //addNewLocation.callOnClick();
-        //assertNull(addNewLocation);
-        //assertTrue(true);
+        addLocButton.callOnClick();
+        assertNotNull(addLocButton);
 
     }
 
     // Test remove favorite location Scenario
     public void test_removeFavoriteLocationScenario(){
 
+        homePage = getActivity();
+
+        //Check sign out partner button
+        Button removeLocButton = (Button) homePage.findViewById(R.id.remove_locs_btn);
+
+        // Simulate press
+        removeLocButton.callOnClick();
+        assertNotNull(removeLocButton);
     }
 
     // Test Sign Out Scenario
     public void test_SignOutScenario() {
 
-        //homePage = getActivity();
+        homePage = getActivity();
 
-        //Check Add New Location button
-        //ActionProcessButton signout = (ActionProcessButton) homePage.findViewById(R.id.logout);
-
-        // Simulate press
-        //signout.callOnClick();
-        //assertNull(signout);
-        assertTrue(true);
+        //Check sign out partner button
+        Button signOutButton = (Button) homePage.findViewById(R.id.logout);
+        assertNotNull(signOutButton);
     }
-    */
 
 }
