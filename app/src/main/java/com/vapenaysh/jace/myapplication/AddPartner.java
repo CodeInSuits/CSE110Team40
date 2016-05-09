@@ -51,26 +51,17 @@ public class AddPartner extends Activity implements View.OnClickListener {
 
         favoriteLocationList = getIntent().getParcelableExtra("FavoriteLocations");
 
-
-        //EditText uid = (EditText) findViewById(R.id.par_id);
-
-        // register everything and update partnership
-        /*
-
-        success -> if the entered email does not a partner yet
-        if (success){
-            set the button to show partner added and redirect user to homepage
-        } else {
-            set the button to show failure and redirect user to homepage
-        }
-        */
     }
+
     //Put partner name and phone number into Android's shared preferences for the application.
     public void addPar(){
         SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = share.edit();
         String name = uname.getText().toString();
         String phoneNumber = phone.getText().toString();
+
+        // empty suit checking
+        // if the text are not empty, then add the partner
         if(name.equals("") || phoneNumber.equals("")){
             AlertDialog.Builder dialog = new AlertDialog.Builder(AddPartner.this);
             dialog.setTitle("Empty Fields");
@@ -135,6 +126,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
     }
 
     @Override
+    // defing the onClick behavior
     public void onClick(View v){
 
         switch (v.getId()) {
@@ -148,14 +140,17 @@ public class AddPartner extends Activity implements View.OnClickListener {
 
     }
 
+    // getter method for user name
     public static String getUname(){
         return username;
     }
 
+    // getter method for user phone number
     public static String getPhone(){
         return userphone;
     }
 
+    // method for starting the server for tracking
     private void startTracking(){
         Intent i = new Intent(this, GPSTrackerService.class);
         i.putExtra("FavoriteLocations", favoriteLocationList);

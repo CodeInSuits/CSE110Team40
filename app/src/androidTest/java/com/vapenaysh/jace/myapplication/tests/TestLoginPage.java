@@ -69,6 +69,7 @@ public class TestLoginPage extends ActivityInstrumentationTestCase2<LoginPage> {
 
     }
 
+    // testing the yinyang graphic
     public void test_yinyangGraphic() {
 
         loginPage = getActivity();
