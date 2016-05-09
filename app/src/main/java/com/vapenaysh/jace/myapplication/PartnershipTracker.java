@@ -4,17 +4,20 @@ import java.util.HashMap;
 
 /**
  * Created by XuanpeiEstherOuyang on 5/3/16.
+ *
+ * Class for tracking partnership
  */
 public class PartnershipTracker {
 
     // hashmap of current user
     HashMap<User, User> tracker;
 
+    // constructor for partnershipTracker
     public PartnershipTracker() {
         tracker = new HashMap<>();
     }
 
-    // Does the user have a partner?
+    // Check does the user have a partner
     public boolean hasPartner(User self) {
 
         if (tracker.get(self) == null) {
@@ -24,6 +27,7 @@ public class PartnershipTracker {
         }
     }
 
+    // getter method for getting parnter name
     public String getPartnerName(User self) {
 
         if(hasPartner(self)) {
@@ -35,6 +39,7 @@ public class PartnershipTracker {
         }
     }
 
+    // getter method for getting parnter email
     public String getPartnerEmail(User self) {
 
         if(hasPartner(self)) {
@@ -47,6 +52,7 @@ public class PartnershipTracker {
 
     }
 
+    // setter method
     public boolean setPartner(User self, User parnter){
 
         if (!hasPartner(self) && !hasPartner(parnter)) {
@@ -57,6 +63,7 @@ public class PartnershipTracker {
         return false;
     }
 
+    // method for removing parnter
     public boolean removePartner(User self){
 
         if(hasPartner(self)){

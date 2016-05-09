@@ -5,6 +5,8 @@ import android.telephony.SmsManager;
 
 /**
  * Created by XuanpeiEstherOuyang on 5/7/16.
+ *
+ * Class for senting notification via SMS
  */
 public class SentSMS{
 
