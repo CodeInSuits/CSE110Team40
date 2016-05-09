@@ -22,6 +22,12 @@ public class PartnerSettings extends Activity {
         TextView number_partner = (TextView)findViewById(R.id.show_phone);
         Button remove_partner = (Button) findViewById(R.id.remove_partner_button);
 
+        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        name = share.getString("partner_name", "N/A");
+        number = share.getString("phone_number", "N/A");
+        name_partner.setText(name);
+        number_partner.setText(number);
+
         remove_partner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,11 +40,7 @@ public class PartnerSettings extends Activity {
             }
         });
 
-        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        name = share.getString("partner_name", "N/A");
-        number = share.getString("phone_number", "N/A");
-        name_partner.setText(name);
-        number_partner.setText(number);
+
 
     }
 
@@ -50,5 +52,11 @@ public class PartnerSettings extends Activity {
         return number;
     }
 
+    public static void setName(String name) {
+        PartnerSettings.name = name;
+    }
 
+    public static void setNumber(String number) {
+        PartnerSettings.number = number;
+    }
 }

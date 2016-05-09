@@ -139,7 +139,7 @@ public class FavoriteLocationList extends Activity implements Parcelable
         try {
             fis = c.openFileInput(LOC_FILE_NAME);
         } catch (Exception e) {
-            Log.e("FavoriteLocationList", "loadLocations() had opening exception: " + e.toString());
+            Log.d("FavoriteLocationList", "loadLocations() had opening exception: " + e.toString());
             return null; //return if no file found
         }
 
@@ -151,7 +151,7 @@ public class FavoriteLocationList extends Activity implements Parcelable
         try {
             fis.close();
         } catch (Exception e) {
-            Log.e("FavoriteLocationList", "loadLocations() had closing exception: " + e.toString());
+            Log.d("FavoriteLocationList", "loadLocations() had closing exception: " + e.toString());
         }
 
         return set;
