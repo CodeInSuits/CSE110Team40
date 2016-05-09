@@ -77,11 +77,5 @@ public class TestLoginPage extends ActivityInstrumentationTestCase2<LoginPage> {
     }
 
 
-    public void test_signIn() {
-
-        loginPage = getActivity();
-
-    }
-
 
 }
