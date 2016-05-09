@@ -99,6 +99,7 @@ public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity>
         customNameEditText.setText(name);
     }
 
+
     private void clickMap(final LatLng latLng){
         mapsActivity.runOnUiThread(new Runnable() {
             @Override
@@ -112,5 +113,6 @@ public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity>
         HashSet<FavoriteLocation> set = favoriteLocationList.getLocations();
         return set.contains(loc);
     }
+
 
 }
