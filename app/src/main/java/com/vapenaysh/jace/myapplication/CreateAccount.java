@@ -30,6 +30,7 @@ public class CreateAccount extends Activity implements ProgressGenerator.OnCompl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Create UI Widgets
         ActionBar actionBar = getActionBar();
         actionBar.hide();
         super.onCreate(savedInstanceState);
@@ -52,13 +53,13 @@ public class CreateAccount extends Activity implements ProgressGenerator.OnCompl
         });
     }
 
-
+    //Stores account information to the database
     private void createAccount(){
 
         final String emailAddress = email.getText().toString();
         final String userName = username.getText().toString();
         final String passWord = password.getText().toString();
-
+        //The user has not entered in required information, prompt the user.
         if(emailAddress.equals("") || userName.equals("") || passWord.equals("")){
             AlertDialog.Builder dialog = new AlertDialog.Builder(CreateAccount.this);
             dialog.setTitle("Empty Fields");

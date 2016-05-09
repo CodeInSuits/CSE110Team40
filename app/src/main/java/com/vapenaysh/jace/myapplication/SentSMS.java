@@ -11,6 +11,7 @@ public class SentSMS{
 
     public static String number;
 
+    //Sends a SMS consisting of a favorite location
     public String sendSms(FavoriteLocation loc){
 
 

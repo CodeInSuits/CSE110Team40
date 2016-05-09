@@ -60,7 +60,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //get rid of the hiderous action bar on the top
+        //get rid of the hideous action bar on the top
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
@@ -71,6 +71,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
         imageView = (ImageView) findViewById(R.id.yinyang);
         animation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);
 
+        //Yin-yang ball animation
         imageView.startAnimation(animation);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override

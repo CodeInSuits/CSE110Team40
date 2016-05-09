@@ -18,7 +18,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashSet;
 
-/*WARNING: THIS CLASS IS COMPLETELY UNTESTED*/
 public class GPSTrackerService extends Service implements LocationListener
 {
 
@@ -31,6 +30,7 @@ public class GPSTrackerService extends Service implements LocationListener
 
     private final IBinder GPSBinder = new LocalBinder();
 
+    //Binder to allow access to the service while running
     public class LocalBinder extends Binder
     {
         public Service getService()
@@ -42,6 +42,7 @@ public class GPSTrackerService extends Service implements LocationListener
     @Override
     public int onStartCommand(Intent i, int flags, int startID)
     {
+        //Parse data from intent
         this.favLocations = i.getParcelableExtra("FavoriteLocations");
         if (this.favLocations == null)
         {
@@ -113,11 +114,12 @@ public class GPSTrackerService extends Service implements LocationListener
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         return GPSBinder;
         //throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    /*Called each time location is changed. Runs a check to see if the user's
+     *current location is one if his/her favorite locations.*/
     @Override
     public void onLocationChanged(Location location)
     {

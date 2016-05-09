@@ -33,6 +33,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_add_partner);
 
+        //Instantiate UI widgets
         btnRegId = (Button) findViewById(R.id.get_self_id);
         addPar = (Button) findViewById(R.id.add_par);
         tvRegId = (TextView)findViewById(R.id.self_regId);
@@ -57,7 +58,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
         }
         */
     }
-
+    //Put partner name and phone number into Android's shared preferences for the application.
     public void addPar(){
         SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = share.edit();
@@ -89,7 +90,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
         }
     }
 
-
+    //Gets the unique regID for the current user from gcm. Runs on a different thread.
     public void getRegId() {
         new AsyncTask<Void, Void, String>() {
 

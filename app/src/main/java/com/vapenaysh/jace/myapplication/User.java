@@ -2,6 +2,7 @@ package com.vapenaysh.jace.myapplication;
 
 /**
  * Created by bijanfarahani on 5/3/16.
+ * Class represents a user, with a username, email, and password.
  */
 public class User {
     protected String userName;
