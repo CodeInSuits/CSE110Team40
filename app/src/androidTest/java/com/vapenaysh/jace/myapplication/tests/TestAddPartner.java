@@ -1,6 +1,9 @@
 package com.vapenaysh.jace.myapplication.tests;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.UiThreadTest;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,6 +25,11 @@ import com.vapenaysh.jace.myapplication.R;
  * When I wants to add a partner,
  * Then I can enter his/her name and phone number to add the person as my partner
  *
+ *
+ * Scenario 2: User does not have a partner but wants to add one
+ * Given that I does not have a partner already,
+ * When I want to get my RegId,
+ * Then I can click on the RegId
  *
  */
 public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner> {
@@ -80,6 +88,7 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
     }
 
     // Test Name Text Edit Field
+    @UiThreadTest
     public void test_nameTextEdit() {
 
         addPartner = getActivity();
@@ -96,6 +105,7 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
 
 
     // Test Name Text Edit Field
+    @UiThreadTest
     public void test_numberTextEdit() {
 
         addPartner = getActivity();
@@ -131,11 +141,11 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
     }
 
     // Test the scenario 1 for adding partner
-    public void test_add_scenario() {
-
-        AddPartner addPartnerObj = new AddPartner();
+    @UiThreadTest
+    public void test_addScenario() {
 
         addPartner = getActivity();
+        AddPartner addPartnerObj = new AddPartner();
 
         // Check Name Text Field
         EditText nameLabel = (EditText) addPartner.findViewById(R.id.par_name);
@@ -147,7 +157,7 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
         assertEquals(name, "Esther");
 
         // Check Phone Text Field
-        TextView phoneLabel = (TextView) addPartner.findViewById(R.id.par_name);
+        TextView phoneLabel = (TextView) addPartner.findViewById(R.id.par_phone);
         String phone = phoneLabel.getText().toString();
         assertEquals(phone, "");
 
@@ -161,7 +171,7 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
         // Simulate press
         addPartnerButton.callOnClick();
 
-        assertEquals(addPartnerObj.getUname(),"Esther");
-        assertEquals(addPartnerObj.getPhone(),"5556");
+        assertEquals(AddPartner.getUname(),"Esther");
+        assertEquals(AddPartner.getPhone(),"5556");
     }
 }

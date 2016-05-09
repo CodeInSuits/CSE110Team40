@@ -12,9 +12,11 @@ import com.vapenaysh.jace.myapplication.R;
  *
  * Testing the functionality of RemovePartner.java
  *
- *  Given that I have a partner
- *  When I click on remove button in the partner panel
- *  Then I will be unpaired with the previous paired partner after confirming the removal of the partner.
+ * Scenario 1: User has a partner and wants to remove it
+ * Given that I have a partner
+ * When I click on remove button in the partner panel
+ * Then I will be unpaired with the previous paired partner after clicking on the remove partner
+ * button and return back to Homepage.
  *
  *  Tests: Remove Button functionality
  *         TextEdit functionality
@@ -70,7 +72,7 @@ public class TestRemovePartner extends ActivityInstrumentationTestCase2<PartnerS
 
     }
 
-
+    // Test the scenario 1 for removing partner
     public void testRemoveScenario(){
 
         removePartner = getActivity();
