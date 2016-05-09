@@ -1,10 +1,14 @@
 package com.vapenaysh.jace.myapplication.tests;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.Button;
+import android.widget.TextView;
+
 import static junit.framework.Assert.*;
 import com.vapenaysh.jace.myapplication.AddPartner;
 import com.vapenaysh.jace.myapplication.PartnerSettings;
 import com.vapenaysh.jace.myapplication.PartnershipTracker;
+import com.vapenaysh.jace.myapplication.R;
 
 /**
  * Created by XuanpeiEstherOuyang on 5/7/16.
@@ -16,7 +20,7 @@ import com.vapenaysh.jace.myapplication.PartnershipTracker;
  *
  */
 public class TestAddPartner_Scenario1 extends ActivityInstrumentationTestCase2<AddPartner> {
-
+    AddPartner addPartner;
 
     // Constructor
     public TestAddPartner_Scenario1() {
@@ -25,16 +29,25 @@ public class TestAddPartner_Scenario1 extends ActivityInstrumentationTestCase2<A
         super(AddPartner.class);
     }
 
-    // Setting up the given part
-    public void setUp() {
 
+    public void test_textViewName() {
+        addPartner = getActivity();
+        TextView name = (TextView) addPartner.findViewById(R.id.textView);
+        assertNotNull(name);
+        String partnerName = name.getText().toString();
+        assertEquals("Name:",partnerName);
+    }
+    public void test_textViewPhone() {
+        addPartner = getActivity();
+        TextView phone = (TextView) addPartner.findViewById(R.id.textView4);
+        assertNotNull(phone);
+        String partnerPhone = phone.getText().toString();
+        assertEquals("Phone Number:",partnerPhone);
     }
 
-    public void testEditText_Name() {
+    public void test_button() {
+        addPartner = getActivity();
+        Button button = (Button) addPartner.findViewById(R.id.add_par);
 
     }
-
-
-
-
 }

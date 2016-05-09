@@ -25,7 +25,7 @@ public class GPSTrackerService extends Service implements LocationListener
     private FavoriteLocationList favLocations;
     protected LocationManager locManager;
     private Context context;
-    private static final long TIME = 5*60*1000;
+    private static final long TIME = 60*1000; //ONE MINUTE
     private static final float DISTANCE = 50;
     private HashSet<FavoriteLocation> visitedLocations = new HashSet<>();
 
@@ -43,6 +43,10 @@ public class GPSTrackerService extends Service implements LocationListener
     public int onStartCommand(Intent i, int flags, int startID)
     {
         this.favLocations = i.getParcelableExtra("FavoriteLocations");
+        if (this.favLocations == null)
+        {
+            this.favLocations = new FavoriteLocationList();
+        }
         this.context = getApplicationContext();
         setupLocationTracking();
         return 0;
