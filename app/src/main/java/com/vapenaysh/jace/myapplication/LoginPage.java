@@ -4,9 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -28,12 +27,20 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 
 public class LoginPage extends FragmentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
     //backend object
-    private Firebase firebase;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     //login button
     private Button login;
@@ -62,8 +69,8 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
 
         //get rid of the hideous action bar on the top
-        ActionBar actionBar = getActionBar();
-        actionBar.hide();
+        //ActionBar actionBar = getActionBar();
+        //actionBar.hide();
 
         //set up the view
         super.onCreate(savedInstanceState);
@@ -127,9 +134,10 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()//.requestIdToken("1021736687932-f73c4tc0pdcdhlrt16b3h3pj7qi0aq1b.apps.googleusercontent.com")
-                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
-                .build();
+                .requestIdToken("1021736687932-3svnpn2q2c81pt8b4isge8nju3thulfl.apps.googleusercontent.com")
+                        .requestEmail()//.requestIdToken("1021736687932-f73c4tc0pdcdhlrt16b3h3pj7qi0aq1b.apps.googleusercontent.com")
+                        .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                        .build();
 
 
 
@@ -161,29 +169,37 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
         register = (Button)findViewById(R.id.register);
         register.setOnClickListener(this);
 
-        //initialize the firebase object
-        //Firebase.setAndroidContext(this);
-
-
-        //connect to the server
-        /**** firebase as backend - MS2
-        firebase = new Firebase("https://coupletone.firebaseio.com/");
-        firebase.addAuthStateListener(new Firebase.AuthStateListener() {
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(AuthData authData) {
-                if (authData != null) {
-                    Toast.makeText(getApplication(), "I am in", Toast.LENGTH_LONG).show();
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
-                    // user is not logged in
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
+                // ...
             }
-        });
-
-        Firebase usernames = firebase.child("usernames");
-        usernames.setValue("Test");
-         ****/
+        };
 
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
     @Override
@@ -243,6 +259,15 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = result.getSignInAccount();
+                firebaseAuthWithGoogle(account);
+            } else {
+                // Google Sign In failed, update UI appropriately
+                // ...
+            }
+
             handleSignInResult(result);
         }
 
@@ -250,6 +275,29 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
             Toast.makeText(getApplication(), "Signed out", Toast.LENGTH_SHORT).show();
             imageView.startAnimation(animation);
         }
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "firebaseAuthWithGooogle:" + acct.getId());
+        // ...
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Toast.makeText(LoginPage.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // ...
+                    }
+                });
     }
 
 
@@ -263,7 +311,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
 
             String idToken = acct.getIdToken();
             //Toast.makeText(getApplication(),idToken, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(LoginPage.this, HomePage.class);
+            Intent intent = new Intent(LoginPage.this, UserCenter.class);
             startActivityForResult(intent, RC_SIGN_OUT);
 
 

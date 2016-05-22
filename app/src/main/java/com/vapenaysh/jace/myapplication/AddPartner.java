@@ -7,22 +7,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import java.io.IOException;
+
+//import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class AddPartner extends Activity implements View.OnClickListener {
     private Button btnRegId;
     private Button addPar;
     private TextView tvRegId;
-    private GoogleCloudMessaging gcm;
+    //private GoogleCloudMessaging gcm;
     private String regid;
     private String id;
     private String PROJECT_NUMBER = Constants.PROJECT_NUMBER;
@@ -92,8 +90,12 @@ public class AddPartner extends Activity implements View.OnClickListener {
         }
     }
 
+
+
+
     //Gets the unique regID for the current user from gcm. Runs on a different thread.
     public void getRegId() {
+        /*
         new AsyncTask<Void, Void, String>() {
 
             @Override
@@ -122,7 +124,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
                 tvRegId.setText(id);
             }
 
-        }.execute(null, null, null);
+        }.execute(null, null, null);*/
     }
 
     @Override

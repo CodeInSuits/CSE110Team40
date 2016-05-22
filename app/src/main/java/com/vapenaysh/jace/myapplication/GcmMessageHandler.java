@@ -1,10 +1,7 @@
 package com.vapenaysh.jace.myapplication;
 import android.app.IntentService;
-import android.os.Handler;
 import android.content.Intent;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.widget.Toast;
 
 /**
@@ -27,6 +24,8 @@ public class GcmMessageHandler extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent){
+
+        /*
         Bundle extras = intent.getExtras();
 
         //Get information from intent
@@ -37,6 +36,7 @@ public class GcmMessageHandler extends IntentService {
         Log.i("GCM", "Received: (" + messageType + ") " + extras.getString("title"));
 
         GcmReceiver.completeWakefulIntent(intent);
+        */
     }
 
     public void showToast(){

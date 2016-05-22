@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "1021736687932",
-    "project_id": "team40coupletone"
+    "firebase_url": "https://team40coupletone.firebaseio.com",
+    "project_id": "team40coupletone",
+    "storage_bucket": "team40coupletone.appspot.com"
   },
   "client": [
     {
@@ -12,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1021736687932-7527qhj77trit2707045kbccclgh23o2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vapenaysh.jace.myapplication",
+            "certificate_hash": "07C779CB902E7AD185A127C6AE2ECD14E7927092"
+          }
+        },
         {
           "client_id": "1021736687932-ng4drgdilud0oafem2cdag2a48ikgafv.apps.googleusercontent.com",
           "client_type": 1,
@@ -59,6 +69,10 @@
             "package_name": "com.vapenaysh.jace.myapplication",
             "certificate_hash": "6511434DC5FC14E6A382669285131388707D5761"
           }
+        },
+        {
+          "client_id": "1021736687932-3svnpn2q2c81pt8b4isge8nju3thulfl.apps.googleusercontent.com",
+          "client_type": 3
         },
         {
           "client_id": "1021736687932-f73c4tc0pdcdhlrt16b3h3pj7qi0aq1b.apps.googleusercontent.com",
