@@ -3,7 +3,7 @@
     package="com.vapenaysh.jace.myapplication" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -96,6 +96,21 @@
         <activity
             android:name=".UserCenter"
             android:label="@string/title_activity_user_center" >
+        </activity>
+        <activity
+            android:name=".GlobalSettings"
+            android:label="@string/title_activity_global_settings"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity
+            android:name=".Partner_Favorite_Location"
+            android:label="@string/title_activity_partner__favorite__location"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity
+            android:name=".PartnerFavoriteLocation"
+            android:label="@string/title_activity_partner_favorite_location"
+            android:theme="@style/AppTheme" >
         </activity>
     </application>
 

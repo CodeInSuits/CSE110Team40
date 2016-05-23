@@ -76,7 +76,7 @@ public class UserCenter extends AppCompatActivity {
                         //android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         //fragmentTransaction.replace(R.id.frame, fragment);
                         //fragmentTransaction.commit();
-                        return true;
+                        break;
 
                     // For rest of the options we just show a toast on click
 
@@ -89,12 +89,23 @@ public class UserCenter extends AppCompatActivity {
                         } else {
                             startActivity(new Intent(UserCenter.this, PartnerSettings.class));
                         }
+                        break;
+
+                    case R.id.globalsetting:
+                        Intent i_setting = new Intent(UserCenter.this, GlobalSettings.class);
+                        startActivity(i_setting);
+                        break;
+
+                    case R.id.partnerfavlocationdispaly:
+                        Intent i_partnerFavLoc = new Intent(UserCenter.this, PartnerFavoriteLocation.class);
+                        startActivity(i_partnerFavLoc);
+                        break;
 
                     default:
-                        Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
-                        return true;
-
+                        Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
+                        break;
                 }
+                return true;
             }
         });
 
