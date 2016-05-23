@@ -3,7 +3,10 @@ package com.vapenaysh.jace.myapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,7 +15,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.IOException;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /*
@@ -27,6 +37,10 @@ public class UserCenter extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private FavoriteLocationList locationsList;
+    private CircleImageView profile;
+    private TextView displayName;
+    private TextView displayEmail;
+    private String backendUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +50,52 @@ public class UserCenter extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //get content from login page
+        String toName;
+        String toEmail;
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                toName = null;
+                toEmail = null;
+                backendUID = null;
+            } else {
+                toName = extras.getString("DisplayName");
+                toEmail = extras.getString("DisplayEmail");
+                backendUID = extras.getString("BackendUID");
+            }
+        } else {
+            toName = (String) savedInstanceState.getSerializable("DisplayName");
+            toEmail = (String) savedInstanceState.getSerializable("DisplayEmail");
+            backendUID = (String) savedInstanceState.getSerializable("BackendUID");
+
+        }
+
+        //sToast.makeText(getApplicationContext(),"WTF " + toName + " " + toEmail + " " + backendUID, Toast.LENGTH_LONG).show();
+
+        Uri toImage = getIntent().getParcelableExtra("ImageURL");
+        Bitmap circleDisplay = null;
+        try {
+            circleDisplay = MediaStore.Images.Media.getBitmap(this.getContentResolver(), toImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         locationsList = new FavoriteLocationList(this);
+
+        View v = navigationView.getHeaderView(0); // 0-index header
+        profile = (CircleImageView) v.findViewById(R.id.profile_image);
+        displayName = (TextView) v.findViewById(R.id.username);
+        displayEmail = (TextView) v.findViewById(R.id.email);
+
+        //profile.setImageURI(null);
+        profile.setImageBitmap(circleDisplay);
+
+        displayEmail.setText(toEmail);
+        displayName.setText(toName);
 
         if(!isSingle()){
             setUpPartnerSettings();
@@ -47,6 +104,12 @@ public class UserCenter extends AppCompatActivity {
             i.putExtra("FavoriteLocations", locationsList);
             startService(i);
         }
+
+
+
+
+
+
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
@@ -81,7 +144,6 @@ public class UserCenter extends AppCompatActivity {
                     // For rest of the options we just show a toast on click
 
                     case R.id.partnersetting:
-                        Toast.makeText(getApplicationContext(), "Send Selected", Toast.LENGTH_SHORT).show();
                         if (isSingle()) {
                             Intent i2 = new Intent(UserCenter.this, AddPartner.class);
                             i2.putExtra("FavoriteLocations", locationsList);
@@ -123,6 +185,7 @@ public class UserCenter extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
 
     }
+
 
 
     // isSingle method without making toast
@@ -188,7 +251,10 @@ public class UserCenter extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.log_out) {
+            FirebaseAuth.getInstance().signOut();
+            finishActivity(1);
+            onBackPressed();
             return true;
         }
 

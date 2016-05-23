@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
-import com.google.android.gms.maps.model.LatLng;
 
 import Utility.ProgressGenerator;
 

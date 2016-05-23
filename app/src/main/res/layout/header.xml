@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/header_container"
     android:layout_height="190dp"
     android:background="#2196F3"
     android:orientation="vertical"
@@ -11,7 +12,7 @@
         android:id="@+id/profile_image"
         android:layout_width="76dp"
         android:layout_height="76dp"
-        android:src= "@drawable/jace"
+        android:src= "@android:drawable/ic_menu_always_landscape_portrait"
         app:border_color="#FF000000"
         android:layout_marginLeft="24dp"
         android:layout_centerVertical="true"

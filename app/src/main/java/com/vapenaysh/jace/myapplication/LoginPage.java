@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -177,6 +178,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -268,11 +270,10 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
                 // ...
             }
 
-            handleSignInResult(result);
+            //handleSignInResult(result);
         }
 
         if(requestCode == RC_SIGN_OUT){
-            Toast.makeText(getApplication(), "Signed out", Toast.LENGTH_SHORT).show();
             imageView.startAnimation(animation);
         }
     }
@@ -286,6 +287,30 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (user != null) {
+                            // Name, email address, and profile photo Url
+                            String name = user.getDisplayName();
+                            String email = user.getEmail();
+                            Uri photoUrl = user.getPhotoUrl();
+
+
+
+                            // The user's ID, unique to the Firebase project. Do NOT use this value to
+                            // authenticate with your backend server, if you have one. Use
+                            // FirebaseUser.getToken() instead.
+                            String uid = user.getUid();
+
+                            Intent i = new Intent(LoginPage.this, UserCenter.class);
+                            i.putExtra("DisplayName", name);
+                            i.putExtra("DisplayEmail", email);
+                            i.putExtra("ImageURL", photoUrl);
+                            i.putExtra("BackendUID", uid);
+                            startActivityForResult(i, RC_SIGN_OUT);
+
+                            //Toast.makeText(getApplicationContext(),name + " " + email + " " + uid, Toast.LENGTH_LONG).show();
+
+                        }
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -301,6 +326,8 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
     }
 
 
+
+    /******                        Old signin results handler
     //log in with google account
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
@@ -311,36 +338,17 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
 
             String idToken = acct.getIdToken();
             //Toast.makeText(getApplication(),idToken, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(LoginPage.this, UserCenter.class);
-            startActivityForResult(intent, RC_SIGN_OUT);
+            Intent i = new Intent(LoginPage.this, UserCenter.class);
+            startActivityForResult(i, RC_SIGN_OUT);
 
 
-            /*** Firebase set up for authentication ***/
-            /*
-            Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
-                @Override
-                public void onAuthenticated(AuthData authData) {
-                    Toast.makeText(getApplication(),"Authenticated successfully with payload authData", Toast.LENGTH_SHORT).show();
-                    // Authenticated successfully with payload authData
-                }
-                @Override
-                public void onAuthenticationError(FirebaseError firebaseError) {
-                    // Authenticated failed with error firebaseError
-                    if(firebaseError.getCode() == FirebaseError.UNKNOWN_ERROR){
-                        Toast.makeText(getApplication(),"Authenticated failed with error firebaseError", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            };
-
-
-            firebase.authWithOAuthToken("google",idToken, authResultHandler);*/
 
 
         } else {
 
             Toast.makeText(getApplication(),"Authenticated failed!", Toast.LENGTH_SHORT).show();
         }
-    }
+    }******/
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Toast.makeText(getApplicationContext(), "Something wrong", Toast.LENGTH_LONG).show();
