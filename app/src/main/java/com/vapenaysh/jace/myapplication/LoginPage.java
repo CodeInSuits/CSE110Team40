@@ -335,6 +335,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             Toast.makeText(getApplication(),getString(R.string.signed_in_fmt, acct.getDisplayName()), Toast.LENGTH_SHORT).show();
+            
 
             String idToken = acct.getIdToken();
             //Toast.makeText(getApplication(),idToken, Toast.LENGTH_SHORT).show();

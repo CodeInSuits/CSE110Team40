@@ -75,6 +75,7 @@ public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity>
          and a default notification sound associated with the location.
          And the location on the map will be marked with a red pin and location name
      */
+    /*
     @UiThreadTest
     public void test_CustomNameOnMapClick(){
         LatLng latLng = new LatLng(32, -117);
@@ -88,7 +89,7 @@ public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity>
         assertTrue( setContainsLocation(new FavoriteLocation(latLng, "TEST")) );
 
     }
-
+*/
     /**
      * The location is given a default name when it is set via tapping on the map
      Given that the user taps a coordinate/address on the map
@@ -97,8 +98,8 @@ public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity>
      Then the location should be added to the list of favorites with an enumerated default name
      (such as “Location 1”) and a default notification sound associated with the location.
      And the location on the map will be marked with a red pin and location name
-     *
      */
+   /*
     @UiThreadTest
     public void test_DefaultNameOnMapClick(){
         LatLng latLng = new LatLng(32,-117);
@@ -110,7 +111,7 @@ public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity>
         assertTrue( setContainsLocation(new FavoriteLocation(latLng, "Location" + numLocs )) );
         assertEquals( numLocs+1, favoriteLocationList.getSize() );
     }
-
+*/
     private void enterName(String name){
         customNameEditText.setText(name);
     }

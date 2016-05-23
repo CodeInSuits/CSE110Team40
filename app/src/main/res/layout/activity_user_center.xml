@@ -20,6 +20,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Daily Visited Location History"
+                android:id="@+id/textView2"
+                android:textSize="35dp"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal|top"
+                android:paddingTop="@dimen/abc_action_bar_icon_vertical_padding_material" />
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="385dp"
+                android:id="@+id/listView"
+                android:layout_gravity="center|bottom" />
         </FrameLayout>
 
     </LinearLayout>

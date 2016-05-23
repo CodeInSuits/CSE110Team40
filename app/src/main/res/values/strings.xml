@@ -27,6 +27,9 @@
     <string name="title_activity_content_fragment">ContentFragment</string>
     <string name="closeDrawer">Navigation View</string>
     <string name="openDrawer">Navigation View Closed</string>
+    <string name="title_activity_global_settings">GlobalSettings</string>
+    <string name="title_activity_partner__favorite__location">Partner_Favorite_Location</string>
+    <string name="title_activity_partner_favorite_location">PartnerFavoriteLocation</string>
 
 
 
