@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,8 @@ public class UserCenter extends AppCompatActivity {
     private TextView displayName;
     private TextView displayEmail;
     private String backendUID;
+    private static final String TAG = "UserCenter";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,7 @@ public class UserCenter extends AppCompatActivity {
         //sToast.makeText(getApplicationContext(),"WTF " + toName + " " + toEmail + " " + backendUID, Toast.LENGTH_LONG).show();
 
         Uri toImage = getIntent().getParcelableExtra("ImageURL");
+        Toast.makeText(getApplicationContext(), toImage.toString(), Toast.LENGTH_SHORT).show();
         Bitmap circleDisplay = null;
         try {
             circleDisplay = MediaStore.Images.Media.getBitmap(this.getContentResolver(), toImage);
@@ -91,8 +95,10 @@ public class UserCenter extends AppCompatActivity {
         displayName = (TextView) v.findViewById(R.id.username);
         displayEmail = (TextView) v.findViewById(R.id.email);
 
-        //profile.setImageURI(null);
-        profile.setImageBitmap(circleDisplay);
+        //profile.setImageBitmap(circleDisplay);
+
+        Log.d(TAG, "ImageUrl" + toImage.toString());
+
 
         displayEmail.setText(toEmail);
         displayName.setText(toName);
@@ -104,10 +110,6 @@ public class UserCenter extends AppCompatActivity {
             i.putExtra("FavoriteLocations", locationsList);
             startService(i);
         }
-
-
-
-
 
 
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
