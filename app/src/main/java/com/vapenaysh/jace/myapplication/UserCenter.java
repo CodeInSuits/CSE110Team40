@@ -107,9 +107,6 @@ public class UserCenter extends AppCompatActivity {
 
 
 
-
-
-
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
@@ -161,6 +158,10 @@ public class UserCenter extends AppCompatActivity {
                     case R.id.partnerfavlocationdispaly:
                         Intent i_partnerFavLoc = new Intent(UserCenter.this, PartnerFavoriteLocation.class);
                         startActivity(i_partnerFavLoc);
+                        break;
+
+                    case R.id.removeFavLoc:
+                        removeAllLocations();
                         break;
 
                     default:
@@ -230,9 +231,8 @@ public class UserCenter extends AppCompatActivity {
 
     /**
      * delete the locations file of all saved locations
-     * @param view
      */
-    public void removeAllLocations(View view){
+    public void removeAllLocations(){
         locationsList.removeAllLocations(this);
         Toast.makeText(getApplicationContext(), "Removed all saved favorite locations.", Toast.LENGTH_SHORT).show();
     }
