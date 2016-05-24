@@ -15,6 +15,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashSet;
 
@@ -27,6 +33,8 @@ public class GPSTrackerService extends Service implements LocationListener
     private static final long TIME = 60*1000; //ONE MINUTE
     private static final float DISTANCE = 50;
     private HashSet<FavoriteLocation> visitedLocations = new HashSet<>();
+    private FirebaseDatabase locationsDB;
+    private DatabaseReference myLocations;
 
     private final IBinder GPSBinder = new LocalBinder();
 
@@ -50,6 +58,24 @@ public class GPSTrackerService extends Service implements LocationListener
             this.favLocations = new FavoriteLocationList();
         }
         this.context = getApplicationContext();
+        locationsDB = FirebaseDatabase.getInstance();
+        myLocations = locationsDB.getReference("visitedLocations");
+        myLocations.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                visitedLocations = (HashSet<FavoriteLocation>) dataSnapshot.getValue();
+                Log.d("NOTE", "GOT LOCATIONS FROM FIREBASE");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                // Failed to read value
+                Log.w("ERROR:", "Failed to read value.", firebaseError.toException());
+            }
+        });
+
         setupLocationTracking();
         return 0;
     }
@@ -135,22 +161,31 @@ public class GPSTrackerService extends Service implements LocationListener
             //within .1 miles
             double distanceBetween = calculateDistanceBetween(latLng, fli.getCoord());
             Log.v("TESTING LOCATION" + fli.toString(), "distance between: " + distanceBetween);
-            if( distanceBetween < .1 )  {
+            if( distanceBetween < .1 && !visitedLocations.contains(fli))  {
                 Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT " + latLng.toString());
-
+/*
                 //TODO: NOTIFICATION CODE
 
                 SentSMS msg = new SentSMS();
                 msg.sendSms(fli);
 
-                //not already in the list of visited locations
+                //not already in the list of visited locations*/
                 visitedLocations.add(fli);
+                //push to firebase
+                myLocations.setValue(visitedLocations);
                 Toast.makeText(getApplicationContext(), "Visited a favorite location", Toast.LENGTH_SHORT).show();
             }
+            /*
             else{
                 visitedLocations.remove(fli); //not within range anymore
-            }
+            }*/
         }
+    }
+
+    public boolean pushLocation(FavoriteLocation fli)
+    {
+
+        return true;
     }
 
     @Override
