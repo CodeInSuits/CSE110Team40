@@ -27,6 +27,7 @@ public class FavoriteLocation {
         this.timeStamp = timeStamp;
     }
 
+
     public long getTimeStamp()
     {
         return timeStamp;
