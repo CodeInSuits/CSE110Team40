@@ -55,6 +55,10 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
             Intent i = new Intent(this, GPSTrackerService.class);
             i.putExtra("FavoriteLocations", locationsList);
             startService(i);
+
+            Intent notifsIntent = new Intent(this, NotificationService.class);
+            i.putExtra(Constants.PARTNER_KEY, PartnerSettings.getNumber());
+            startService(notifsIntent);
         }
 
 

@@ -83,6 +83,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
             userphone = phoneNumber;
 
             startTracking();
+            startNotificationService();
 
             editor.commit();
             Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
@@ -157,6 +158,12 @@ public class AddPartner extends Activity implements View.OnClickListener {
         Intent i = new Intent(this, GPSTrackerService.class);
         i.putExtra("FavoriteLocations", favoriteLocationList);
         startService(i);
+    }
+
+    private void startNotificationService(){
+        Intent notifsIntent = new Intent(this, NotificationService.class);
+        notifsIntent.putExtra(Constants.PARTNER_KEY, PartnerSettings.getNumber());
+        startService(notifsIntent);
     }
 
 

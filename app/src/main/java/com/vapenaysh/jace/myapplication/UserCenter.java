@@ -103,6 +103,8 @@ public class UserCenter extends AppCompatActivity {
             Intent i = new Intent(this, GPSTrackerService.class);
             i.putExtra("FavoriteLocations", locationsList);
             startService(i);
+
+            startNotificationService();
         }
 
 
@@ -270,5 +272,11 @@ public class UserCenter extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startNotificationService(){
+        Intent notifsIntent = new Intent(this, NotificationService.class);
+        notifsIntent.putExtra(Constants.PARTNER_KEY, PartnerSettings.getNumber());
+        startService(notifsIntent);
     }
 }
