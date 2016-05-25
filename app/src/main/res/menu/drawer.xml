@@ -24,7 +24,13 @@
             android:id="@+id/partnerfavlocationdispaly"
             android:checked="false"
             android:icon="@drawable/yin"
-            android:title="Partner's FavLocation Settings" />
+            android:title="Partner's Favorite Location \n  List and Settings" />
+
+        <item
+            android:id="@+id/removeFavLoc"
+            android:checked="false"
+            android:icon="@drawable/yin"
+            android:title="Remove locations " />
     </group>
 
 </menu>

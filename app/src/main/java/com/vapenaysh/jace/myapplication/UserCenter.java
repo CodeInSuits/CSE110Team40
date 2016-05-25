@@ -147,6 +147,10 @@ public class UserCenter extends AppCompatActivity {
                         startActivity(i_partnerFavLoc);
                         break;
 
+                    case R.id.removeFavLoc:
+                        removeAllLocations();
+                        break;
+
                     default:
                         Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
                         break;
@@ -214,9 +218,8 @@ public class UserCenter extends AppCompatActivity {
 
     /**
      * delete the locations file of all saved locations
-     * @param view
      */
-    public void removeAllLocations(View view){
+    public void removeAllLocations(){
         locationsList.removeAllLocations(this);
         Toast.makeText(getApplicationContext(), "Removed all saved favorite locations.", Toast.LENGTH_SHORT).show();
     }
