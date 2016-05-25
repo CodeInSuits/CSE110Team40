@@ -36,6 +36,9 @@ public class GPSTrackerService extends Service implements LocationListener
     private FirebaseDatabase locationsDB;
     private DatabaseReference myLocations;
 
+    //when user is within location limit, add to firebase
+    private VisitedLocationToFirebase firebaseConnector;
+
     private final IBinder GPSBinder = new LocalBinder();
 
     //Binder to allow access to the service while running
