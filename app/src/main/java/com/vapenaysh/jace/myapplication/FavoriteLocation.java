@@ -12,10 +12,30 @@ public class FavoriteLocation {
 
     private LatLng coord;
     private String name;
+    private long timeStamp;
+    private short vibeTone;
 
-    public FavoriteLocation(LatLng latLng, String name){
-        coord = latLng;
+    public FavoriteLocation(LatLng coord, String name){
+        this.coord = coord;
         this.name = name;
+    }
+
+
+    public FavoriteLocation(LatLng coord, String name, long timeStamp){
+        this.coord = coord;
+        this.name = name;
+        this.timeStamp = timeStamp;
+    }
+
+
+    public long getTimeStamp()
+    {
+        return timeStamp;
+    }
+
+    public void setTimeStamp (long timeStamp)
+    {
+        this.timeStamp = timeStamp;
     }
 
     public String getName() {

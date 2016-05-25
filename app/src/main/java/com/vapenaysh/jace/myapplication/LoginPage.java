@@ -35,6 +35,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class LoginPage extends FragmentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
@@ -287,7 +295,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         if (user != null) {
                             // Name, email address, and profile photo Url
                             String name = user.getDisplayName();
@@ -301,9 +309,35 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
                             // FirebaseUser.getToken() instead.
                             String uid = user.getUid();
 
+
+                            final String firebaseEmail = email.split("@")[0];
+                            final Map<String, String> userInfo = new HashMap<String, String>();
+                            userInfo.put("name", name);
+                            userInfo.put("email",email);
+                            userInfo.put("photouri",photoUrl.toString());
+                            userInfo.put("useruid", uid);
+                            userInfo.put("partner", "");
+
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            final DatabaseReference myRef = database.getReference("users");
+                            myRef.child(firebaseEmail).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (!dataSnapshot.exists()) {
+                                        myRef.child(firebaseEmail).setValue(userInfo);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    System.out.println("The read failed: " + databaseError.getMessage());
+                                }
+                            });
+
+
                             Intent i = new Intent(LoginPage.this, UserCenter.class);
                             i.putExtra("DisplayName", name);
-                            i.putExtra("DisplayEmail", email);
+                            i.putExtra("DisplayEmail", firebaseEmail);
                             i.putExtra("ImageURL", photoUrl);
                             i.putExtra("BackendUID", uid);
                             startActivityForResult(i, RC_SIGN_OUT);
