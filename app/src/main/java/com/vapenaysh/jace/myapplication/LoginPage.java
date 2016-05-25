@@ -36,6 +36,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class LoginPage extends FragmentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
@@ -300,6 +303,15 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
                             // authenticate with your backend server, if you have one. Use
                             // FirebaseUser.getToken() instead.
                             String uid = user.getUid();
+                            Map<String, String> userInfo = new HashMap<String, String>();
+                            userInfo.put("name", name);
+                            userInfo.put("email",email);
+                            userInfo.put("photouri",photoUrl.toString());
+                            userInfo.put("useruid", uid);
+
+                            UserStorageManager userStorageManager = new UserStorageManager();
+                            userStorageManager.store(userInfo, uid);
+
 
                             Intent i = new Intent(LoginPage.this, UserCenter.class);
                             i.putExtra("DisplayName", name);

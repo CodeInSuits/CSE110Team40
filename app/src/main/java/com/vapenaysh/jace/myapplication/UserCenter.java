@@ -3,10 +3,8 @@ package com.vapenaysh.jace.myapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,8 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -54,36 +50,22 @@ public class UserCenter extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //get content from login page
-        String toName;
-        String toEmail;
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                toName = null;
-                toEmail = null;
-                backendUID = null;
-            } else {
-                toName = extras.getString("DisplayName");
-                toEmail = extras.getString("DisplayEmail");
-                backendUID = extras.getString("BackendUID");
-            }
-        } else {
-            toName = (String) savedInstanceState.getSerializable("DisplayName");
-            toEmail = (String) savedInstanceState.getSerializable("DisplayEmail");
-            backendUID = (String) savedInstanceState.getSerializable("BackendUID");
+        String toName = getIntent().getStringExtra("DisplayName");;
+        String toEmail = getIntent().getStringExtra("DisplayEmail");;
+        backendUID = getIntent().getStringExtra("BackendUID");
 
-        }
 
         //sToast.makeText(getApplicationContext(),"WTF " + toName + " " + toEmail + " " + backendUID, Toast.LENGTH_LONG).show();
 
         Uri toImage = getIntent().getParcelableExtra("ImageURL");
         Toast.makeText(getApplicationContext(), toImage.toString(), Toast.LENGTH_SHORT).show();
+        /*
         Bitmap circleDisplay = null;
         try {
             circleDisplay = MediaStore.Images.Media.getBitmap(this.getContentResolver(), toImage);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
         //Initializing NavigationView
