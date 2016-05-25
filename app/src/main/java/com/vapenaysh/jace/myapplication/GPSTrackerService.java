@@ -15,7 +15,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -67,7 +66,12 @@ public class GPSTrackerService extends Service implements LocationListener
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 fll = (HashSet<FavoriteLocation>) dataSnapshot.getValue();
-                Log.d("NOTE", "GOT LOCATIONS FROM FIREBASE");
+                Log.d("NOTE", "GOT LOCATI" +
+                        "" +
+                        "" +
+                        "" +
+                        "" +
+                        "ONS FROM FIREBASE");
             }
 
             @Override

@@ -82,7 +82,7 @@ public class UserCenter extends AppCompatActivity {
         Log.d(TAG, "ImageUrl" + toImage.toString());
 
 
-        displayEmail.setText(toEmail);
+        displayEmail.setText(toEmail + "@gmail.com");
         displayName.setText(toName);
 
         if(!isSingle()){
