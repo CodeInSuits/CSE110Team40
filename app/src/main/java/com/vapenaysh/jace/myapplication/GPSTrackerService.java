@@ -28,11 +28,11 @@ public class GPSTrackerService extends Service implements LocationListener
 {
 
     private FavoriteLocationList favLocations;
+    private HashSet<FavoriteLocation> fll;
     protected LocationManager locManager;
     private Context context;
     private static final long TIME = 60*1000; //ONE MINUTE
     private static final float DISTANCE = 50;
-    private HashSet<FavoriteLocation> visitedLocations = new HashSet<>();
     private FirebaseDatabase locationsDB;
     private DatabaseReference myLocations;
 
@@ -59,13 +59,14 @@ public class GPSTrackerService extends Service implements LocationListener
         }
         this.context = getApplicationContext();
         locationsDB = FirebaseDatabase.getInstance();
-        myLocations = locationsDB.getReference("visitedLocations");
+        //TODO: fetch UID, store data properly
+        myLocations = locationsDB.getReference("UID" + "_locations");
         myLocations.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                visitedLocations = (HashSet<FavoriteLocation>) dataSnapshot.getValue();
+                fll = (HashSet<FavoriteLocation>) dataSnapshot.getValue();
                 Log.d("NOTE", "GOT LOCATIONS FROM FIREBASE");
             }
 
@@ -153,7 +154,7 @@ public class GPSTrackerService extends Service implements LocationListener
         Log.v("GPSTrackerService", "Location changed");
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         //check if user is close to a favorite location
-        HashSet<FavoriteLocation> fll = favLocations.getLocations();
+        fll = favLocations.getLocations();
         for (FavoriteLocation fli: fll)
         {
             //TODO only do below checks if not in visitedLocations
@@ -161,8 +162,13 @@ public class GPSTrackerService extends Service implements LocationListener
             //within .1 miles
             double distanceBetween = calculateDistanceBetween(latLng, fli.getCoord());
             Log.v("TESTING LOCATION" + fli.toString(), "distance between: " + distanceBetween);
-            if( distanceBetween < .1 && !visitedLocations.contains(fli))  {
-                Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT " + latLng.toString());
+            long currentTime = System.currentTimeMillis();
+            if( distanceBetween < .1)
+            {
+                //if (currentTime - (currentTime - fli.getTimeStamp()) > (currentTime - (currentTime % ((1000*60*60*24))) + (1000*60*60*3)))
+                fli.setTimeStamp(currentTime);
+                //push to firebase
+            Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT " + latLng.toString());
 /*
                 //TODO: NOTIFICATION CODE
 
@@ -170,11 +176,10 @@ public class GPSTrackerService extends Service implements LocationListener
                 msg.sendSms(fli);
 
                 //not already in the list of visited locations*/
-                visitedLocations.add(fli);
-                //push to firebase
-                myLocations.setValue(visitedLocations);
+                myLocations.setValue(fll);
                 Toast.makeText(getApplicationContext(), "Visited a favorite location", Toast.LENGTH_SHORT).show();
             }
+
             /*
             else{
                 visitedLocations.remove(fli); //not within range anymore
@@ -204,7 +209,7 @@ public class GPSTrackerService extends Service implements LocationListener
     }
 
     /**
-     * https://www.geodatasource.com/developers/java for formula
+     * https://www.geoda    tasource.com/developers/java for formula
      * @param loc1
      * @param loc2
      * @return
