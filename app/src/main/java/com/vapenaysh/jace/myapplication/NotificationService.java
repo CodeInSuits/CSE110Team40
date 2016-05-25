@@ -18,7 +18,7 @@ import com.firebase.client.ValueEventListener;
 public class NotificationService extends IntentService {
     private Firebase firebase;
     private static final String URL = Constants.FIREBASE_URL;
-    private static final String VISITED_URL = Constants.VISITED_LOC_URL;
+    private static final String LOC_URL = Constants.LOC_URL;
 
     public NotificationService(){
         super("notification service");
@@ -32,7 +32,7 @@ public class NotificationService extends IntentService {
             synchronized (this)
             {
                 String partner = intent.getStringExtra(Constants.PARTNER_KEY);
-                firebase = new Firebase(URL + partner + VISITED_URL);
+                firebase = new Firebase(URL + partner + LOC_URL);
                 firebase.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

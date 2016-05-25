@@ -36,7 +36,7 @@ public class GPSTrackerService extends Service implements LocationListener
     private DatabaseReference myLocations;
 
     //when user is within location limit, add to firebase
-    private VisitedLocationToFirebase firebaseConnector;
+    private LocationStorageManager locationStorageManager;
 
     private final IBinder GPSBinder = new LocalBinder();
 
@@ -60,29 +60,9 @@ public class GPSTrackerService extends Service implements LocationListener
             this.favLocations = new FavoriteLocationList();
         }
         this.context = getApplicationContext();
-        locationsDB = FirebaseDatabase.getInstance();
-        //TODO: fetch UID, store data properly
-        myLocations = locationsDB.getReference("UID" + "_locations");
-        myLocations.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                fll = (HashSet<FavoriteLocation>) dataSnapshot.getValue();
-                Log.d("NOTE", "GOT LOCATI" +
-                        "" +
-                        "" +
-                        "" +
-                        "" +
-                        "ONS FROM FIREBASE");
-            }
 
-            @Override
-            public void onCancelled(DatabaseError firebaseError) {
-                // Failed to read value
-                Log.w("ERROR:", "Failed to read value.", firebaseError.toException());
-            }
-        });
+        locationStorageManager = new LocationStorageManager("123"); //TODO: MAKE UID
+        fll = locationStorageManager.getLocations();
 
         setupLocationTracking();
         return 0;
