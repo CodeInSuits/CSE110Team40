@@ -4,6 +4,9 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by Matt on 4/29/16.
  * FavoriteLocation class - stores a LatLng and a custom name for the location.
@@ -12,8 +15,9 @@ public class FavoriteLocation {
 
     private LatLng coord;
     private String name;
-    private long timeStamp;
+    private Date date;
     private short vibeTone;
+    private boolean visited = false;
 
     public FavoriteLocation(LatLng coord, String name){
         this.coord = coord;
@@ -21,21 +25,21 @@ public class FavoriteLocation {
     }
 
 
-    public FavoriteLocation(LatLng coord, String name, long timeStamp){
+    public FavoriteLocation(LatLng coord, String name, Date timeStamp){
         this.coord = coord;
         this.name = name;
-        this.timeStamp = timeStamp;
+        this.date = timeStamp;
     }
 
 
-    public long getTimeStamp()
+    public Date getDate()
     {
-        return timeStamp;
+        return date;
     }
 
-    public void setTimeStamp (long timeStamp)
+    public void setDate (Date timeStamp)
     {
-        this.timeStamp = timeStamp;
+        this.date = timeStamp;
     }
 
     public String getName() {
@@ -48,6 +52,18 @@ public class FavoriteLocation {
 
     public LatLng getCoord() {
         return coord;
+    }
+
+    public void setVisited(){
+        visited = true;
+    }
+
+    public void clearVisited(){
+        visited = false;
+    }
+
+    public boolean isVisited(){
+        return visited;
     }
 
     //Equals comparator for direct comparison.
@@ -73,5 +89,64 @@ public class FavoriteLocation {
     @Override
     public int hashCode() {
         return toString().hashCode();
+    }
+
+    /**
+     *     @return true if Date represents time after the 3am cutoff time
+     */
+    public boolean afterCutoffTime() {
+        Date now = new Date();
+        Calendar cal = new Calendar() {
+            @Override
+            public void add(int i, int i1) {
+
+            }
+
+            @Override
+            protected void computeFields() {
+
+            }
+
+            @Override
+            protected void computeTime() {
+
+            }
+
+            @Override
+            public int getGreatestMinimum(int i) {
+                return 0;
+            }
+
+            @Override
+            public int getLeastMaximum(int i) {
+                return 0;
+            }
+
+            @Override
+            public int getMaximum(int i) {
+                return 0;
+            }
+
+            @Override
+            public int getMinimum(int i) {
+                return 0;
+            }
+
+            @Override
+            public void roll(int i, boolean b) {
+
+            }
+        };
+        cal.setTime(now);
+        if(cal.get(Calendar.HOUR_OF_DAY) < 3) { //between 12am and 3am so should not reset
+            return false;
+        }
+
+        cal.set(Calendar.HOUR_OF_DAY, 3);
+        Date cutoff = cal.getTime();
+
+        return getDate().after(cutoff);
+
+
     }
 }

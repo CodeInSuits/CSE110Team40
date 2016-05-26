@@ -15,28 +15,21 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
 import java.util.HashSet;
 
 public class GPSTrackerService extends Service implements LocationListener
 {
 
-    private FavoriteLocationList favLocations;
     private HashSet<FavoriteLocation> fll;
     protected LocationManager locManager;
     private Context context;
     private static final long TIME = 60*1000; //ONE MINUTE
     private static final float DISTANCE = 50;
-    private FirebaseDatabase locationsDB;
-    private DatabaseReference myLocations;
 
     //when user is within location limit, add to firebase
-    private LocationStorageManager locationStorageManager;
+    private FavoriteLocationList partnersLocManager;
 
     private final IBinder GPSBinder = new LocalBinder();
 
@@ -53,16 +46,11 @@ public class GPSTrackerService extends Service implements LocationListener
     public int onStartCommand(Intent i, int flags, int startID)
     {
         Toast.makeText(getApplicationContext(), "Tracking started", Toast.LENGTH_SHORT).show();
-        //Parse data from intent
-        this.favLocations = i.getParcelableExtra("FavoriteLocations");
-        if (this.favLocations == null)
-        {
-            this.favLocations = new FavoriteLocationList();
-        }
         this.context = getApplicationContext();
 
-        locationStorageManager = new LocationStorageManager("123"); //TODO: MAKE UID
-        fll = locationStorageManager.getLocations();
+
+        partnersLocManager = new FavoriteLocationList("123"); //TODO: MAKE partner uid getter
+        fll = partnersLocManager.getLocations();
 
         setupLocationTracking();
         return 0;
@@ -141,7 +129,7 @@ public class GPSTrackerService extends Service implements LocationListener
         Log.v("GPSTrackerService", "Location changed");
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         //check if user is close to a favorite location
-        fll = favLocations.getLocations();
+        fll = partnersLocManager.getLocations();
         for (FavoriteLocation fli: fll)
         {
             //TODO only do below checks if not in visitedLocations
@@ -149,35 +137,26 @@ public class GPSTrackerService extends Service implements LocationListener
             //within .1 miles
             double distanceBetween = calculateDistanceBetween(latLng, fli.getCoord());
             Log.v("TESTING LOCATION" + fli.toString(), "distance between: " + distanceBetween);
-            long currentTime = System.currentTimeMillis();
-            if( distanceBetween < .1)
+            if( distanceBetween < .1 && !fli.isVisited() ) //arriving for the first time
             {
-                //if (currentTime - (currentTime - fli.getTimeStamp()) > (currentTime - (currentTime % ((1000*60*60*24))) + (1000*60*60*3)))
-                fli.setTimeStamp(currentTime);
+                fli.setDate(new Date());
+                fli.setVisited();
+
                 //push to firebase
-            Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT " + latLng.toString());
-/*
-                //TODO: NOTIFICATION CODE
+                Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT " + latLng.toString());
+                partnersLocManager.writeLocation(fli);
+                //Toast.makeText(getApplicationContext(), "Visited a favorite location", Toast.LENGTH_SHORT).show();
+            }
+            //departing
+            else if( distanceBetween > .1 && fli.isVisited() ){
+                fli.setDate(new Date());
+                fli.clearVisited();
+                Log.d("NOTIFICATION", "DEPARTING " + fli.getName() );
 
-                SentSMS msg = new SentSMS();
-                msg.sendSms(fli);
-
-                //not already in the list of visited locations*/
-                myLocations.setValue(fll);
-                Toast.makeText(getApplicationContext(), "Visited a favorite location", Toast.LENGTH_SHORT).show();
+                partnersLocManager.writeLocation(fli);
             }
 
-            /*
-            else{
-                visitedLocations.remove(fli); //not within range anymore
-            }*/
         }
-    }
-
-    public boolean pushLocation(FavoriteLocation fli)
-    {
-
-        return true;
     }
 
     @Override

@@ -28,7 +28,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
     private EditText phone;
     private static String username;
     private static String userphone;
-    private FavoriteLocationList favoriteLocationList;
+    private FavoriteLocationList partnerLocationList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +47,8 @@ public class AddPartner extends Activity implements View.OnClickListener {
         uname = (EditText) findViewById(R.id.par_name);
         phone = (EditText) findViewById(R.id.par_phone);
 
-        favoriteLocationList = getIntent().getParcelableExtra("FavoriteLocations");
 
+        partnerLocationList = null;
     }
 
     //Put partner name and phone number into Android's shared preferences for the application.
@@ -91,51 +91,11 @@ public class AddPartner extends Activity implements View.OnClickListener {
         }
     }
 
-
-
-
-    //Gets the unique regID for the current user from gcm. Runs on a different thread.
-    public void getRegId() {
-        /*
-        new AsyncTask<Void, Void, String>() {
-
-            @Override
-            protected String doInBackground(Void... params) {
-                String msg = "";
-                try {
-                    if(gcm == null) {
-                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-                    }
-
-                    regid = gcm.register(PROJECT_NUMBER);
-                    msg = "Device registered, registration ID=" + regid;
-                    Log.i("GCM", "!!!!! " + regid);
-                    id = regid;
-
-                } catch(IOException ex) {
-                    msg = "Error: " + ex.getMessage();
-                    id = msg;
-                }
-
-                return msg;
-            }
-
-            @Override
-            protected void onPostExecute(String msg){
-                tvRegId.setText(id);
-            }
-
-        }.execute(null, null, null);*/
-    }
-
     @Override
     // defing the onClick behavior
     public void onClick(View v){
 
         switch (v.getId()) {
-            case R.id.get_self_id:
-                getRegId();
-                break;
             case R.id.add_par:
                 addPar();
                 break;
@@ -156,7 +116,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
     // method for starting the server for tracking
     private void startTracking(){
         Intent i = new Intent(this, GPSTrackerService.class);
-        i.putExtra("FavoriteLocations", favoriteLocationList);
+        //i.putExtra("FavoriteLocations", favoriteLocationList);
         startService(i);
     }
 
