@@ -18,10 +18,16 @@ public class FavoriteLocationList {
     private HashSet<FavoriteLocation> fll;
     private static final String TAG= "LocationStorageMgr";
 
+    /**
+     *
+     * @param uid or identifier of the partner to get the correct url path in firebase
+     */
     public FavoriteLocationList(final String uid){
         FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
         db = locationsDB.getReference(uid + Constants.LOC_URL);
         //database looking at the url for a given user's locations
+
+        fll = new HashSet<>();
 
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -64,5 +70,9 @@ public class FavoriteLocationList {
         db.setValue(fll);
         Log.v(TAG, "Removed location " + loc);
         return true;
+    }
+
+    public int getSize(){
+        return fll.size();
     }
 }

@@ -73,7 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         namePromptLayout = (RelativeLayout) findViewById(R.id.custom_name_layout);
         namePromptLayout.setVisibility(View.GONE);
 
-        favoriteLocationList = getIntent().getParcelableExtra("FavoriteLocations");
+        favoriteLocationList = new FavoriteLocationList("123"); //TODO: This user's username
 
         //previously saved, retrieved from the file
         savedLocations = favoriteLocationList.getLocations();
@@ -166,7 +166,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             //add to local file for storage and current session's location set
             try {
-                favoriteLocationList.addLocation(fave, this);
+                favoriteLocationList.writeLocation(fave);
                 savedLocations.add(fave);
 
                 currentMarker.setTitle(name);

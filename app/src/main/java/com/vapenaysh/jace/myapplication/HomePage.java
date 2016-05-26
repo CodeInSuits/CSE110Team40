@@ -17,7 +17,6 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
     private ProgressGenerator progressGenerator;
     private ActionProcessButton signout;
-    private FavoriteLocationList locationsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +45,17 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         signout.setMode(ActionProcessButton.Mode.PROGRESS);
         signout.setOnClickListener(this);
 
-        //get the saved locations from the file and store locally
-        locationsList = new FavoriteLocationList(this);
-
         if(!isSingle()){
             setUpPartnerSettings();
-            //WARNING: UNTESTED CODE
+
+            //start tracking this user
             Intent i = new Intent(this, GPSTrackerService.class);
-            i.putExtra("FavoriteLocations", locationsList);
+            i.putExtra(Constants.PARTNER_KEY, PartnerSettings.getNumber()); //TODO: username, not number
             startService(i);
 
+            //start receiving notifications from the partner's locations
             Intent notifsIntent = new Intent(this, NotificationService.class);
-            i.putExtra(Constants.PARTNER_KEY, PartnerSettings.getNumber());
+            i.putExtra(Constants.PARTNER_KEY, PartnerSettings.getNumber()); //TODO: username, not number
             startService(notifsIntent);
         }
 
@@ -75,7 +73,6 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         switch (v.getId()){
             case R.id.add_fave_loc_btn:
                 Intent i = new Intent(this, MapsActivity.class);
-                i.putExtra("FavoriteLocations", locationsList);
                 startActivity(i);
                 break;
 
@@ -83,7 +80,6 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
 
                 if (isSingle()) {
                     Intent i2 = new Intent(this, AddPartner.class);
-                    i2.putExtra("FavoriteLocations", locationsList);
                     startActivity(i2);
                 } else {
                     startActivity(new Intent(HomePage.this, PartnerSettings.class));
@@ -158,7 +154,8 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
      * @param view
      */
     public void removeAllLocations(View view){
-        locationsList.removeAllLocations(this);
+        FavoriteLocationList locationsList = new FavoriteLocationList(""); //TODO: this user's username
+        locationsList.removeAllLocations();
         Toast.makeText(getApplicationContext(), "Removed all saved favorite locations.", Toast.LENGTH_SHORT).show();
     }
 

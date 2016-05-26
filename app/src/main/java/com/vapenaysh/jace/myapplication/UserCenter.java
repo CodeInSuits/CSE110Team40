@@ -33,7 +33,6 @@ public class UserCenter extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-    private FavoriteLocationList locationsList;
     private CircleImageView profile;
     private TextView displayName;
     private TextView displayEmail;
@@ -70,7 +69,6 @@ public class UserCenter extends AppCompatActivity {
 
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        locationsList = new FavoriteLocationList(this);
 
         View v = navigationView.getHeaderView(0); // 0-index header
         profile = (CircleImageView) v.findViewById(R.id.profile_image);
@@ -89,7 +87,7 @@ public class UserCenter extends AppCompatActivity {
             setUpPartnerSettings();
             //WARNING: UNTESTED CODE
             Intent i = new Intent(this, GPSTrackerService.class);
-            i.putExtra("FavoriteLocations", locationsList);
+            i.putExtra(Constants.PARTNER_KEY, PartnerSettings.getNumber()); //TODO: username, not number
             startService(i);
 
             startNotificationService();
@@ -118,7 +116,6 @@ public class UserCenter extends AppCompatActivity {
                     //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.addmap:
                         Intent i = new Intent(UserCenter.this, MapsActivity.class);
-                        i.putExtra("FavoriteLocations", locationsList);
                         startActivity(i);
                         //Toast.makeText(getApplicationContext(), "Map Selected", Toast.LENGTH_SHORT).show();
                         //ContentFragment fragment = new ContentFragment();
@@ -132,7 +129,6 @@ public class UserCenter extends AppCompatActivity {
                     case R.id.partnersetting:
                         if (isSingle()) {
                             Intent i2 = new Intent(UserCenter.this, AddPartner.class);
-                            i2.putExtra("FavoriteLocations", locationsList);
                             startActivity(i2);
                         } else {
                             startActivity(new Intent(UserCenter.this, PartnerSettings.class));
@@ -222,7 +218,8 @@ public class UserCenter extends AppCompatActivity {
      * delete the locations file of all saved locations
      */
     public void removeAllLocations(){
-        locationsList.removeAllLocations(this);
+        FavoriteLocationList locationsList = new FavoriteLocationList(""); //TODO: this user's username
+        locationsList.removeAllLocations();
         Toast.makeText(getApplicationContext(), "Removed all saved favorite locations.", Toast.LENGTH_SHORT).show();
     }
 

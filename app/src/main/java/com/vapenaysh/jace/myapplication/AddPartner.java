@@ -28,7 +28,6 @@ public class AddPartner extends Activity implements View.OnClickListener {
     private EditText phone;
     private static String username;
     private static String userphone;
-    private FavoriteLocationList partnerLocationList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +46,6 @@ public class AddPartner extends Activity implements View.OnClickListener {
         uname = (EditText) findViewById(R.id.par_name);
         phone = (EditText) findViewById(R.id.par_phone);
 
-
-        partnerLocationList = null;
     }
 
     //Put partner name and phone number into Android's shared preferences for the application.
@@ -116,13 +113,13 @@ public class AddPartner extends Activity implements View.OnClickListener {
     // method for starting the server for tracking
     private void startTracking(){
         Intent i = new Intent(this, GPSTrackerService.class);
-        //i.putExtra("FavoriteLocations", favoriteLocationList);
+        i.putExtra(Constants.PARTNER_KEY, "MY USERNAME"); //TODO: username, not number
         startService(i);
     }
 
     private void startNotificationService(){
         Intent notifsIntent = new Intent(this, NotificationService.class);
-        notifsIntent.putExtra(Constants.PARTNER_KEY, PartnerSettings.getNumber());
+        notifsIntent.putExtra(Constants.PARTNER_KEY, PartnerSettings.getNumber()); //TODO: username not number
         startService(notifsIntent);
     }
 

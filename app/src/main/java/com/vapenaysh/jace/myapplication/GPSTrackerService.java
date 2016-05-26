@@ -48,8 +48,8 @@ public class GPSTrackerService extends Service implements LocationListener
         Toast.makeText(getApplicationContext(), "Tracking started", Toast.LENGTH_SHORT).show();
         this.context = getApplicationContext();
 
-
-        partnersLocManager = new FavoriteLocationList("123"); //TODO: MAKE partner uid getter
+        String partner = i.getStringExtra(Constants.PARTNER_KEY);
+        partnersLocManager = new FavoriteLocationList(partner); //TODO: MAKE partner uid getter
         fll = partnersLocManager.getLocations();
 
         setupLocationTracking();
