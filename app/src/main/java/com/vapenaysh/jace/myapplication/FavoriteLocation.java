@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class FavoriteLocation {
 
-    private MyLatLng coord;
+    private LatLng coord;
     private String name;
     private Date date;
     private short vibeTone;
@@ -19,13 +19,13 @@ public class FavoriteLocation {
 
     public FavoriteLocation(){}
 
-    public FavoriteLocation(MyLatLng coord, String name){
+    public FavoriteLocation(LatLng coord, String name){
         this.coord = coord;
         this.name = name;
     }
 
 
-    public FavoriteLocation(MyLatLng coord, String name, Date timeStamp){
+    public FavoriteLocation(LatLng coord, String name, Date timeStamp){
         this.coord = coord;
         this.name = name;
         this.date = timeStamp;
@@ -50,7 +50,7 @@ public class FavoriteLocation {
         this.name = name;
     }
 
-    public MyLatLng getCoord() {
+    public LatLng getCoord() {
         return coord;
     }
 
