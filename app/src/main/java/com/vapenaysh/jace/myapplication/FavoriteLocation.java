@@ -7,11 +7,11 @@ import java.util.Date;
 
 /**
  * Created by Matt on 4/29/16.
- * FavoriteLocation class - stores a LatLng and a custom name for the location.
+ * FavoriteLocation class - stores a MyLatLng and a custom name for the location.
  */
 public class FavoriteLocation {
 
-    private LatLng coord;
+    private MyLatLng myLatLng;
     private String name;
     private Date date;
     private short vibeTone;
@@ -20,13 +20,13 @@ public class FavoriteLocation {
     public FavoriteLocation(){}
 
     public FavoriteLocation(LatLng coord, String name){
-        this.coord = coord;
+        this.myLatLng = new MyLatLng(coord.latitude, coord.longitude);
         this.name = name;
     }
 
 
     public FavoriteLocation(LatLng coord, String name, Date timeStamp){
-        this.coord = coord;
+        this.myLatLng = new MyLatLng(coord.latitude, coord.longitude);
         this.name = name;
         this.date = timeStamp;
     }
@@ -50,8 +50,20 @@ public class FavoriteLocation {
         this.name = name;
     }
 
-    public LatLng getCoord() {
-        return coord;
+    public LatLng coordinate() {
+        return new LatLng(myLatLng.getLat(), myLatLng.getLon());
+    }
+
+    public MyLatLng getMyLatLng(){
+        return myLatLng;
+    }
+
+    public void setLat(double l){
+        myLatLng.setLat(l);
+    }
+
+    public void setLon(double l){
+        myLatLng.setLon(l);
     }
 
     public void setVisited(){
@@ -73,7 +85,7 @@ public class FavoriteLocation {
         if (o == null || getClass() != o.getClass()) return false;
 
         FavoriteLocation that = (FavoriteLocation) o;
-        if (coord != null && !coord.equals(that.coord)) return false;
+        if (myLatLng != null && !myLatLng.equals(that.myLatLng)) return false;
 
         return name != null && name.equals(that.name);
 
@@ -81,7 +93,7 @@ public class FavoriteLocation {
 
     @Override
     public String toString() {
-        return name + "&" + coord.latitude + "&" + coord.longitude;
+        return name + "&" + myLatLng.getLat() + "&" + myLatLng.getLon();
     }
 
     @Override

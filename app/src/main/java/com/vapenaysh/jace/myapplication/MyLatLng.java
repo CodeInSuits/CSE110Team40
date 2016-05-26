@@ -18,7 +18,7 @@ public class MyLatLng {
         return lat;
     }
 
-    public double getLong(){
+    public double getLon(){
         return lon;
     }
 
@@ -48,7 +48,14 @@ public class MyLatLng {
     public void setLatLng(double lat, double lon){
         this.lat = lat;
         this.lon = lon;
+    }
 
+    public void setLat(double l){
+        lat = l;
+    }
+
+    public void setLon(double l){
+        lon = l;
     }
 
 }

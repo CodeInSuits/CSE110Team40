@@ -135,7 +135,7 @@ public class GPSTrackerService extends Service implements LocationListener
             //TODO only do below checks if not in visitedLocations
 
             //within .1 miles
-            double distanceBetween = calculateDistanceBetween(latLng, fli.getCoord());
+            double distanceBetween = calculateDistanceBetween(latLng, fli.coordinate());
             Log.v("TESTING LOCATION" + fli.toString(), "distance between: " + distanceBetween);
             if( distanceBetween < .1 && !fli.isVisited() ) //arriving for the first time
             {

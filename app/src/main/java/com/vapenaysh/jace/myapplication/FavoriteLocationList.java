@@ -28,7 +28,6 @@ public class FavoriteLocationList extends Observable{
         FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
         db = locationsDB.getReference(uid + Constants.LOC_URL);
         //database looking at the url for a given user's locations
-        Log.e("HELLO", db.toString());
 
         fll = new ArrayList<>();
 

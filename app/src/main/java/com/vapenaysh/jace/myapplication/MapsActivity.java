@@ -169,7 +169,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //add to local file for storage and current session's location set
             try {
                 favoriteLocationList.writeLocation(fave);
-                savedLocations.add(fave);
 
                 currentMarker.setTitle(name);
                 currentMarker.setSnippet(getSnippetString(currentMarker));
@@ -328,7 +327,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.v("MapsActivity", savedLocations.toString());
 
         for( FavoriteLocation loc : savedLocations){
-            Marker m = mMap.addMarker(new MarkerOptions().position(loc.getCoord()));
+            Marker m = mMap.addMarker(new MarkerOptions().position(loc.coordinate()));
             m.setTitle("SAVED: " + loc.getName());
             m.setSnippet( getSnippetString(m) );
         }
