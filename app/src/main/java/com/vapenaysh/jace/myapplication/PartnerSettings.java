@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class PartnerSettings extends Activity {
 
     private static String name;
@@ -23,9 +26,8 @@ public class PartnerSettings extends Activity {
         TextView number_partner = (TextView)findViewById(R.id.show_phone);
         Button remove_partner = (Button) findViewById(R.id.remove_partner_button);
 
-        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        name = share.getString("partner_name", "N/A");
-        number = share.getString("phone_number", "N/A");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
         name_partner.setText(name);
         number_partner.setText(number);
 

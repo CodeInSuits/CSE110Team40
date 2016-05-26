@@ -41,9 +41,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class LoginPage extends FragmentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
@@ -296,37 +293,57 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
                         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         if (user != null) {
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            final DatabaseReference myRef = database.getReference("users");
                             // Name, email address, and profile photo Url
-                            String name = user.getDisplayName();
-                            String email = user.getEmail();
-                            Uri photoUrl = user.getPhotoUrl();
-
-
-
+                            final String name = user.getDisplayName();
+                            final String email = user.getEmail();
+                            final String firebaseEmail = email.split("@")[0];
+                            final Uri photoUrl = user.getPhotoUrl();
                             // The user's ID, unique to the Firebase project. Do NOT use this value to
                             // authenticate with your backend server, if you have one. Use
                             // FirebaseUser.getToken() instead.
-                            String uid = user.getUid();
+                            final String uid = user.getUid();
+                            final String partnerEmail = "";
+                            final String partnerName = "";
 
 
-                            final String firebaseEmail = email.split("@")[0];
-                            final Map<String, String> userInfo = new HashMap<String, String>();
-                            userInfo.put("name", name);
-                            userInfo.put("email",email);
-                            userInfo.put("photouri",photoUrl.toString());
-                            userInfo.put("useruid", uid);
-                            userInfo.put("partner", "");
-
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            final DatabaseReference myRef = database.getReference("users");
-                            myRef.child(firebaseEmail).addValueEventListener(new ValueEventListener() {
+                            myRef.child(firebaseEmail).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Intent i = new Intent(LoginPage.this, UserCenter.class);
                                     if (!dataSnapshot.exists()) {
-                                        myRef.child(firebaseEmail).setValue(userInfo);
+                                        User nwUser = new User(firebaseEmail, partnerEmail, photoUrl.toString(), uid, name, partnerName);
+                                        myRef.child(firebaseEmail).setValue(nwUser);
+                                        i.putExtra("DisplayName", name);
+                                        i.putExtra("DisplayEmail", firebaseEmail);
+                                        i.putExtra("ImageURL", photoUrl.toString());
+                                        i.putExtra("BackendUID", uid);
+                                        i.putExtra("PartnerEmail", partnerEmail);
+                                        i.putExtra("PartnerName", partnerName);
+                                        Toast.makeText(getBaseContext(), "Welcome to coupletone! " + name, Toast.LENGTH_SHORT).show();
+                                        Log.w(TAG, "Data did not already exist!");
+                                        startActivityForResult(i, RC_SIGN_OUT);
+
                                     }
+                                    else {
+                                        User storedUser = dataSnapshot.getValue(User.class);
+                                        i.putExtra("DisplayName", storedUser.getUserName());
+                                        i.putExtra("DisplayEmail", storedUser.getEmail());
+                                        i.putExtra("ImageURL", storedUser.getPhotoUri());
+                                        i.putExtra("BackendUID", storedUser.getUid());
+                                        i.putExtra("PartnerEmail", storedUser.getPartnerEmail());
+                                        i.putExtra("PartnerName", storedUser.getPartnerName());
+                                        Toast.makeText(getBaseContext(), "Welcome back to coupletone! " + storedUser.getUserName() , Toast.LENGTH_SHORT).show();
+                                        Log.w(TAG, "Data already exists! and "+ storedUser.getUserName());
+                                        startActivityForResult(i, RC_SIGN_OUT);
+
+                                    }
+
+
                                 }
 
                                 @Override
@@ -335,15 +352,6 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
                                 }
                             });
 
-
-                            Intent i = new Intent(LoginPage.this, UserCenter.class);
-                            i.putExtra("DisplayName", name);
-                            i.putExtra("DisplayEmail", firebaseEmail);
-                            i.putExtra("ImageURL", photoUrl);
-                            i.putExtra("BackendUID", uid);
-                            startActivityForResult(i, RC_SIGN_OUT);
-
-                            //Toast.makeText(getApplicationContext(),name + " " + email + " " + uid, Toast.LENGTH_LONG).show();
 
                         }
 
@@ -362,29 +370,6 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
 
 
 
-    /******                        Old signin results handler
-    //log in with google account
-    private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            Toast.makeText(getApplication(),getString(R.string.signed_in_fmt, acct.getDisplayName()), Toast.LENGTH_SHORT).show();
-            
-
-            String idToken = acct.getIdToken();
-            //Toast.makeText(getApplication(),idToken, Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(LoginPage.this, UserCenter.class);
-            startActivityForResult(i, RC_SIGN_OUT);
-
-
-
-
-        } else {
-
-            Toast.makeText(getApplication(),"Authenticated failed!", Toast.LENGTH_SHORT).show();
-        }
-    }******/
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Toast.makeText(getApplicationContext(), "Something wrong", Toast.LENGTH_LONG).show();

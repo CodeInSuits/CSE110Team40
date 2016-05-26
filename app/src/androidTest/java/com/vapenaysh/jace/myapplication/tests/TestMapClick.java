@@ -9,7 +9,7 @@ import com.vapenaysh.jace.myapplication.FavoriteLocation;
 import com.vapenaysh.jace.myapplication.FavoriteLocationList;
 import com.vapenaysh.jace.myapplication.MapsActivity;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * Tests scenarios involving map clicking and added a location with a custom/default name
@@ -124,7 +124,7 @@ public class TestMapClick extends ActivityInstrumentationTestCase2<MapsActivity>
     }
 
     private boolean setContainsLocation(FavoriteLocation loc){
-        HashSet<FavoriteLocation> set = favoriteLocationList.getLocations();
+        ArrayList<FavoriteLocation> set = favoriteLocationList.getLocations();
         return set.contains(loc);
     }
 

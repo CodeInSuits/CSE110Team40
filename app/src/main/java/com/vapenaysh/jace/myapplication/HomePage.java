@@ -124,6 +124,8 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
         String name = share.getString("partner_name", "N/A");
         String number = share.getString("phone_number", "N/A");
 
+
+
         if(name.equals("N/A") || number.equals("N/A")) {
             Toast.makeText(this,"No Partner Found", Toast.LENGTH_LONG).show();
             return true;

@@ -62,7 +62,7 @@ public class TestFavoriteLocation extends TestCase {
 
         LatLng coord = new LatLng(1,1);
         favoriteLocation = new FavoriteLocation(coord, "test");
-        assertEquals(coord, favoriteLocation.getCoord());
+        assertEquals(coord, favoriteLocation.coordinate());
 
     }
 

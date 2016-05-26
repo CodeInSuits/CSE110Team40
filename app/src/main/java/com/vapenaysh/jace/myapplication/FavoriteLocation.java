@@ -19,6 +19,14 @@ public class FavoriteLocation {
 
     public FavoriteLocation(){}
 
+    public short getVibeTone() {
+        return vibeTone;
+    }
+
+    public void setVibeTone(short vibeTone) {
+        this.vibeTone = vibeTone;
+    }
+
     public FavoriteLocation(LatLng coord, String name){
         this.myLatLng = new MyLatLng(coord.latitude, coord.longitude);
         this.name = name;

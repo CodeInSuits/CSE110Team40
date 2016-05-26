@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Phone Number:"
+        android:text="Email Address:"
         android:textStyle="bold"
         android:id="@+id/textView4"
         android:layout_centerVertical="true"
@@ -67,6 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/par_phone"
+        android:inputType="textEmailAddress"
         android:layout_below="@+id/textView4"
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/par_name" />
