@@ -1,7 +1,5 @@
 package com.vapenaysh.jace.myapplication;
 
-import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Calendar;
@@ -13,19 +11,21 @@ import java.util.Date;
  */
 public class FavoriteLocation {
 
-    private LatLng coord;
+    private MyLatLng coord;
     private String name;
     private Date date;
     private short vibeTone;
     private boolean visited = false;
 
-    public FavoriteLocation(LatLng coord, String name){
+    public FavoriteLocation(){}
+
+    public FavoriteLocation(MyLatLng coord, String name){
         this.coord = coord;
         this.name = name;
     }
 
 
-    public FavoriteLocation(LatLng coord, String name, Date timeStamp){
+    public FavoriteLocation(MyLatLng coord, String name, Date timeStamp){
         this.coord = coord;
         this.name = name;
         this.date = timeStamp;
@@ -50,7 +50,7 @@ public class FavoriteLocation {
         this.name = name;
     }
 
-    public LatLng getCoord() {
+    public MyLatLng getCoord() {
         return coord;
     }
 
@@ -73,8 +73,6 @@ public class FavoriteLocation {
         if (o == null || getClass() != o.getClass()) return false;
 
         FavoriteLocation that = (FavoriteLocation) o;
-        Log.v("EQUALS NAME", "" + this.getName().equals(that.getName()));
-
         if (coord != null && !coord.equals(that.coord)) return false;
 
         return name != null && name.equals(that.name);

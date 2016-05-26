@@ -31,13 +31,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Observable;
+import java.util.Observer;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMapClickListener,
-        GoogleMap.OnMarkerClickListener
+        GoogleMap.OnMarkerClickListener,
+        Observer
 
 {
 
@@ -47,7 +49,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private ArrayList<Marker> searchMarkers = new ArrayList<Marker>();
 
-    private HashSet<FavoriteLocation> savedLocations;
+    private ArrayList<FavoriteLocation> savedLocations;
 
     private TextView namePrompt;
 
@@ -74,9 +76,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         namePromptLayout.setVisibility(View.GONE);
 
         favoriteLocationList = new FavoriteLocationList("123"); //TODO: This user's username
+        favoriteLocationList.addObserver(this);
 
-        //previously saved, retrieved from the file
-        savedLocations = favoriteLocationList.getLocations();
     }
 
 
@@ -117,7 +118,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
-        addSavedLocationMarkers();
+        //Now called after FavoriteLocationList notifies observers
+        //addSavedLocationMarkers();
 
         moveMap(null);
 
@@ -177,6 +179,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String saved = "Save location: Name: " + name + " at Location: " + location.latitude + ", " + location.longitude;
                 Toast.makeText(getApplicationContext(),saved,Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
+                Log.e("MapsActivity", e.toString());
                 namePrompt.setText(R.string.problem_saving);
                 return;
             }
@@ -320,6 +323,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * add markers for all the previous saved locations so the user knows where they already added
      */
     private void addSavedLocationMarkers(){
+        //previously saved, retrieved from the file
+        savedLocations = favoriteLocationList.getLocations();
+        Log.v("MapsActivity", savedLocations.toString());
+
         for( FavoriteLocation loc : savedLocations){
             Marker m = mMap.addMarker(new MarkerOptions().position(loc.getCoord()));
             m.setTitle("SAVED: " + loc.getName());
@@ -354,5 +361,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double lat = (double)Math.round(latLng.latitude * 1000d) / 1000d;
         double lon = (double)Math.round(latLng.longitude * 1000d) / 1000d;
         return "Latitude: " + lat + "/Longitude: " + lon;
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        addSavedLocationMarkers();
     }
 }

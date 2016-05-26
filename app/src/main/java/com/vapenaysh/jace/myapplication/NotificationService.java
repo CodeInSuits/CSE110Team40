@@ -11,7 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Date;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 /**
  * Created by Matt on 5/23/16.
@@ -37,7 +37,7 @@ public class NotificationService extends IntentService {
                 partnerDb.addValueEventListener(new com.google.firebase.database.ValueEventListener() {
                     @Override
                     public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                        HashSet<FavoriteLocation> data = (HashSet<FavoriteLocation>) dataSnapshot.getValue();
+                        ArrayList<FavoriteLocation> data = (ArrayList<FavoriteLocation>) dataSnapshot.getValue();
 
                         FavoriteLocation latest = getMostRecentlyVisited(data);
                         NotificationCompat.Builder mBuilder = null;
@@ -80,7 +80,7 @@ public class NotificationService extends IntentService {
      * @param set
      * @return
      */
-    private FavoriteLocation getMostRecentlyVisited(HashSet<FavoriteLocation> set) {
+    private FavoriteLocation getMostRecentlyVisited(ArrayList<FavoriteLocation> set) {
         FavoriteLocation latest = null; //the location last visited
         Date mostRecent = new Date(Long.MAX_VALUE);
         for (FavoriteLocation fl : set) {

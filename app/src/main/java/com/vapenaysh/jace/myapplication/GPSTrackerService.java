@@ -17,12 +17,12 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Date;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class GPSTrackerService extends Service implements LocationListener
 {
 
-    private HashSet<FavoriteLocation> fll;
+    private ArrayList<FavoriteLocation> fll;
     protected LocationManager locManager;
     private Context context;
     private static final long TIME = 60*1000; //ONE MINUTE

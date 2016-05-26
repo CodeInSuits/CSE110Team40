@@ -6,17 +6,19 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * Created by Matt on 5/24/16.
  */
-public class FavoriteLocationList {
+public class FavoriteLocationList extends Observable{
     private DatabaseReference db;
-    private HashSet<FavoriteLocation> fll;
-    private static final String TAG= "LocationStorageMgr";
+    private ArrayList<FavoriteLocation> fll;
+    private static final String TAG= "FavoriteLocationList";
 
     /**
      *
@@ -26,16 +28,27 @@ public class FavoriteLocationList {
         FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
         db = locationsDB.getReference(uid + Constants.LOC_URL);
         //database looking at the url for a given user's locations
+        Log.e("HELLO", db.toString());
 
-        fll = new HashSet<>();
+        fll = new ArrayList<>();
 
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                fll = (HashSet<FavoriteLocation>) dataSnapshot.getValue();
-                Log.d("NOTE", "GOT LOCATIONS FROM FIREBASE FOR USER" + uid);
+                Object o = dataSnapshot.getValue();
+                if(o instanceof ArrayList) { //error checking
+                    GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {};
+                    fll = dataSnapshot.getValue(t);
+                    Log.d("NOTE", "Locations: " + fll.toString());
+                    setChanged();
+                    notifyObservers();
+                }
+                else{
+                    fll = new ArrayList<>();
+                }
+                Log.d("NOTE", "GOT LOCATIONS FROM FIREBASE FOR USER " + uid);
             }
 
             @Override
@@ -48,19 +61,26 @@ public class FavoriteLocationList {
     }
 
     public boolean writeLocation(FavoriteLocation favoriteLocation){
-        fll.add(favoriteLocation);
+        int i = fll.indexOf(favoriteLocation);
+        if(i != -1){
+            fll.set(i, favoriteLocation); //overwrite the previous one with an updated version
+        }
+        else {
+            fll.add(favoriteLocation);
+        }
+
         db.setValue(fll);
         Log.v(TAG, "Added location " + favoriteLocation + " to firebase");
         return true;
     }
 
-    public HashSet<FavoriteLocation> getLocations(){
+    public ArrayList<FavoriteLocation> getLocations(){
         return fll;
     }
 
 
     public void removeAllLocations(){
-        fll = new HashSet<>();
+        fll = new ArrayList<>();
         db.setValue(fll);
         Log.v(TAG, "Deleted all locations");
     }

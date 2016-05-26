@@ -129,6 +129,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
         mAnimationSet.start();
 
 
+
         // / Customize sign-in button. The sign-in button can be displayed in
         // multiple sizes and color schemes. It can also be contextually
         // rendered based on the requested scopes. For example. a red button may
