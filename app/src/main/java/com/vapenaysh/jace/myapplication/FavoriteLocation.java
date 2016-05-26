@@ -15,6 +15,23 @@ public class FavoriteLocation {
     private long timeStamp;
     private short vibeTone;
 
+    public FavoriteLocation() {
+    }
+
+    public void setCoord(LatLng coord) {
+        this.coord = coord;
+    }
+
+    public short getVibeTone() {
+        return vibeTone;
+    }
+
+
+
+    public void setVibeTone(short vibeTone) {
+        this.vibeTone = vibeTone;
+    }
+
     public FavoriteLocation(LatLng coord, String name){
         this.coord = coord;
         this.name = name;

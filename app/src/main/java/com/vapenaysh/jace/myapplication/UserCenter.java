@@ -3,7 +3,8 @@ package com.vapenaysh.jace.myapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +19,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,8 +49,15 @@ public class UserCenter extends AppCompatActivity {
     private CircleImageView profile;
     private TextView displayName;
     private TextView displayEmail;
-    private String backendUID;
     private static final String TAG = "UserCenter";
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private String userEmail;
+    private String partnerEmail;
+    private String backendUID;
+    private String userName;
+    private String partnerName;
+    private String imageUri;
+
 
 
     @Override
@@ -49,23 +68,15 @@ public class UserCenter extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         //get content from login page
-        String toName = getIntent().getStringExtra("DisplayName");;
-        String toEmail = getIntent().getStringExtra("DisplayEmail");;
+        userName = getIntent().getStringExtra("DisplayName");
+        userEmail = getIntent().getStringExtra("DisplayEmail");
         backendUID = getIntent().getStringExtra("BackendUID");
-
-
-        //sToast.makeText(getApplicationContext(),"WTF " + toName + " " + toEmail + " " + backendUID, Toast.LENGTH_LONG).show();
-
-        Uri toImage = getIntent().getParcelableExtra("ImageURL");
-        Toast.makeText(getApplicationContext(), toImage.toString(), Toast.LENGTH_SHORT).show();
-        /*
-        Bitmap circleDisplay = null;
-        try {
-            circleDisplay = MediaStore.Images.Media.getBitmap(this.getContentResolver(), toImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+        partnerEmail = getIntent().getStringExtra("PartnerEmail");
+        partnerName = getIntent().getStringExtra("PartnerName");
+        imageUri = getIntent().getStringExtra("ImageURL");
+        Log.d(TAG, "ImageUrl" + imageUri);
 
 
         //Initializing NavigationView
@@ -77,15 +88,16 @@ public class UserCenter extends AppCompatActivity {
         displayName = (TextView) v.findViewById(R.id.username);
         displayEmail = (TextView) v.findViewById(R.id.email);
 
-        //profile.setImageBitmap(circleDisplay);
-
-        Log.d(TAG, "ImageUrl" + toImage.toString());
 
 
-        displayEmail.setText(toEmail + "@gmail.com");
-        displayName.setText(toName);
 
-        if(!isSingle()){
+        displayEmail.setText(userEmail + "@gmail.com");
+        displayName.setText(userName);
+        Picasso.with(getApplicationContext()).load(imageUri).into(profile);
+
+        //new ImageLoadTask(imageUri, profile).execute();
+
+        if(!isSingle(userEmail)){
             setUpPartnerSettings();
             //WARNING: UNTESTED CODE
             Intent i = new Intent(this, GPSTrackerService.class);
@@ -128,7 +140,7 @@ public class UserCenter extends AppCompatActivity {
                     // For rest of the options we just show a toast on click
 
                     case R.id.partnersetting:
-                        if (isSingle()) {
+                        if (isSingle(userEmail)) {
                             Intent i2 = new Intent(UserCenter.this, AddPartner.class);
                             i2.putExtra("FavoriteLocations", locationsList);
                             startActivity(i2);
@@ -186,36 +198,48 @@ public class UserCenter extends AppCompatActivity {
     }
 
 
-
-    // isSingle method without making toast
-    public boolean isSingleForTest(String parName, String parNumber){
-
-        if(parName.equals("N/A") || parNumber.equals("N/A")) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-
     // Checks if current user is single, and reports information to UI and return value.
-    public boolean isSingle(){
+    public boolean isSingle(String userPath){
+        DatabaseReference myRef = database.getReference("users");
+        myRef.child(userPath).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User storedUser = dataSnapshot.getValue(User.class);
+                partnerEmail = storedUser.getPartnerEmail();
+                Toast.makeText(getBaseContext(), "Partner email is " + partnerEmail, Toast.LENGTH_SHORT).show();
+            }
 
-        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        String name = share.getString("partner_name", "N/A");
-        String number = share.getString("phone_number", "N/A");
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-        if(name.equals("N/A") || number.equals("N/A")) {
-            Toast.makeText(this,"No Partner Found", Toast.LENGTH_LONG).show();
+            }
+        });
+        if(partnerEmail.equals("")){
             return true;
         }
-        else {
-            Toast.makeText(this,"Partner Found", Toast.LENGTH_LONG).show();
+        else{
             return false;
         }
     }
 
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            Log.e("src", src);
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            Log.e("Bitmap","returned");
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("Exception",e.getMessage());
+            return null;
+        }
+    }
     /**
      * delete the locations file of all saved locations
      */
