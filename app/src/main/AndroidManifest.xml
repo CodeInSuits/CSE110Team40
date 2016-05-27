@@ -55,9 +55,6 @@
                 android:value=".LoginPage" />
         </activity>
         <activity
-            android:name=".HomePage"
-            android:label="@string/app_name" />
-        <activity
             android:name=".PartnerSettings"
             android:label="@string/app_name" />
 

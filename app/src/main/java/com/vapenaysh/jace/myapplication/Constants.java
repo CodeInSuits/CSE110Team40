@@ -13,4 +13,7 @@ public class Constants {
 
     public final static String DISPLAY_EMAIL = "DisplayEmail";
 
+    public final static String DATABASE_PARTNER_KEY = "partnerEmail";
+    public final static String DATABASE_PARTNER_NAME = "partnerName";
+
 }

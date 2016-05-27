@@ -31,8 +31,12 @@
         android:text="Please Enter Your Partner&apos;s Information Below:"
         android:id="@+id/textView3"
         android:layout_below="@+id/title_add_par"
+        android:layout_marginTop="8dp"
         android:layout_alignParentStart="true"
-        android:paddingTop="@dimen/activity_horizontal_margin" />
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:paddingTop="@dimen/activity_horizontal_margin"
+        android:paddingBottom="16dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -54,18 +58,21 @@
         android:id="@+id/textView4"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
-        android:paddingTop="5dp" />
+        android:paddingTop="24dp" />
 
     <EditText
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:layout_height="48dp"
         android:id="@+id/par_name"
+        android:layout_marginBottom="16dp"
         android:layout_below="@+id/textView"
         android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:background="#ffffff"
         android:id="@+id/par_phone"
         android:inputType="textEmailAddress"
         android:layout_below="@+id/textView4"
@@ -92,7 +99,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/par_email" />
     -->
-
+<!--
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -112,16 +119,15 @@
         android:textStyle="bold"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/get_self_id"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true" />-->
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Partner"
         android:id="@+id/add_par"
-        android:layout_alignTop="@+id/get_self_id"
-        android:layout_alignEnd="@+id/self_regId"
-        android:layout_above="@+id/self_regId" />
+        android:layout_below="@+id/par_phone"
+        android:layout_alignEnd="@+id/par_phone" />
 
 
 </RelativeLayout>

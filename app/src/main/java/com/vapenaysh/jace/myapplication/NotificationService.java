@@ -19,6 +19,7 @@ import java.util.ArrayList;
  */
 public class NotificationService extends IntentService {
     private DatabaseReference partnerDb;
+    private ArrayList<FavoriteLocation> visitedList;
 
     public NotificationService() {
         super("notification service");
@@ -27,10 +28,11 @@ public class NotificationService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.v("NotificationService", "Service Started");
+        visitedList = new ArrayList<>();
 
         if (intent != null) {
             synchronized (this) {
-                String partner = intent.getStringExtra(Constants.PARTNER_KEY);
+                String partner = intent.getStringExtra(Constants.PARTNER_EMAIL);
                 FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
                 partnerDb = locationsDB.getReference(partner + Constants.LOC_URL);
 
@@ -44,19 +46,23 @@ public class NotificationService extends IntentService {
                         FavoriteLocation latest = getMostRecentlyVisited(data);
                         NotificationCompat.Builder mBuilder = null;
 
+                        clearListIfAfterCutoff();
+
                         //ARRIVED AT A LOCATION
-                        if (latest != null && latest.isVisited() && latest.afterCutoffTime() ) {
+                        if (latest != null && !visitedList.contains(latest) && latest.afterCutoffTime() ) {
+                            visitedList.add(latest);
                             mBuilder = new NotificationCompat.Builder(getApplicationContext())
                                             .setSmallIcon(R.drawable.heart2)
                                             .setContentTitle("Arrival")
                                             .setContentText("Partner arrived at " + latest.getName());
                         }
                         //DEPARTED FROM A LOCATION
-                        else if(latest != null && !latest.isVisited() && latest.afterCutoffTime() ){
+                        else if(latest != null && visitedList.contains(latest) ){
                             mBuilder = new NotificationCompat.Builder(getApplicationContext())
                                     .setSmallIcon(R.drawable.heart2)
                                     .setContentTitle("Departure")
                                     .setContentText("Partner departed from " + latest.getName());
+                            visitedList.remove(latest);
                         }
 
                         //display the notification
@@ -97,6 +103,19 @@ public class NotificationService extends IntentService {
         }
 
         return latest;
+    }
+
+    /**
+     * Go through visited list, removing locations if not after cutoff time
+     */
+    private void clearListIfAfterCutoff(){
+        if(visitedList.size() == 0) return;
+
+        for(FavoriteLocation favLoc : visitedList ){
+            if(!favLoc.afterCutoffTime()) {
+                visitedList.remove(favLoc);
+            }
+        }
     }
 }
 

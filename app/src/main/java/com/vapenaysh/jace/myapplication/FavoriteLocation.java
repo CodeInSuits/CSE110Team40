@@ -14,16 +14,16 @@ public class FavoriteLocation {
     private MyLatLng myLatLng;
     private String name;
     private Date date;
-    private short vibeTone;
+    private int vibeTone;
     private boolean visited = false;
 
     public FavoriteLocation(){}
 
-    public short getVibeTone() {
+    public int getVibeTone() {
         return vibeTone;
     }
 
-    public void setVibeTone(short vibeTone) {
+    public void setVibeTone(int vibeTone) {
         this.vibeTone = vibeTone;
     }
 

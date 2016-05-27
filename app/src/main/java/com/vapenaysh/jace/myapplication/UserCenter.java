@@ -145,7 +145,9 @@ public class UserCenter extends AppCompatActivity {
                             i2.putExtra(Constants.DISPLAY_EMAIL, userEmail);
                             startActivity(i2);
                         } else {
-                            startActivity(new Intent(UserCenter.this, PartnerSettings.class));
+                            Intent i2 = new Intent(UserCenter.this, PartnerSettings.class);
+                            i2.putExtra(Constants.DISPLAY_EMAIL, userEmail);
+                            startActivity(i2);
                         }
                         break;
 
