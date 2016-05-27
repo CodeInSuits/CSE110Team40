@@ -27,7 +27,7 @@ public class PartnerSettings extends Activity {
         Button remove_partner = (Button) findViewById(R.id.remove_partner_button);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
+        DatabaseReference myRef = database.getReference("user");
         name_partner.setText(name);
         number_partner.setText(number);
 

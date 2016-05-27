@@ -1,10 +1,6 @@
 package com.vapenaysh.jace.myapplication;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -25,11 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -222,24 +213,6 @@ public class UserCenter extends AppCompatActivity {
         }
     }
 
-
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            Log.e("src", src);
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Log.e("Bitmap","returned");
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("Exception",e.getMessage());
-            return null;
-        }
-    }
     /**
      * delete the locations file of all saved locations
      */
@@ -250,11 +223,8 @@ public class UserCenter extends AppCompatActivity {
 
     //Creates sharedpreferences from app data
     private void setUpPartnerSettings(){
-        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        String name = share.getString("partner_name", "N/A");
-        String number = share.getString("phone_number", "N/A");
-        PartnerSettings.setNumber(number);
-        PartnerSettings.setName(name);
+        PartnerSettings.setNumber(partnerEmail);
+        PartnerSettings.setName(partnerName);
 
     }
 
