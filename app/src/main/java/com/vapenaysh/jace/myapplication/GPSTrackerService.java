@@ -29,7 +29,7 @@ public class GPSTrackerService extends Service implements LocationListener
     private static final float DISTANCE = 50;
 
     //when user is within location limit, add to firebase
-    private FavoriteLocationList partnersLocManager;
+    private FavoriteLocationList myLocManager;
 
     private final IBinder GPSBinder = new LocalBinder();
 
@@ -48,9 +48,9 @@ public class GPSTrackerService extends Service implements LocationListener
         Toast.makeText(getApplicationContext(), "Tracking started", Toast.LENGTH_SHORT).show();
         this.context = getApplicationContext();
 
-        String partner = i.getStringExtra(Constants.PARTNER_KEY);
-        partnersLocManager = new FavoriteLocationList(partner); //TODO: MAKE partner uid getter
-        fll = partnersLocManager.getLocations();
+        String user = i.getStringExtra(Constants.DISPLAY_EMAIL);
+        myLocManager = new FavoriteLocationList(user);
+        fll = myLocManager.getLocations();
 
         setupLocationTracking();
         return 0;
@@ -129,11 +129,9 @@ public class GPSTrackerService extends Service implements LocationListener
         Log.v("GPSTrackerService", "Location changed");
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         //check if user is close to a favorite location
-        fll = partnersLocManager.getLocations();
+        fll = myLocManager.getLocations();
         for (FavoriteLocation fli: fll)
         {
-            //TODO only do below checks if not in visitedLocations
-
             //within .1 miles
             double distanceBetween = calculateDistanceBetween(latLng, fli.coordinate());
             Log.v("TESTING LOCATION" + fli.toString(), "distance between: " + distanceBetween);
@@ -144,7 +142,7 @@ public class GPSTrackerService extends Service implements LocationListener
 
                 //push to firebase
                 Log.d("NOTIFICATION", "FOUND FAVORITE LOCATION AT " + latLng.toString());
-                partnersLocManager.writeLocation(fli);
+                myLocManager.writeLocation(fli);
                 //Toast.makeText(getApplicationContext(), "Visited a favorite location", Toast.LENGTH_SHORT).show();
             }
             //departing
@@ -153,7 +151,7 @@ public class GPSTrackerService extends Service implements LocationListener
                 fli.clearVisited();
                 Log.d("NOTIFICATION", "DEPARTING " + fli.getName() );
 
-                partnersLocManager.writeLocation(fli);
+                myLocManager.writeLocation(fli);
             }
 
         }
