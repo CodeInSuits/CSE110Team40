@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vapenaysh.jace.myapplication" >
+    package="com.vapenaysh.jace.myapplication">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -27,7 +27,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:name=".MyApplication">
         <activity
             android:name=".CreateAccount"
             android:label="@string/title_activity_create_account" />
@@ -48,14 +49,11 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LoginPage" />
         </activity>
-        <activity
-            android:name=".HomePage"
-            android:label="@string/app_name" />
         <activity
             android:name=".PartnerSettings"
             android:label="@string/app_name" />
@@ -63,12 +61,16 @@
         <service
             android:name=".GPSTrackerService"
             android:enabled="true"
-            android:exported="true" >
-        </service>
+            android:exported="true"></service>
+
+        <service
+            android:name=".NotificationService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <activity
             android:name=".LoginPage"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,41 +79,26 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".GcmReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-
-                <category android:name="com.vapenaysh.jace.myapplication" />
-            </intent-filter>
-        </receiver>
-
-        <service android:name=".GcmMessageHandler" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".UserCenter"
-            android:label="@string/title_activity_user_center" >
-        </activity>
+            android:label="@string/title_activity_user_center"></activity>
         <activity
             android:name=".GlobalSettings"
             android:label="@string/title_activity_global_settings"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".Partner_Favorite_Location"
             android:label="@string/title_activity_partner__favorite__location"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".PartnerFavoriteLocation"
             android:label="@string/title_activity_partner_favorite_location"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme"></activity>
+
     </application>
 
 </manifest>

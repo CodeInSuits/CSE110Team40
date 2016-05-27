@@ -3,16 +3,20 @@ package com.vapenaysh.jace.myapplication;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 //import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -28,7 +32,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
     private EditText phone;
     private static String username;
     private static String userphone;
-    private FavoriteLocationList favoriteLocationList;
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,27 +40,25 @@ public class AddPartner extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_activity_add_partner);
 
         //Instantiate UI widgets
-        btnRegId = (Button) findViewById(R.id.get_self_id);
+        //btnRegId = (Button) findViewById(R.id.get_self_id);
         addPar = (Button) findViewById(R.id.add_par);
-        tvRegId = (TextView)findViewById(R.id.self_regId);
+        //tvRegId = (TextView)findViewById(R.id.self_regId);
 
-        btnRegId.setOnClickListener(this);
+        //btnRegId.setOnClickListener(this);
         addPar.setOnClickListener(this);
         //tvRegId.setText(id);
 
         uname = (EditText) findViewById(R.id.par_name);
         phone = (EditText) findViewById(R.id.par_phone);
 
-        favoriteLocationList = getIntent().getParcelableExtra("FavoriteLocations");
+        userEmail = getIntent().getStringExtra(Constants.DISPLAY_EMAIL);
 
     }
 
     //Put partner name and phone number into Android's shared preferences for the application.
     public void addPar(){
-        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = share.edit();
-        String name = uname.getText().toString();
-        String phoneNumber = phone.getText().toString();
+        final String name = uname.getText().toString();
+        final String phoneNumber = phone.getText().toString().split("@")[0];
 
         // empty suit checking
         // if the text are not empty, then add the partner
@@ -74,57 +76,51 @@ public class AddPartner extends Activity implements View.OnClickListener {
             dialog.show();
         }
         else{
-            editor.putString("partner_name",name);
-            PartnerSettings.setName(name);
-            username = name;
+            final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference partnersDatabase = firebaseDatabase.getReference("users").child(phoneNumber);
+            partnersDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(!dataSnapshot.exists()){
+                        //partner does not exist in database yet
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(AddPartner.this);
+                        dialog.setTitle("Partner Does Not Exist");
+                        dialog.setMessage("No match for " + phoneNumber);
+                        dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
 
-            editor.putString("phone_number",phoneNumber);
-            PartnerSettings.setNumber(phoneNumber);
-            userphone = phoneNumber;
+                            }
+                        });
+                        dialog.show();
+                    }
+                    else { //make partner connection
+                        DatabaseReference userDatabase = firebaseDatabase.getReference("users").child(userEmail);
+                        userDatabase.child(Constants.DATABASE_PARTNER_KEY).setValue(phoneNumber);
+                        userDatabase.child(Constants.DATABASE_PARTNER_NAME).setValue(name);
+                        Intent i = new Intent(AddPartner.this, UserCenter.class);
+                        i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
+                        startActivity(i);
+                        Toast.makeText(getApplicationContext(), "Partner added", Toast.LENGTH_LONG).show();
 
-            startTracking();
 
-            editor.commit();
-            Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-    }
-
-
-
-
-    //Gets the unique regID for the current user from gcm. Runs on a different thread.
-    public void getRegId() {
-        /*
-        new AsyncTask<Void, Void, String>() {
-
-            @Override
-            protected String doInBackground(Void... params) {
-                String msg = "";
-                try {
-                    if(gcm == null) {
-                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
                     }
 
-                    regid = gcm.register(PROJECT_NUMBER);
-                    msg = "Device registered, registration ID=" + regid;
-                    Log.i("GCM", "!!!!! " + regid);
-                    id = regid;
-
-                } catch(IOException ex) {
-                    msg = "Error: " + ex.getMessage();
-                    id = msg;
                 }
 
-                return msg;
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            protected void onPostExecute(String msg){
-                tvRegId.setText(id);
-            }
+                }
+            });
 
-        }.execute(null, null, null);*/
+
+            startTracking();
+            startNotificationService();
+
+            Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -132,9 +128,6 @@ public class AddPartner extends Activity implements View.OnClickListener {
     public void onClick(View v){
 
         switch (v.getId()) {
-            case R.id.get_self_id:
-                getRegId();
-                break;
             case R.id.add_par:
                 addPar();
                 break;
@@ -155,8 +148,14 @@ public class AddPartner extends Activity implements View.OnClickListener {
     // method for starting the server for tracking
     private void startTracking(){
         Intent i = new Intent(this, GPSTrackerService.class);
-        i.putExtra("FavoriteLocations", favoriteLocationList);
+        i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
         startService(i);
+    }
+
+    private void startNotificationService(){
+        Intent notifsIntent = new Intent(this, NotificationService.class);
+        notifsIntent.putExtra(Constants.PARTNER_EMAIL, PartnerSettings.getNumber());
+        startService(notifsIntent);
     }
 
 

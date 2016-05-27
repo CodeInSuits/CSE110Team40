@@ -126,6 +126,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
         mAnimationSet.start();
 
 
+
         // / Customize sign-in button. The sign-in button can be displayed in
         // multiple sizes and color schemes. It can also be contextually
         // rendered based on the requested scopes. For example. a red button may
@@ -235,14 +236,7 @@ public class LoginPage extends FragmentActivity implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()){
 
-            /*
-            case R.id.login:
-                EditText uname = (EditText) findViewById(R.id.email);
-                EditText passw = (EditText) findViewById(R.id.password);
-                //TODO: login logic
-                startActivity(new Intent(LoginPage.this, HomePage.class));
-                break;
-            case R.id.register:
+            /*case R.id.register:
                 startActivity(new Intent(LoginPage.this, CreateAccount.class));
                 break;*/
             case R.id.google_signin:

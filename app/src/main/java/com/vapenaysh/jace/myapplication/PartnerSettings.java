@@ -1,15 +1,22 @@
 package com.vapenaysh.jace.myapplication;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Map;
 
 public class PartnerSettings extends Activity {
 
@@ -22,27 +29,41 @@ public class PartnerSettings extends Activity {
         setContentView(R.layout.activity_remove);
 
         //Instantiate widgets
-        TextView name_partner = (TextView) findViewById(R.id.show_name);
-        TextView number_partner = (TextView)findViewById(R.id.show_phone);
+        final TextView name_partner = (TextView) findViewById(R.id.show_name);
+        final TextView number_partner = (TextView)findViewById(R.id.show_phone);
         Button remove_partner = (Button) findViewById(R.id.remove_partner_button);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("user");
-        name_partner.setText(name);
-        number_partner.setText(number);
+        final String userEmail = getIntent().getStringExtra(Constants.DISPLAY_EMAIL);
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference("users");
+        myRef.child(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<Map<String, String>> t = new GenericTypeIndicator<Map<String, String>>() {
+                };
+                Map<String, String> map = dataSnapshot.getValue(t);
+                String name = map.get(Constants.DATABASE_PARTNER_NAME);
+                String email = map.get(Constants.DATABASE_PARTNER_KEY);
+                name_partner.setText(name);
+                number_partner.setText(email);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         remove_partner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: on removePartner, stop the service
-                SharedPreferences remove = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-                SharedPreferences.Editor removeEditor = remove.edit();
-                removeEditor.remove("partner_name");
-                removeEditor.remove("phone_number");
-                name = "N/A";
-                number = "N/A";
-                removeEditor.commit();
-                finish();
+                myRef.child(userEmail).child(Constants.DATABASE_PARTNER_NAME).setValue("");
+                myRef.child(userEmail).child(Constants.DATABASE_PARTNER_KEY).setValue("");
+                Log.v("PartnerSettings", "Removed partner");
+                Toast.makeText(getApplicationContext(), "Partner removed", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(PartnerSettings.this, UserCenter.class);
+                i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
+                startActivity(i);
             }
         });
 
