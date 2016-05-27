@@ -99,7 +99,7 @@ public class UserCenter extends AppCompatActivity {
             setUpPartnerSettings();
             //WARNING: UNTESTED CODE
             Intent i = new Intent(this, GPSTrackerService.class);
-            i.putExtra(Constants.PARTNER_KEY, PartnerSettings.getNumber()); //TODO: username, not number
+            i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
             startService(i);
 
             startNotificationService();
@@ -128,6 +128,7 @@ public class UserCenter extends AppCompatActivity {
                     //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.addmap:
                         Intent i = new Intent(UserCenter.this, MapsActivity.class);
+                        i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
                         startActivity(i);
                         //Toast.makeText(getApplicationContext(), "Map Selected", Toast.LENGTH_SHORT).show();
                         //ContentFragment fragment = new ContentFragment();
@@ -141,6 +142,7 @@ public class UserCenter extends AppCompatActivity {
                     case R.id.partnersetting:
                         if (isSingle(userEmail)) {
                             Intent i2 = new Intent(UserCenter.this, AddPartner.class);
+                            i2.putExtra(Constants.DISPLAY_EMAIL, userEmail);
                             startActivity(i2);
                         } else {
                             startActivity(new Intent(UserCenter.this, PartnerSettings.class));
@@ -242,7 +244,7 @@ public class UserCenter extends AppCompatActivity {
      * delete the locations file of all saved locations
      */
     public void removeAllLocations(){
-        FavoriteLocationList locationsList = new FavoriteLocationList(""); //TODO: this user's username
+        FavoriteLocationList locationsList = new FavoriteLocationList(userEmail);
         locationsList.removeAllLocations();
         Toast.makeText(getApplicationContext(), "Removed all saved favorite locations.", Toast.LENGTH_SHORT).show();
     }
@@ -284,7 +286,7 @@ public class UserCenter extends AppCompatActivity {
 
     private void startNotificationService(){
         Intent notifsIntent = new Intent(this, NotificationService.class);
-        notifsIntent.putExtra(Constants.PARTNER_KEY, PartnerSettings.getNumber());
+        notifsIntent.putExtra(Constants.PARTNER_KEY, partnerEmail );
         startService(notifsIntent);
     }
 }

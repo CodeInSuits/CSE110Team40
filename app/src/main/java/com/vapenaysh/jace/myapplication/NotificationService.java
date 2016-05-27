@@ -9,6 +9,7 @@ import android.util.Log;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.Date;
 import java.util.ArrayList;
@@ -37,7 +38,8 @@ public class NotificationService extends IntentService {
                 partnerDb.addValueEventListener(new com.google.firebase.database.ValueEventListener() {
                     @Override
                     public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                        ArrayList<FavoriteLocation> data = (ArrayList<FavoriteLocation>) dataSnapshot.getValue();
+                        GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {};
+                        ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
 
                         FavoriteLocation latest = getMostRecentlyVisited(data);
                         NotificationCompat.Builder mBuilder = null;
@@ -81,6 +83,10 @@ public class NotificationService extends IntentService {
      * @return
      */
     private FavoriteLocation getMostRecentlyVisited(ArrayList<FavoriteLocation> set) {
+        if(set == null){
+            return null;
+        }
+
         FavoriteLocation latest = null; //the location last visited
         Date mostRecent = new Date(Long.MAX_VALUE);
         for (FavoriteLocation fl : set) {

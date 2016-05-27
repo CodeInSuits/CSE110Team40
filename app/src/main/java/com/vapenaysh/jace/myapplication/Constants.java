@@ -9,6 +9,8 @@ public class Constants {
     public final static String FIREBASE_URL = "https://coupletone.firebaseio.com/";
 
     public final static String LOC_URL = "_locations";
-    public final static String PARTNER_KEY = "Partner12345";
+    public final static String PARTNER_EMAIL = "PartnerEmail";
+
+    public final static String DISPLAY_EMAIL = "DisplayEmail";
 
 }

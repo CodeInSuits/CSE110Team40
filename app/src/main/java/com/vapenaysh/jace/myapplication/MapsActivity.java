@@ -75,7 +75,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         namePromptLayout = (RelativeLayout) findViewById(R.id.custom_name_layout);
         namePromptLayout.setVisibility(View.GONE);
 
-        favoriteLocationList = new FavoriteLocationList("123"); //TODO: This user's username
+        String user = getIntent().getStringExtra(Constants.DISPLAY_EMAIL);
+        favoriteLocationList = new FavoriteLocationList(user);
         favoriteLocationList.addObserver(this);
 
     }
