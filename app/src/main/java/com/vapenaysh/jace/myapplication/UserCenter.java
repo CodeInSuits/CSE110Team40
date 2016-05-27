@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +19,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -36,11 +45,19 @@ public class UserCenter extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-    private FavoriteLocationList locationsList;
     private CircleImageView profile;
     private TextView displayName;
     private TextView displayEmail;
+    private static final String TAG = "UserCenter";
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private String userEmail;
+    private String partnerEmail;
     private String backendUID;
+    private String userName;
+    private String partnerName;
+    private String imageUri;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,61 +67,43 @@ public class UserCenter extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         //get content from login page
-        String toName;
-        String toEmail;
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                toName = null;
-                toEmail = null;
-                backendUID = null;
-            } else {
-                toName = extras.getString("DisplayName");
-                toEmail = extras.getString("DisplayEmail");
-                backendUID = extras.getString("BackendUID");
-            }
-        } else {
-            toName = (String) savedInstanceState.getSerializable("DisplayName");
-            toEmail = (String) savedInstanceState.getSerializable("DisplayEmail");
-            backendUID = (String) savedInstanceState.getSerializable("BackendUID");
-
-        }
-
-        //sToast.makeText(getApplicationContext(),"WTF " + toName + " " + toEmail + " " + backendUID, Toast.LENGTH_LONG).show();
-
-        Uri toImage = getIntent().getParcelableExtra("ImageURL");
-        Bitmap circleDisplay = null;
-        try {
-            circleDisplay = MediaStore.Images.Media.getBitmap(this.getContentResolver(), toImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        userName = getIntent().getStringExtra("DisplayName");
+        userEmail = getIntent().getStringExtra("DisplayEmail");
+        backendUID = getIntent().getStringExtra("BackendUID");
+        partnerEmail = getIntent().getStringExtra("PartnerEmail");
+        partnerName = getIntent().getStringExtra("PartnerName");
+        imageUri = getIntent().getStringExtra("ImageURL");
+        Log.d(TAG, "ImageUrl" + imageUri);
 
 
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        locationsList = new FavoriteLocationList(this);
 
         View v = navigationView.getHeaderView(0); // 0-index header
         profile = (CircleImageView) v.findViewById(R.id.profile_image);
         displayName = (TextView) v.findViewById(R.id.username);
         displayEmail = (TextView) v.findViewById(R.id.email);
 
-        //profile.setImageURI(null);
-        profile.setImageBitmap(circleDisplay);
 
-        displayEmail.setText(toEmail);
-        displayName.setText(toName);
 
-        if(!isSingle()){
+
+        displayEmail.setText(userEmail + "@gmail.com");
+        displayName.setText(userName);
+        Picasso.with(getApplicationContext()).load(imageUri).into(profile);
+
+        //new ImageLoadTask(imageUri, profile).execute();
+
+        if(!isSingle(userEmail)){
             setUpPartnerSettings();
             //WARNING: UNTESTED CODE
             Intent i = new Intent(this, GPSTrackerService.class);
-            i.putExtra("FavoriteLocations", locationsList);
+            i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
             startService(i);
-        }
 
+            startNotificationService();
+        }
 
 
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
@@ -129,7 +128,7 @@ public class UserCenter extends AppCompatActivity {
                     //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.addmap:
                         Intent i = new Intent(UserCenter.this, MapsActivity.class);
-                        i.putExtra("FavoriteLocations", locationsList);
+                        i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
                         startActivity(i);
                         //Toast.makeText(getApplicationContext(), "Map Selected", Toast.LENGTH_SHORT).show();
                         //ContentFragment fragment = new ContentFragment();
@@ -141,12 +140,14 @@ public class UserCenter extends AppCompatActivity {
                     // For rest of the options we just show a toast on click
 
                     case R.id.partnersetting:
-                        if (isSingle()) {
+                        if (isSingle(userEmail)) {
                             Intent i2 = new Intent(UserCenter.this, AddPartner.class);
-                            i2.putExtra("FavoriteLocations", locationsList);
+                            i2.putExtra(Constants.DISPLAY_EMAIL, userEmail);
                             startActivity(i2);
                         } else {
-                            startActivity(new Intent(UserCenter.this, PartnerSettings.class));
+                            Intent i2 = new Intent(UserCenter.this, PartnerSettings.class);
+                            i2.putExtra(Constants.DISPLAY_EMAIL, userEmail);
+                            startActivity(i2);
                         }
                         break;
 
@@ -199,41 +200,54 @@ public class UserCenter extends AppCompatActivity {
     }
 
 
-
-    // isSingle method without making toast
-    public boolean isSingleForTest(String parName, String parNumber){
-
-        if(parName.equals("N/A") || parNumber.equals("N/A")) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-
     // Checks if current user is single, and reports information to UI and return value.
-    public boolean isSingle(){
+    public boolean isSingle(String userPath){
+        DatabaseReference myRef = database.getReference("users");
+        myRef.child(userPath).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User storedUser = dataSnapshot.getValue(User.class);
+                partnerEmail = storedUser.getPartnerEmail();
+                Toast.makeText(getBaseContext(), "Partner email is " + partnerEmail, Toast.LENGTH_SHORT).show();
+            }
 
-        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        String name = share.getString("partner_name", "N/A");
-        String number = share.getString("phone_number", "N/A");
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-        if(name.equals("N/A") || number.equals("N/A")) {
-            Toast.makeText(this,"No Partner Found", Toast.LENGTH_LONG).show();
+            }
+        });
+        if(partnerEmail.equals("")){
             return true;
         }
-        else {
-            Toast.makeText(this,"Partner Found", Toast.LENGTH_LONG).show();
+        else{
             return false;
         }
     }
 
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            Log.e("src", src);
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            Log.e("Bitmap","returned");
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("Exception",e.getMessage());
+            return null;
+        }
+    }
     /**
      * delete the locations file of all saved locations
      */
     public void removeAllLocations(){
-        locationsList.removeAllLocations(this);
+        FavoriteLocationList locationsList = new FavoriteLocationList(userEmail);
+        locationsList.removeAllLocations();
         Toast.makeText(getApplicationContext(), "Removed all saved favorite locations.", Toast.LENGTH_SHORT).show();
     }
 
@@ -270,5 +284,12 @@ public class UserCenter extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startNotificationService(){
+        Intent notifsIntent = new Intent(this, NotificationService.class);
+        notifsIntent.putExtra(Constants.PARTNER_EMAIL, partnerEmail );
+
+        startService(notifsIntent);
     }
 }

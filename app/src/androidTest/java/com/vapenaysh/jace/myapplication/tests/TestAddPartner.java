@@ -1,17 +1,12 @@
 package com.vapenaysh.jace.myapplication.tests;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import static junit.framework.Assert.*;
 import com.vapenaysh.jace.myapplication.AddPartner;
-import com.vapenaysh.jace.myapplication.PartnerSettings;
-import com.vapenaysh.jace.myapplication.PartnershipTracker;
 import com.vapenaysh.jace.myapplication.R;
 
 /**

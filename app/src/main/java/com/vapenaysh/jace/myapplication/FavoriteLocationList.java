@@ -1,182 +1,97 @@
 package com.vapenaysh.jace.myapplication;
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Observable;
 
 /**
- * Created by Jerry on 5/5/16.
- * Parcelable class containing a list of favorite locations which can be passed around in Intents
- * as well as write out to a file.
+ * Created by Matt on 5/24/16.
  */
-public class FavoriteLocationList extends Activity implements Parcelable
-{
-    private static HashSet<FavoriteLocation> locations;
-    public final static String LOC_FILE_NAME = Constants.LOC_FILE_NAME;
-    private final boolean NEW_FILE = true;
+public class FavoriteLocationList extends Observable{
+    private DatabaseReference db;
+    private ArrayList<FavoriteLocation> fll;
+    private static final String TAG= "FavoriteLocationList";
 
-    public FavoriteLocationList(Parcel in)
-    {
-        locations = new HashSet<>();
-        while (in.dataAvail() > 0)
-        {
-            //Data is stored latitude, longitude, and name
-            locations.add(new FavoriteLocation(new LatLng(in.readDouble(), in.readDouble()), in.readString()));
-        }
-    }
+    /**
+     *
+     * @param uid or identifier of the partner to get the correct url path in firebase
+     */
+    public FavoriteLocationList(final String uid){
+        FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
+        db = locationsDB.getReference(uid + Constants.LOC_URL);
+        //database looking at the url for a given user's locations
 
-    //default constructor create empty hashset
-    public FavoriteLocationList()
-    {
-        locations = new HashSet<>();
-    }
+        fll = new ArrayList<>();
 
-    //constructor that also loads previous locations
-    public FavoriteLocationList(Context c){
-        locations = FavoriteLocationList.loadLocations(c);
-    }
-
-
-    public HashSet<FavoriteLocation> getLocations()
-    {
-        return locations;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
-        if(locations != null){
-            for (FavoriteLocation l : locations)
-            {
-                dest.writeDouble(l.getCoord().latitude);
-                dest.writeDouble(l.getCoord().longitude);
-                dest.writeString(l.getName());
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Object o = dataSnapshot.getValue();
+                if(o instanceof ArrayList) { //error checking
+                    GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {};
+                    fll = dataSnapshot.getValue(t);
+                    Log.d("NOTE", "Locations: " + fll.toString());
+                    setChanged();
+                    notifyObservers();
+                }
+                else{
+                    fll = new ArrayList<>();
+                }
+                Log.d("NOTE", "GOT LOCATIONS FROM FIREBASE FOR USER " + uid);
             }
-        }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                // Failed to read value
+                Log.w("ERROR:", "Failed to read value.", firebaseError.toException());
+            }
+        });
+
     }
 
-    public static final Parcelable.Creator<FavoriteLocationList> CREATOR
-            = new Parcelable.Creator<FavoriteLocationList>() {
-        public FavoriteLocationList createFromParcel(Parcel in) {
-            return new FavoriteLocationList(in);
+    public boolean writeLocation(FavoriteLocation favoriteLocation){
+        int i = fll.indexOf(favoriteLocation);
+        if(i != -1){
+            fll.set(i, favoriteLocation); //overwrite the previous one with an updated version
+        }
+        else {
+            fll.add(favoriteLocation);
         }
 
-        public FavoriteLocationList[] newArray(int size) {
-            return new FavoriteLocationList[size];
-        }
-    };
+        db.setValue(fll);
+        Log.v(TAG, "Added location " + favoriteLocation + " to firebase");
+        return true;
+    }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public ArrayList<FavoriteLocation> getLocations(){
+        return fll;
+    }
+
+
+    public void removeAllLocations(){
+        fll = new ArrayList<>();
+        db.setValue(fll);
+        Log.v(TAG, "Deleted all locations");
+    }
+
+    public boolean removeLocation(FavoriteLocation loc){
+        fll.remove(loc);
+        db.setValue(fll);
+        Log.v(TAG, "Removed location " + loc);
+        return true;
     }
 
     public int getSize(){
-        return locations.size();
-    }
-
-    //Wrapper for the HashSet to add a new location
-    public boolean addLocation(FavoriteLocation loc, Context c){
-        boolean added = locations.add(loc);
-        if(added){
-            locationToFile(loc, FavoriteLocationList.LOC_FILE_NAME, c, false);
-        }
-        return added;
-    }
-
-    public void removeAllLocations(Context c){
-        c.deleteFile(LOC_FILE_NAME);
-        locations = new HashSet<>();
-        Log.v("FavoriteLocationList", "Deleted locations file");
-
-    }
-
-    public boolean removeLocation(FavoriteLocation loc, Context c){
-        boolean removed = locations.remove(loc);
-        if(removed){
-            writeLocations(locations, c);
-        }
-        return removed;
-    }
-
-    //write all the locations to a new file i.e. rewriting the file after a remove
-    private void writeLocations(Iterable<FavoriteLocation> list, Context c){
-        for(FavoriteLocation loc : list){
-            locationToFile(loc, FavoriteLocationList.LOC_FILE_NAME, c, NEW_FILE);
-        }
-    }
-
-    private void locationToFile(FavoriteLocation loc, String filename, Context c, boolean newfile) {
-        try {
-            if(newfile){
-                c.deleteFile(filename);
-            }
-
-            FileOutputStream fos = c.openFileOutput(filename, Context.MODE_APPEND);
-            fos.write(loc.toString().getBytes());
-            fos.write("\n".getBytes());
-            Log.v("FavoriteLocationList", "locationToFile() saved " + loc.getName() + " successfully!");
-            fos.close();
-        }catch(Exception e){
-            Toast.makeText(c, "Problems saving " + loc.getName(), Toast.LENGTH_SHORT).show();
-            Log.e("FavoriteLocationList", "locationToFile() had errors saving.");
-
-        }
-    }
-
-    /** Every time the user starts up the app, populate the array of favorite locations */
-    public static HashSet<FavoriteLocation> loadLocations(Context c) {
-        FileInputStream fis;
-        HashSet<FavoriteLocation> set = new HashSet<>();
-
-        try {
-            fis = c.openFileInput(LOC_FILE_NAME);
-        } catch (Exception e) {
-            Log.d("FavoriteLocationList", "loadLocations() had opening exception: " + e.toString());
-            return null; //return if no file found
-        }
-
-        Scanner input = new Scanner(fis);
-        while (input.hasNextLine()) {
-            translateFavoriteLocation(input.nextLine(), set);
-        }
-
-        try {
-            fis.close();
-        } catch (Exception e) {
-            Log.d("FavoriteLocationList", "loadLocations() had closing exception: " + e.toString());
-        }
-
-        return set;
-    }
-
-    /** Take each string of form "name&latitude&longitude" and create a favorite location,
-     *  adding it to the array
-     */
-    private static void translateFavoriteLocation( String line, HashSet<FavoriteLocation> set ){
-        String[] parts = line.split("&");
-        if( parts.length != 3 ){
-            Log.v("FavoriteLocationList", "translateFavoriteLocation() read a "
-                    + "line of location with incorrect number of parameters");
-            return;
-        }
-
-        double lat = Double.parseDouble(parts[1]);
-        double lon = Double.parseDouble(parts[2]);
-        FavoriteLocation loc = new FavoriteLocation(new LatLng(lat, lon), parts[0]);
-        set.add(loc);
-        Log.v("FavoriteLocationList", "translateFavoriteLocation() read " + loc.getName() + " successfully");
+        return fll.size();
     }
 }
-
-

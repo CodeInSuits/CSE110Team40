@@ -5,31 +5,31 @@
         <item
             android:id="@+id/addmap"
             android:checked="false"
-            android:icon="@drawable/places_ic_search"
+            android:icon="@drawable/map"
             android:title="@string/add_loc_btn" />
 
         <item
             android:id="@+id/partnersetting"
             android:checked="false"
-            android:icon="@drawable/common_full_open_on_phone"
+            android:icon="@drawable/partnersettings"
             android:title="@string/partner_settings" />
 
         <item
             android:id="@+id/globalsetting"
             android:checked="false"
-            android:icon="@drawable/yin"
+            android:icon="@drawable/globalsettings"
             android:title="notification settings" />
 
         <item
             android:id="@+id/partnerfavlocationdispaly"
             android:checked="false"
-            android:icon="@drawable/yin"
+            android:icon="@drawable/favoritelocation"
             android:title="Partner's Favorite Location \n  List and Settings" />
 
         <item
             android:id="@+id/removeFavLoc"
             android:checked="false"
-            android:icon="@drawable/yin"
+            android:icon="@drawable/clear"
             android:title="Remove locations " />
     </group>
 
