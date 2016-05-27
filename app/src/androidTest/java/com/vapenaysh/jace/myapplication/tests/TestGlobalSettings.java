@@ -13,7 +13,6 @@ import static junit.framework.Assert.*;
 import com.vapenaysh.jace.myapplication.AddPartner;
 import com.vapenaysh.jace.myapplication.GlobalSettings;
 import com.vapenaysh.jace.myapplication.PartnerSettings;
-import com.vapenaysh.jace.myapplication.PartnershipTracker;
 import com.vapenaysh.jace.myapplication.R;
 
 /**
