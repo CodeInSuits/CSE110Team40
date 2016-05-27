@@ -51,6 +51,7 @@ public class HomePage extends Activity implements View.OnClickListener, Progress
             //start tracking this user
             Intent i = new Intent(this, GPSTrackerService.class);
             i.putExtra(Constants.DISPLAY_EMAIL, ""); //TODO: username, not number
+
             startService(i);
 
             //start receiving notifications from the partner's locations

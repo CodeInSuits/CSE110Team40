@@ -287,6 +287,7 @@ public class UserCenter extends AppCompatActivity {
     private void startNotificationService(){
         Intent notifsIntent = new Intent(this, NotificationService.class);
         notifsIntent.putExtra(Constants.PARTNER_EMAIL, partnerEmail );
+
         startService(notifsIntent);
     }
 }
