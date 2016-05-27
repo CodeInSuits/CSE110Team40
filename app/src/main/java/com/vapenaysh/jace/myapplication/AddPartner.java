@@ -17,12 +17,8 @@ import android.widget.Toast;
 //import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class AddPartner extends Activity implements View.OnClickListener {
-    private Button btnRegId;
     private Button addPar;
-    private TextView tvRegId;
     //private GoogleCloudMessaging gcm;
-    private String regid;
-    private String id;
     private String PROJECT_NUMBER = Constants.PROJECT_NUMBER;
     private EditText uname;
     private EditText phone;
@@ -36,11 +32,8 @@ public class AddPartner extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_activity_add_partner);
 
         //Instantiate UI widgets
-        btnRegId = (Button) findViewById(R.id.get_self_id);
         addPar = (Button) findViewById(R.id.add_par);
-        tvRegId = (TextView)findViewById(R.id.self_regId);
 
-        btnRegId.setOnClickListener(this);
         addPar.setOnClickListener(this);
         //tvRegId.setText(id);
 
@@ -91,50 +84,11 @@ public class AddPartner extends Activity implements View.OnClickListener {
     }
 
 
-
-
-    //Gets the unique regID for the current user from gcm. Runs on a different thread.
-    public void getRegId() {
-        /*
-        new AsyncTask<Void, Void, String>() {
-
-            @Override
-            protected String doInBackground(Void... params) {
-                String msg = "";
-                try {
-                    if(gcm == null) {
-                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-                    }
-
-                    regid = gcm.register(PROJECT_NUMBER);
-                    msg = "Device registered, registration ID=" + regid;
-                    Log.i("GCM", "!!!!! " + regid);
-                    id = regid;
-
-                } catch(IOException ex) {
-                    msg = "Error: " + ex.getMessage();
-                    id = msg;
-                }
-
-                return msg;
-            }
-
-            @Override
-            protected void onPostExecute(String msg){
-                tvRegId.setText(id);
-            }
-
-        }.execute(null, null, null);*/
-    }
-
     @Override
     // defing the onClick behavior
     public void onClick(View v){
 
         switch (v.getId()) {
-            case R.id.get_self_id:
-                getRegId();
-                break;
             case R.id.add_par:
                 addPar();
                 break;

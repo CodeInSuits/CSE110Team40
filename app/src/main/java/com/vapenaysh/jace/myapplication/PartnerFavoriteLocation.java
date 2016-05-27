@@ -24,6 +24,11 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+
     }
+
+
 
 }

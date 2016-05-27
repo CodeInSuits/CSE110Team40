@@ -52,7 +52,7 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
         TextView phone = (TextView) addPartner.findViewById(R.id.textView4);
         assertNotNull(phone);
         String partnerPhone = phone.getText().toString();
-        assertEquals("Phone Number:", partnerPhone);
+        assertEquals("Email:", partnerPhone);
     }
 
     // Test Name Text Edit Field
@@ -88,25 +88,6 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
         assertEquals(phone, "5556");
     }
 
-    // Test the button for RegId
-    public void test_getRegIDScenario(){
-
-        addPartner = getActivity();
-
-        //Check remove partner button
-        Button getIDButton = (Button) addPartner.findViewById(R.id.get_self_id);
-
-        // check the edittext for getID
-        EditText idText = (EditText) addPartner.findViewById(R.id.self_regId);
-        assertEquals(idText.getText().toString(), "Register id");
-
-        // Simulate press
-        getIDButton.callOnClick();
-
-        String id = idText.getText().toString();
-        assertTrue(id instanceof String );
-
-    }
 
     // Test the scenario 1 for adding partner
     @UiThreadTest
