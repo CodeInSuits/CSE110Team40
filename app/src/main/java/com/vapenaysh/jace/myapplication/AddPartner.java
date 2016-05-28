@@ -1,4 +1,3 @@
-
 package com.vapenaysh.jace.myapplication;
 
 import android.app.Activity;

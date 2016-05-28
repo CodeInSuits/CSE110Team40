@@ -11,10 +11,17 @@ import android.widget.Button;
 
 public class GlobalSettings extends AppCompatActivity {
 
-    AudioManager audioManager;
+    /*
+     1 - Both Sound and Vibration
+     2 - Sound only
+     3 - Vibe only
+     4 - Mute
+     */
+    private static int notificationMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_global_settings);
 
@@ -23,15 +30,12 @@ public class GlobalSettings extends AppCompatActivity {
         Button vibeOnly = (Button) findViewById(R.id.vibeonly);
         Button mute = (Button) findViewById(R.id.mute);
 
-        AudioManager audioManager =
-                (AudioManager) getSystemService(getApplicationContext().AUDIO_SERVICE);
-
 
         both.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    setVibration(true);
-                    setSound(true);
+
+                setNotificationSetting(true, true);
             }
         });
 
@@ -39,8 +43,7 @@ public class GlobalSettings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                setVibration(false);
-                setSound(true);
+                setNotificationSetting(true, false);
             }
         });
 
@@ -48,8 +51,7 @@ public class GlobalSettings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                setVibration(true);
-                setSound(false);
+                setNotificationSetting(false, true);
             }
         });
 
@@ -58,32 +60,30 @@ public class GlobalSettings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                setVibration(false);
-                setSound(false);
+                setNotificationSetting(false, false);
             }
         });
     }
 
-    public void setVibration(boolean turnOn) {
+    public void setNotificationSetting(boolean sound, boolean vibe) {
 
-        if(audioManager != null) {
-            if (turnOn) {
-                audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-            } else {
-                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-            }
+        if (sound && vibe){
+            notificationMode = 1;
         }
+        else if (sound && !vibe){
+            notificationMode = 2;
+        }
+        else if (!sound && vibe){
+            notificationMode = 3;
+        }
+        else {
+            notificationMode = 4;
+        }
+
     }
 
-    public void setSound(boolean turnOn){
-
-        if(audioManager != null) {
-            if (turnOn) {
-                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-            } else {
-                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-            }
-        }
+    public static int getNotificationMode(){
+        return notificationMode;
     }
 
 }
