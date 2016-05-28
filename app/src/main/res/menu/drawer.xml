@@ -23,7 +23,7 @@
         <item
             android:id="@+id/partnerfavlocationdispaly"
             android:checked="false"
-            android:icon="@drawable/favoritelocation"
+            android:icon="@drawable/partnerlocation"
             android:title="Partner's Favorite Location \n  List and Settings" />
 
         <item
