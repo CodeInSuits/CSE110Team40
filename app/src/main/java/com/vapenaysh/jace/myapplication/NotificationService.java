@@ -38,6 +38,7 @@ public class NotificationService extends IntentService {
 
 
                 partnerDb.addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+
                     @Override
                     public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
                         GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {};
@@ -55,6 +56,17 @@ public class NotificationService extends IntentService {
                                             .setSmallIcon(R.drawable.heart2)
                                             .setContentTitle("Arrival")
                                             .setContentText("Partner arrived at " + latest.getName());
+
+
+                            // code for calling arrival sound notification method (FavoriteLocation object)
+
+                            // code for calling arrival vibration notification method (FavoriteLocation obejct)
+
+
+                            // code for calling location sound notification method (FavoriteLocation object)
+
+                            // code for calling location vibration notification method (FavoriteLocation obejct)
+
                         }
                         //DEPARTED FROM A LOCATION
                         else if(latest != null && visitedList.contains(latest) ){
@@ -63,6 +75,12 @@ public class NotificationService extends IntentService {
                                     .setContentTitle("Departure")
                                     .setContentText("Partner departed from " + latest.getName());
                             visitedList.remove(latest);
+
+                            // code for calling departure sound notification method (FavoriteLocation object)
+
+                            // code for calling departure vibration notification method (FavoriteLocation obejct)
+
+
                         }
 
                         //display the notification

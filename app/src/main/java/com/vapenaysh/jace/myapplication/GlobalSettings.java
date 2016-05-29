@@ -1,5 +1,6 @@
 package com.vapenaysh.jace.myapplication;
 
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -38,7 +39,7 @@ public class GlobalSettings extends AppCompatActivity {
 
                 setNotificationSetting(true, true);
                 Toast.makeText(getApplicationContext(), "Sound & Vibration", Toast.LENGTH_SHORT).show();
-
+                saveSettings();
             }
         });
 
@@ -48,6 +49,7 @@ public class GlobalSettings extends AppCompatActivity {
 
                 setNotificationSetting(true, false);
                 Toast.makeText(getApplicationContext(), "Sound Only", Toast.LENGTH_SHORT).show();
+                saveSettings();
             }
         });
 
@@ -57,6 +59,7 @@ public class GlobalSettings extends AppCompatActivity {
 
                 setNotificationSetting(false, true);
                 Toast.makeText(getApplicationContext(), "Vibration Only", Toast.LENGTH_SHORT).show();
+                saveSettings();
             }
         });
 
@@ -67,6 +70,7 @@ public class GlobalSettings extends AppCompatActivity {
 
                 setNotificationSetting(false, false);
                 Toast.makeText(getApplicationContext(), "Mute", Toast.LENGTH_SHORT).show();
+                saveSettings();
             }
         });
     }
@@ -85,7 +89,13 @@ public class GlobalSettings extends AppCompatActivity {
         else {
             notificationMode = 4;
         }
+    }
 
+    public void saveSettings(){
+        SharedPreferences sharedPreferences = getSharedPreferences("notif_mode", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("mode", notificationMode+"");
+        editor.apply();
     }
 
     public static int getNotificationMode(){

@@ -32,7 +32,6 @@ public class FavoriteLocation {
         this.name = name;
     }
 
-
     public FavoriteLocation(LatLng coord, String name, Date timeStamp){
         this.myLatLng = new MyLatLng(coord.latitude, coord.longitude);
         this.name = name;

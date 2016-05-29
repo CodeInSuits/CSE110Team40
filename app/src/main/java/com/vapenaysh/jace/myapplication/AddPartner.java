@@ -62,6 +62,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
         // empty suit checking
         // if the text are not empty, then add the partner
         if(name.equals("") || phoneNumber.equals("")){
+
             AlertDialog.Builder dialog = new AlertDialog.Builder(AddPartner.this);
             dialog.setTitle("Empty Fields");
             dialog.setMessage("Please complete the form");
@@ -75,9 +76,11 @@ public class AddPartner extends Activity implements View.OnClickListener {
             dialog.show();
         }
         else{
+
             final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference partnersDatabase = firebaseDatabase.getReference("users").child(phoneNumber);
             partnersDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(!dataSnapshot.exists()){
@@ -93,8 +96,9 @@ public class AddPartner extends Activity implements View.OnClickListener {
                             }
                         });
                         dialog.show();
-                    }
-                    else { //make partner connection
+
+                    } else { //make partner connection
+
                         DatabaseReference userDatabase = firebaseDatabase.getReference("users").child(userEmail);
                         userDatabase.child(Constants.DATABASE_PARTNER_KEY).setValue(phoneNumber);
                         userDatabase.child(Constants.DATABASE_PARTNER_NAME).setValue(name);
@@ -102,7 +106,6 @@ public class AddPartner extends Activity implements View.OnClickListener {
                         i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
                         startActivity(i);
                         Toast.makeText(getApplicationContext(), "Partner added", Toast.LENGTH_LONG).show();
-
 
                     }
 

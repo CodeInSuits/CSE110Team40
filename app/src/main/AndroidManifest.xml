@@ -91,10 +91,6 @@
             android:label="@string/title_activity_global_settings"
             android:theme="@style/AppTheme"></activity>
         <activity
-            android:name=".Partner_Favorite_Location"
-            android:label="@string/title_activity_partner__favorite__location"
-            android:theme="@style/AppTheme"></activity>
-        <activity
             android:name=".PartnerFavoriteLocation"
             android:label="@string/title_activity_partner_favorite_location"
             android:theme="@style/AppTheme"></activity>
