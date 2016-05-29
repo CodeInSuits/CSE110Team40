@@ -84,6 +84,34 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
         testList.add(new FavoriteLocation(new LatLng(1.0, 10), "PC"));
 
         testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB no life"));
+
 
         listView = (ListView) findViewById(R.id.list);
         Toast.makeText(getApplicationContext(),"Partner has " + fll.size() + " favorite locations", Toast.LENGTH_SHORT).show();
