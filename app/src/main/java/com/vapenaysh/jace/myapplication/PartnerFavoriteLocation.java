@@ -1,17 +1,40 @@
 package com.vapenaysh.jace.myapplication;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PartnerFavoriteLocation extends AppCompatActivity {
 
     private ListView listView;
     private CustomListViewAdapter customListViewAdapter;
+    FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
+    ArrayList<FavoriteLocation> fll;
+
+    /*
+     TODO: 1. Fully integrate with the customListViewAdapter
+           2. Understand Matt's code for data pulling from firebase
+                i. Stored location as an ArraryList
+                ii. Coordination with wrapper MyLatlng
+
+
+     */
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,19 +43,63 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        String uid = getIntent().getStringExtra("PartnerEmail");
+
+
+        DatabaseReference db;
+        db = locationsDB.getReference(uid + Constants.LOC_URL);
+        fll = new ArrayList<>();
+
+
+
+
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Object o = dataSnapshot.getValue();
+                if(o instanceof ArrayList) { //error checking
+                    GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {};
+                    fll = dataSnapshot.getValue(t);
+                    Log.d("NOTE", "Locations: " + fll.toString());
+
+                }
+                else{
+                    fll = new ArrayList<>();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                // Failed to read value
+                Log.w("ERROR:", "Failed to read value.", firebaseError.toException());
             }
         });
 
 
+        ArrayList<HashMap<String, String>> locationList = new ArrayList<>();
+        listView = (ListView) findViewById(R.id.list);
+
+        customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), fll);
+        listView.setAdapter(customListViewAdapter);
+
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                int myPosition = position;
+
+                String itemClickedId = listView.getItemAtPosition(myPosition).toString();
+
+                Toast.makeText(getApplicationContext(), "Id Clicked: " + itemClickedId, Toast.LENGTH_LONG).show();
+
+
+            }
+        });
 
     }
-
-
 
 }

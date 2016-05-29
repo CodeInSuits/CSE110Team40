@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by paulodichone on 2/4/15.
@@ -17,11 +16,11 @@ import java.util.HashMap;
 public class CustomListViewAdapter extends BaseAdapter {
 
     private Context mContext;
-    private  ArrayList<HashMap<String, String>> locations;
+    private  ArrayList<FavoriteLocation> locations;
     private static LayoutInflater inflater = null;
 
 
-    public CustomListViewAdapter(Context context, ArrayList<HashMap<String, String>> data){
+    public CustomListViewAdapter(Context context, ArrayList<FavoriteLocation> data){
 
         mContext = context;
         locations = data;
@@ -57,6 +56,7 @@ public class CustomListViewAdapter extends BaseAdapter {
             TextView title = (TextView) view.findViewById(R.id.title);
             TextView location = (TextView) view.findViewById(R.id.location);
             ImageView image = (ImageView) view.findViewById(R.id.tonesetting);
+
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -67,14 +67,14 @@ public class CustomListViewAdapter extends BaseAdapter {
                 }
             });
 
-            HashMap<String, String> mLocation = new HashMap<>();
-
-            mLocation = locations.get(position);
 
 
+            FavoriteLocation mLocation = locations.get(position);
 
-            title.setText(mLocation.get("title"));
-            location.setText(mLocation.get("location"));
+
+
+            title.setText(mLocation.getName());
+            location.setText(mLocation.getMyLatLng().getLat() + ", " + mLocation.getMyLatLng().getLon());
 
 
         }
