@@ -1,5 +1,7 @@
 package com.vapenaysh.jace.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -148,8 +150,29 @@ public class UserCenter extends AppCompatActivity {
                         break;
 
                     case R.id.partnerfavlocationdispaly:
-                        Intent i_partnerFavLoc = new Intent(UserCenter.this, PartnerFavoriteLocation.class);
-                        startActivity(i_partnerFavLoc);
+
+                        if(isSingle(userEmail)){
+                            //partner does not exist in database yet
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(UserCenter.this);
+                            dialog.setTitle("Partner Does Not Exist");
+                            dialog.setMessage("No match for " + userName);
+                            dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+
+                                }
+                            });
+                            dialog.show();
+
+                        }
+                        else{
+                            Intent i_partnerFavLoc = new Intent(UserCenter.this, PartnerFavoriteLocation.class);
+                            i_partnerFavLoc.putExtra("PartnerEmail", partnerEmail);
+                            startActivity(i_partnerFavLoc);
+
+                        }
+
                         break;
 
                     case R.id.removeFavLoc:
