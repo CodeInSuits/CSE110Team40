@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class GlobalSettings extends AppCompatActivity {
 
@@ -36,6 +37,8 @@ public class GlobalSettings extends AppCompatActivity {
             public void onClick(View v) {
 
                 setNotificationSetting(true, true);
+                Toast.makeText(getApplicationContext(), "Sound & Vibration", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -44,6 +47,7 @@ public class GlobalSettings extends AppCompatActivity {
             public void onClick(View v) {
 
                 setNotificationSetting(true, false);
+                Toast.makeText(getApplicationContext(), "Sound Only", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -52,6 +56,7 @@ public class GlobalSettings extends AppCompatActivity {
             public void onClick(View v) {
 
                 setNotificationSetting(false, true);
+                Toast.makeText(getApplicationContext(), "Vibration Only", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -61,6 +66,7 @@ public class GlobalSettings extends AppCompatActivity {
             public void onClick(View v) {
 
                 setNotificationSetting(false, false);
+                Toast.makeText(getApplicationContext(), "Mute", Toast.LENGTH_SHORT).show();
             }
         });
     }
