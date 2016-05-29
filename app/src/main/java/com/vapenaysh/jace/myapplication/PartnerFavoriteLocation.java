@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,7 +18,6 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PartnerFavoriteLocation extends AppCompatActivity {
 
@@ -44,6 +44,8 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         String uid = getIntent().getStringExtra("PartnerEmail");
+        Toast.makeText(getApplicationContext(),"Partner is " + uid, Toast.LENGTH_SHORT).show();
+
 
 
         DatabaseReference db;
@@ -77,11 +79,45 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
             }
         });
 
+        ArrayList<FavoriteLocation> testList = new ArrayList<>();
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "UCSD"));
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "PC"));
 
-        ArrayList<HashMap<String, String>> locationList = new ArrayList<>();
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
+        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB no life"));
+
+
         listView = (ListView) findViewById(R.id.list);
+        Toast.makeText(getApplicationContext(),"Partner has " + fll.size() + " favorite locations", Toast.LENGTH_SHORT).show();
 
-        customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), fll);
+
+        customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), testList);
         listView.setAdapter(customListViewAdapter);
 
 

@@ -95,7 +95,7 @@ public class UserCenter extends AppCompatActivity {
             i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
             startService(i);
 
-            startNotificationService();
+            //startNotificationService();
         }
 
 
