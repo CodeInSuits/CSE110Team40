@@ -34,25 +34,30 @@ public class PartnerSettings extends Activity {
         Button remove_partner = (Button) findViewById(R.id.remove_partner_button);
 
         final String userEmail = getIntent().getStringExtra(Constants.DISPLAY_EMAIL);
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
         final DatabaseReference myRef = database.getReference("users");
-        myRef.child(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<Map<String, String>> t = new GenericTypeIndicator<Map<String, String>>() {
-                };
-                Map<String, String> map = dataSnapshot.getValue(t);
-                String name = map.get(Constants.DATABASE_PARTNER_NAME);
-                String email = map.get(Constants.DATABASE_PARTNER_KEY);
-                name_partner.setText(name);
-                number_partner.setText(email);
-            }
+        if(userEmail != null) {
+            myRef.child(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    GenericTypeIndicator<Map<String, String>> t = new GenericTypeIndicator<Map<String, String>>() {
+                    };
+                    Map<String, String> map = dataSnapshot.getValue(t);
+                    String name = map.get(Constants.DATABASE_PARTNER_NAME);
+                    String email = map.get(Constants.DATABASE_PARTNER_KEY);
+                    name_partner.setText(name);
+                    number_partner.setText(email);
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 
         remove_partner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +69,8 @@ public class PartnerSettings extends Activity {
                 stopService(new Intent(PartnerSettings.this, NotificationService.class));
                 stopService(new Intent(PartnerSettings.this, GPSTrackerService.class));
                 finish();
+
+                onBackPressed();
             }
         });
 

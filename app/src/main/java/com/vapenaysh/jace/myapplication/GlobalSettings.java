@@ -1,5 +1,6 @@
 package com.vapenaysh.jace.myapplication;
 
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,13 +9,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class GlobalSettings extends AppCompatActivity {
 
-    AudioManager audioManager;
+    /*
+     1 - Both Sound and Vibration
+     2 - Sound only
+     3 - Vibe only
+     4 - Mute
+     */
+    private static int notificationMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_global_settings);
 
@@ -23,15 +32,14 @@ public class GlobalSettings extends AppCompatActivity {
         Button vibeOnly = (Button) findViewById(R.id.vibeonly);
         Button mute = (Button) findViewById(R.id.mute);
 
-        AudioManager audioManager =
-                (AudioManager) getSystemService(getApplicationContext().AUDIO_SERVICE);
-
 
         both.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    setVibration(true);
-                    setSound(true);
+
+                setNotificationSetting(true, true);
+                Toast.makeText(getApplicationContext(), "Sound & Vibration", Toast.LENGTH_SHORT).show();
+                saveSettings();
             }
         });
 
@@ -39,8 +47,9 @@ public class GlobalSettings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                setVibration(false);
-                setSound(true);
+                setNotificationSetting(true, false);
+                Toast.makeText(getApplicationContext(), "Sound Only", Toast.LENGTH_SHORT).show();
+                saveSettings();
             }
         });
 
@@ -48,8 +57,9 @@ public class GlobalSettings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                setVibration(true);
-                setSound(false);
+                setNotificationSetting(false, true);
+                Toast.makeText(getApplicationContext(), "Vibration Only", Toast.LENGTH_SHORT).show();
+                saveSettings();
             }
         });
 
@@ -58,32 +68,38 @@ public class GlobalSettings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                setVibration(false);
-                setSound(false);
+                setNotificationSetting(false, false);
+                Toast.makeText(getApplicationContext(), "Mute", Toast.LENGTH_SHORT).show();
+                saveSettings();
             }
         });
     }
 
-    public void setVibration(boolean turnOn) {
+    public void setNotificationSetting(boolean sound, boolean vibe) {
 
-        if(audioManager != null) {
-            if (turnOn) {
-                audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-            } else {
-                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-            }
+        if (sound && vibe){
+            notificationMode = 1;
+        }
+        else if (sound && !vibe){
+            notificationMode = 2;
+        }
+        else if (!sound && vibe){
+            notificationMode = 3;
+        }
+        else {
+            notificationMode = 4;
         }
     }
 
-    public void setSound(boolean turnOn){
+    public void saveSettings(){
+        SharedPreferences sharedPreferences = getSharedPreferences("notif_mode", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("mode", notificationMode+"");
+        editor.apply();
+    }
 
-        if(audioManager != null) {
-            if (turnOn) {
-                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-            } else {
-                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-            }
-        }
+    public static int getNotificationMode(){
+        return notificationMode;
     }
 
 }

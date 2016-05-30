@@ -1,13 +1,13 @@
 package com.vapenaysh.jace.myapplication;
 
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,13 +24,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -56,6 +55,9 @@ public class UserCenter extends AppCompatActivity {
     private String userName;
     private String partnerName;
     private String imageUri;
+    private ListView lv;
+    FavoriteLocationAdapter fla;
+    private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
 
 
 
@@ -76,6 +78,8 @@ public class UserCenter extends AppCompatActivity {
         partnerName = getIntent().getStringExtra("PartnerName");
         imageUri = getIntent().getStringExtra("ImageURL");
         Log.d(TAG, "ImageUrl" + imageUri);
+
+
 
 
         //Initializing NavigationView
@@ -102,7 +106,7 @@ public class UserCenter extends AppCompatActivity {
             i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
             startService(i);
 
-            startNotificationService();
+            //startNotificationService();
         }
 
 
@@ -157,8 +161,29 @@ public class UserCenter extends AppCompatActivity {
                         break;
 
                     case R.id.partnerfavlocationdispaly:
-                        Intent i_partnerFavLoc = new Intent(UserCenter.this, PartnerFavoriteLocation.class);
-                        startActivity(i_partnerFavLoc);
+
+                        if(isSingle(userEmail)){
+                            //partner does not exist in database yet
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(UserCenter.this);
+                            dialog.setTitle("Partner Does Not Exist");
+                            dialog.setMessage("No match for " + userName);
+                            dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+
+                                }
+                            });
+                            dialog.show();
+
+                        }
+                        else{
+                            Intent i_partnerFavLoc = new Intent(UserCenter.this, PartnerFavoriteLocation.class);
+                            i_partnerFavLoc.putExtra("PartnerEmail", partnerEmail);
+                            startActivity(i_partnerFavLoc);
+
+                        }
+
                         break;
 
                     case R.id.removeFavLoc:
@@ -193,11 +218,32 @@ public class UserCenter extends AppCompatActivity {
 
         //Setting the actionbarToggle to drawer layout
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        lv = (ListView) findViewById(R.id.listView);
+        fla = new FavoriteLocationAdapter(this, R.layout.user_center_list_row, flls);
+        lv.setAdapter(fla);
+        loadData();
+        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh()
+            {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        loadData();
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 50);
+            }
+        });
 
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
     }
+
+
 
 
     // Checks if current user is single, and reports information to UI and return value.
@@ -224,24 +270,6 @@ public class UserCenter extends AppCompatActivity {
         }
     }
 
-
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            Log.e("src", src);
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Log.e("Bitmap","returned");
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("Exception",e.getMessage());
-            return null;
-        }
-    }
     /**
      * delete the locations file of all saved locations
      */
@@ -253,11 +281,8 @@ public class UserCenter extends AppCompatActivity {
 
     //Creates sharedpreferences from app data
     private void setUpPartnerSettings(){
-        SharedPreferences share = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        String name = share.getString("partner_name", "N/A");
-        String number = share.getString("phone_number", "N/A");
-        PartnerSettings.setNumber(number);
-        PartnerSettings.setName(name);
+        PartnerSettings.setNumber(partnerEmail);
+        PartnerSettings.setName(partnerName);
 
     }
 
@@ -288,7 +313,7 @@ public class UserCenter extends AppCompatActivity {
 
     private void startNotificationService(){
         Intent notifsIntent = new Intent(this, NotificationService.class);
-        notifsIntent.putExtra(Constants.PARTNER_EMAIL, partnerEmail );
+        notifsIntent.putExtra(Constants.PARTNER_EMAIL, partnerEmail);
 
         startService(notifsIntent);
     }
@@ -296,7 +321,34 @@ public class UserCenter extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        if(partnerEmail == null || partnerEmail.equals(""))
+        if (partnerEmail == null || partnerEmail.equals(""))
             isSingle(userEmail); //read partner info in case it got updated
+    }
+
+    private boolean loadData()
+    {
+        DatabaseReference partnerDb = database.getReference(partnerEmail + Constants.LOC_URL);
+
+        partnerDb.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener()
+        {
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
+                };
+                ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
+                flls.clear();
+                for (FavoriteLocation i : data)
+                {
+                    flls.add(i);
+                }
+                fla.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return true;
     }
 }

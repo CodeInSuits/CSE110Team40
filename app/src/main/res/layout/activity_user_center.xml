@@ -31,12 +31,21 @@
                 android:gravity="center"
                 android:layout_gravity="center_horizontal|top"
                 android:paddingTop="@dimen/abc_action_bar_icon_vertical_padding_material" />
+            <android.support.v4.widget.SwipeRefreshLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/swipe_container"
+                android:layout_width="match_parent"
+                android:layout_height="398dp"
+                android:layout_gravity="bottom">
 
-            <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="385dp"
-                android:id="@+id/listView"
-                android:layout_gravity="center|bottom" />
+
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="404dp"
+                    android:id="@+id/listView"
+                    android:layout_gravity="center_horizontal|bottom" />
+            </android.support.v4.widget.SwipeRefreshLayout>
+
         </FrameLayout>
 
     </LinearLayout>

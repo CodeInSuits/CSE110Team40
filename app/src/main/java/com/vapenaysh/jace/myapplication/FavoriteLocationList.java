@@ -20,6 +20,7 @@ public class FavoriteLocationList extends Observable{
     private ArrayList<FavoriteLocation> fll;
     private static final String TAG= "FavoriteLocationList";
 
+
     /**
      *
      * @param uid or identifier of the partner to get the correct url path in firebase

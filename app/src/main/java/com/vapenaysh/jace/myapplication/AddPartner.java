@@ -1,4 +1,3 @@
-
 package com.vapenaysh.jace.myapplication;
 
 import android.app.Activity;
@@ -12,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
+import com.firebase.client.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,11 +27,11 @@ public class AddPartner extends Activity implements View.OnClickListener {
     private String regid;
     private String id;
     private String PROJECT_NUMBER = Constants.PROJECT_NUMBER;
-    private EditText uname;
-    private EditText phone;
-    private static String username;
-    private static String userphone;
+    private EditText pname;
+    private EditText pemail;
     private String userEmail;
+    private String partnerName;
+    private String partnerEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_activity_add_partner);
 
         //Instantiate UI widgets
-        //btnRegId = (Button) findViewById(R.id.get_self_id);
+        //btnRegId = (Button) findViewById(R.id.get_sel  f_id);
         addPar = (Button) findViewById(R.id.add_par);
         //tvRegId = (TextView)findViewById(R.id.self_regId);
 
@@ -48,8 +47,8 @@ public class AddPartner extends Activity implements View.OnClickListener {
         addPar.setOnClickListener(this);
         //tvRegId.setText(id);
 
-        uname = (EditText) findViewById(R.id.par_name);
-        phone = (EditText) findViewById(R.id.par_phone);
+        pname = (EditText) findViewById(R.id.par_name);
+        pemail = (EditText) findViewById(R.id.par_phone);
 
         userEmail = getIntent().getStringExtra(Constants.DISPLAY_EMAIL);
 
@@ -57,12 +56,12 @@ public class AddPartner extends Activity implements View.OnClickListener {
 
     //Put partner name and phone number into Android's shared preferences for the application.
     public void addPar(){
-        final String name = uname.getText().toString();
-        final String phoneNumber = phone.getText().toString().split("@")[0];
+        partnerName = pname.getText().toString();
+        partnerEmail = pemail.getText().toString().split("@")[0];
 
         // empty suit checking
         // if the text are not empty, then add the partner
-        if(name.equals("") || phoneNumber.equals("")){
+        if(partnerEmail.equals("") || partnerEmail.equals("")){
             AlertDialog.Builder dialog = new AlertDialog.Builder(AddPartner.this);
             dialog.setTitle("Empty Fields");
             dialog.setMessage("Please complete the form");
@@ -77,15 +76,15 @@ public class AddPartner extends Activity implements View.OnClickListener {
         }
         else{
             final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            final DatabaseReference partnersDatabase = firebaseDatabase.getReference("users").child(phoneNumber);
+            final DatabaseReference partnersDatabase = firebaseDatabase.getReference("users").child(partnerEmail);
             partnersDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(!dataSnapshot.exists()){
+                public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                    if (!dataSnapshot.exists()) {
                         //partner does not exist in database yet
                         AlertDialog.Builder dialog = new AlertDialog.Builder(AddPartner.this);
                         dialog.setTitle("Partner Does Not Exist");
-                        dialog.setMessage("No match for " + phoneNumber);
+                        dialog.setMessage("No match for " + partnerEmail);
                         dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -94,31 +93,27 @@ public class AddPartner extends Activity implements View.OnClickListener {
                             }
                         });
                         dialog.show();
-                    }
-                    else { //make partner connection
+                    } else { //make partner connection
                         DatabaseReference userDatabase = firebaseDatabase.getReference("users").child(userEmail);
-                        userDatabase.child(Constants.DATABASE_PARTNER_KEY).setValue(phoneNumber);
-                        userDatabase.child(Constants.DATABASE_PARTNER_NAME).setValue(name);
+                        userDatabase.child(Constants.DATABASE_PARTNER_KEY).setValue(partnerEmail);
+                        userDatabase.child(Constants.DATABASE_PARTNER_NAME).setValue(partnerName);
                         finish();
                         Toast.makeText(getApplicationContext(), "Partner added", Toast.LENGTH_LONG).show();
-
-
                     }
-
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
                 }
+
             });
 
 
             startTracking();
             startNotificationService();
-
-            Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
+            finish();
         }
+
     }
 
     @Override
@@ -133,14 +128,10 @@ public class AddPartner extends Activity implements View.OnClickListener {
 
     }
 
-    // getter method for user name
-    public static String getUname(){
-        return username;
-    }
-
-    // getter method for user phone number
-    public static String getPhone(){
-        return userphone;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(getApplicationContext(), "Partner Added", Toast.LENGTH_SHORT).show();
     }
 
     // method for starting the server for tracking

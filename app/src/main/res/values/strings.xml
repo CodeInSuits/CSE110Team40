@@ -17,7 +17,7 @@
     <string name="saved_successfully">Saved successfully!</string>
     <string name="title_activity_remove_partner">remove_partner</string>
     <string name="partner_info_title">Partner Information</string>
-    <string name="add_partner_title">Add A Partner From Google Account</string>
+    <string name="add_partner_title">Add A Partner From Email</string>
     <string name="show_ema">Phone:</string>
     <string name="show_nam">Name:</string>
     <string name="email_address">Email Address</string>
@@ -30,6 +30,8 @@
     <string name="title_activity_global_settings">GlobalSettings</string>
     <string name="title_activity_partner__favorite__location">Partner_Favorite_Location</string>
     <string name="title_activity_partner_favorite_location">PartnerFavoriteLocation</string>
+    <string name="title_activity_sound_tone_setting">SoundToneSetting</string>
+    <string name="title_activity_vibe_tone_setting">VibeToneSetting</string>
 
 
 
