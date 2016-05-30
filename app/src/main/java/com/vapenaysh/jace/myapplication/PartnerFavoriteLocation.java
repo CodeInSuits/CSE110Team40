@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -60,16 +59,32 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                Object o = dataSnapshot.getValue();
-                if(o instanceof ArrayList) { //error checking
-                    GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {};
-                    fll = dataSnapshot.getValue(t);
-                    Log.d("NOTE", "Locations: " + fll.toString());
+                GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
+                };
+                fll = dataSnapshot.getValue(t);
+                Log.d("NOTE", "Locations: " + fll.toString());
+                Toast.makeText(getBaseContext(), "Partner has " + fll.size() + " favorite locations", Toast.LENGTH_SHORT).show();
+                listView = (ListView) findViewById(R.id.list);
 
-                }
-                else{
-                    fll = new ArrayList<>();
-                }
+                customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), fll);
+                listView.setAdapter(customListViewAdapter);
+
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        int myPosition = position;
+
+                        String itemClickedId = listView.getItemAtPosition(myPosition).toString();
+
+                        Toast.makeText(getApplicationContext(), "Id Clicked: " + itemClickedId, Toast.LENGTH_LONG).show();
+
+
+                    }
+                });
+
+
             }
 
             @Override
@@ -79,62 +94,10 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
             }
         });
 
-        ArrayList<FavoriteLocation> testList = new ArrayList<>();
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "UCSD"));
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "PC"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
-
-        testList.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB no life"));
-
-
-        listView = (ListView) findViewById(R.id.list);
-        Toast.makeText(getApplicationContext(),"Partner has " + fll.size() + " favorite locations", Toast.LENGTH_SHORT).show();
-
-
-        customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), testList);
-        listView.setAdapter(customListViewAdapter);
 
 
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                int myPosition = position;
-
-                String itemClickedId = listView.getItemAtPosition(myPosition).toString();
-
-                Toast.makeText(getApplicationContext(), "Id Clicked: " + itemClickedId, Toast.LENGTH_LONG).show();
-
-
-            }
-        });
 
     }
 
