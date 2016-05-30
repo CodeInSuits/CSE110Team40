@@ -55,7 +55,7 @@ public class NotificationService extends IntentService {
                         clearListIfAfterCutoff();
 
                         //ARRIVED AT A LOCATION
-                        if (latest != null && !visitedList.contains(latest) && latest.afterCutoffTime() ) {
+                        if (latest != null && !visitedList.contains(latest) && latest.afterCutoffTime() && latest.isVisited() ) {
                             visitedList.add(latest);
                             mBuilder = new NotificationCompat.Builder(getApplicationContext())
                                             .setSmallIcon(R.drawable.heart2)
@@ -76,7 +76,7 @@ public class NotificationService extends IntentService {
                             //vibe.playTone(latest);
                         }
                         //DEPARTED FROM A LOCATION
-                        else if(latest != null && visitedList.contains(latest) ){
+                        else if(latest != null && visitedList.contains(latest) && !latest.isVisited() ){
                             mBuilder = new NotificationCompat.Builder(getApplicationContext())
                                     .setSmallIcon(R.drawable.heart2)
                                     .setContentTitle("Departure")
