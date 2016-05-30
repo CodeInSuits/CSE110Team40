@@ -113,7 +113,7 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
         Button addPartnerButton = (Button) addPartner.findViewById(R.id.add_par);
 
         // Simulate press
-        addPartnerButton.callOnClick();
+        //addPartnerButton.callOnClick();
 
         //assertEquals(AddPartner.getUname(), null);
         //assertEquals(AddPartner.getPhone(), "5556");
