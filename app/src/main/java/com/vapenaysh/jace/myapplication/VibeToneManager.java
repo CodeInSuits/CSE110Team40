@@ -57,11 +57,9 @@ public class VibeToneManager extends AppCompatActivity {
     public void playArrivalTone(){
 
         if (vibrate != null){
-
             if (checkMode(this.notificationMode)) {
                 vibrate.vibrate(arrivalTone, -1);
             }
-
         }
     }
 
@@ -69,11 +67,9 @@ public class VibeToneManager extends AppCompatActivity {
     public void playDepartureTone(){
 
         if (vibrate != null){
-
             if (checkMode(this.notificationMode)) {
                 vibrate.vibrate(departureTone, -1);
             }
-
         }
     }
 

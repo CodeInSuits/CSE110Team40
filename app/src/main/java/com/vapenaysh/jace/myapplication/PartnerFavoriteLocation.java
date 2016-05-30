@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,8 +37,6 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
            2. Understand Matt's code for data pulling from firebase
                 i. Stored location as an ArraryList
                 ii. Coordination with wrapper MyLatlng
-
-
      */
 
     @Override
@@ -50,16 +49,12 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
         String uid = getIntent().getStringExtra("PartnerEmail");
         Toast.makeText(getApplicationContext(),"Partner is " + uid, Toast.LENGTH_SHORT).show();
 
-
-
         DatabaseReference db;
         db = locationsDB.getReference(uid + Constants.LOC_URL);
         fll = new ArrayList<>();
 
-
-
-
         db.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -67,10 +62,13 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                 GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
                 };
                 fll = dataSnapshot.getValue(t);
-                Log.d("NOTE", "Locations: " + fll.toString());
-                Toast.makeText(getBaseContext(), "Partner has " + fll.size() + " favorite locations", Toast.LENGTH_SHORT).show();
-                listView = (ListView) findViewById(R.id.list);
 
+                if (fll != null) {
+                    Log.d("NOTE", "Locations: " + fll.toString());
+                    Toast.makeText(getBaseContext(), "Partner has " + fll.size() + " favorite locations", Toast.LENGTH_SHORT).show();
+                }
+
+                listView = (ListView) findViewById(R.id.list);
                 customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), fll);
                 listView.setAdapter(customListViewAdapter);
 

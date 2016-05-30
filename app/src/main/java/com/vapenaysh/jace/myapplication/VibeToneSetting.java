@@ -16,10 +16,14 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 public class VibeToneSetting extends Activity {
 
     private RadioGroup radioGroup;
     private static int VibeToneIndex;
+
+    FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     private static SharedPreferences sp;
 
 
@@ -155,6 +159,8 @@ public class VibeToneSetting extends Activity {
         });
     }
 
+
+
     // testing code // need to be removed later
     public void testVibe(){
         Vibrator e  = (Vibrator) getSystemService(VIBRATOR_SERVICE);
@@ -172,6 +178,11 @@ public class VibeToneSetting extends Activity {
 
     public static SharedPreferences getSharedPreferences () {
         return sp;
+    }
+
+    public void save(){
+
+
     }
 
 }
