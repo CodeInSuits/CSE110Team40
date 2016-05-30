@@ -30,6 +30,8 @@
     <string name="title_activity_global_settings">GlobalSettings</string>
     <string name="title_activity_partner__favorite__location">Partner_Favorite_Location</string>
     <string name="title_activity_partner_favorite_location">PartnerFavoriteLocation</string>
+    <string name="title_activity_sound_tone_setting">SoundToneSetting</string>
+    <string name="title_activity_vibe_tone_setting">VibeToneSetting</string>
 
 
 

@@ -21,7 +21,7 @@ public class RingToneManager extends AppCompatActivity {
         this.notificationMode = Integer.parseInt(sharedPreferences.getString("mode", "1"));
     }
 
-    public void playRingTone(FavoriteLocation loc){
+    public void playTone(FavoriteLocation loc){
 
         if(checkMode(this.notificationMode)) {
 

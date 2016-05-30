@@ -33,7 +33,9 @@ public class PartnerSettings extends Activity {
         Button remove_partner = (Button) findViewById(R.id.remove_partner_button);
 
         final String userEmail = getIntent().getStringExtra(Constants.DISPLAY_EMAIL);
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
         final DatabaseReference myRef = database.getReference("users");
         if(userEmail != null) {
             myRef.child(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {

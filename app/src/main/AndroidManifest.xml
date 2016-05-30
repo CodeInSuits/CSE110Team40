@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vapenaysh.jace.myapplication">
+    package="com.vapenaysh.jace.myapplication" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -24,11 +24,11 @@
     <uses-permission android:name="com.example.gcm.permission.C2D_MESSAGE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".MyApplication">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".CreateAccount"
             android:label="@string/title_activity_create_account" />
@@ -49,7 +49,7 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LoginPage" />
@@ -61,16 +61,15 @@
         <service
             android:name=".GPSTrackerService"
             android:enabled="true"
-            android:exported="true"></service>
-
+            android:exported="true" />
         <service
             android:name=".NotificationService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".LoginPage"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -85,16 +84,25 @@
 
         <activity
             android:name=".UserCenter"
-            android:label="@string/title_activity_user_center"></activity>
+            android:label="@string/title_activity_user_center" />
         <activity
             android:name=".GlobalSettings"
             android:label="@string/title_activity_global_settings"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".PartnerFavoriteLocation"
             android:label="@string/title_activity_partner_favorite_location"
-            android:theme="@style/AppTheme"></activity>
-
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".SoundToneSetting"
+            android:label="@string/title_activity_sound_tone_setting"
+            android:theme="@style/AppTheme" >
+        </activity>
+        <activity
+            android:name=".VibeToneSetting"
+            android:label="@string/title_activity_vibe_tone_setting"
+            android:theme="@style/AppTheme" >
+        </activity>
     </application>
 
 </manifest>

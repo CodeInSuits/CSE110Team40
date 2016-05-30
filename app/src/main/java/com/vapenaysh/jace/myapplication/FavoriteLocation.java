@@ -15,6 +15,7 @@ public class FavoriteLocation {
     private String name;
     private Date date;
     private int vibeTone;
+    private int ringTone;
     private boolean visited = false;
 
     public FavoriteLocation(){}
@@ -25,6 +26,14 @@ public class FavoriteLocation {
 
     public void setVibeTone(int vibeTone) {
         this.vibeTone = vibeTone;
+    }
+
+    public int getRingTone() {
+        return ringTone;
+    }
+
+    public void setRingTone(int ringTone) {
+        this.ringTone = ringTone;
     }
 
     public FavoriteLocation(LatLng coord, String name){

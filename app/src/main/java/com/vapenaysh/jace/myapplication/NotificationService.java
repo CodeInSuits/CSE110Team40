@@ -3,6 +3,7 @@ package com.vapenaysh.jace.myapplication;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 public class NotificationService extends IntentService {
     private DatabaseReference partnerDb;
     private ArrayList<FavoriteLocation> visitedList;
+    private RingToneManager ring;
+    private VibeToneManager vibe;
 
     public NotificationService() {
         super("notification service");
@@ -29,6 +32,9 @@ public class NotificationService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Log.v("NotificationService", "Service Started");
         visitedList = new ArrayList<>();
+
+        ring = new RingToneManager();
+        vibe = new VibeToneManager((Vibrator) getSystemService(VIBRATOR_SERVICE));
 
         if (intent != null) {
             synchronized (this) {
@@ -59,14 +65,16 @@ public class NotificationService extends IntentService {
 
 
                             // code for calling arrival sound notification method (FavoriteLocation object)
+                            // ring.playArrivalTone();
 
                             // code for calling arrival vibration notification method (FavoriteLocation obejct)
-
+                            // vibe.playArrivalTone();
 
                             // code for calling location sound notification method (FavoriteLocation object)
+                            // ring.playTone(latest);
 
                             // code for calling location vibration notification method (FavoriteLocation obejct)
-
+                            vibe.playTone(latest);
                         }
                         //DEPARTED FROM A LOCATION
                         else if(latest != null && visitedList.contains(latest) ){
@@ -77,9 +85,10 @@ public class NotificationService extends IntentService {
                             visitedList.remove(latest);
 
                             // code for calling departure sound notification method (FavoriteLocation object)
+                            // ring.playDepartureTone();
 
                             // code for calling departure vibration notification method (FavoriteLocation obejct)
-
+                            // vibe.playDepartureTone();
 
                         }
 
