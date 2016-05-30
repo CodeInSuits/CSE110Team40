@@ -54,10 +54,6 @@ public class RingToneSetting extends AppCompatActivity {
                 Log.i("tonepath", tonePath);
                 Toast.makeText(getApplicationContext(), tonePath, Toast.LENGTH_SHORT).show();
             }
-            else {
-                Toast.makeText(getApplicationContext(), "noooo", Toast.LENGTH_SHORT).show();
-
-            }
         }
     }
 

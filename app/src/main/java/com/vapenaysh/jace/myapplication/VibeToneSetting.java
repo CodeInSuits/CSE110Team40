@@ -155,15 +155,12 @@ public class VibeToneSetting extends Activity {
         });
     }
 
-
-
     // testing code // need to be removed later
     public void testVibe(){
         Vibrator e  = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         VibeToneManager vibe = new VibeToneManager(e);
         vibe.testPlayTone();
     }
-
 
     public static int getVibeToneIndex() {
         return VibeToneIndex;
