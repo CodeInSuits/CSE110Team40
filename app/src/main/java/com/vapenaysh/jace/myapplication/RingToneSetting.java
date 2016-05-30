@@ -53,7 +53,7 @@ public class RingToneSetting extends AppCompatActivity {
         if(resultCode == Activity.RESULT_OK && requestCode == 3){
             Uri toneUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
             //RingtoneManager.setActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION, toneUri);
-            if(toneUri!=null){
+            if(toneUri != null){
                 tonePath = toneUri.toString();
                 Log.i("tonepath", tonePath);
                 Toast.makeText(getApplicationContext(), tonePath, Toast.LENGTH_SHORT).show();
