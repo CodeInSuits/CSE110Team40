@@ -21,23 +21,25 @@ public class FavoriteLocationAdapter extends ArrayAdapter<FavoriteLocation>
     @Override
     public View getView(int pos, View convertView, ViewGroup parent)
     {
-        View v = convertView;
-        if (v == null)
-        {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            v = layoutInflater.inflate(R.layout.user_center_list_row, null);
-        }
         FavoriteLocation favoriteLocation = getItem(pos);
         if (favoriteLocation != null)
         {
-            TextView title = (TextView) v.findViewById(R.id.name);
-            TextView visited = (TextView) v.findViewById(R.id.visited);
-            title.setText(favoriteLocation.getName());
-            if (favoriteLocation.getDate() != null)
+            if (favoriteLocation.getDate() != null && favoriteLocation.isVisited())
+            {
+                View v = convertView;
+                if (v == null)
+                {
+                    LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+                    v = layoutInflater.inflate(R.layout.user_center_list_row, null);
+
+                }
+                TextView title = (TextView) v.findViewById(R.id.name);
+                TextView visited = (TextView) v.findViewById(R.id.visited);
+                title.setText(favoriteLocation.getName());
                 visited.setText("LAST VISITED ON " + favoriteLocation.getDate().toString());
-            else
-                visited.setText("NEVER VISITED BEFORE");
+                return v;
+            }
         }
-        return v;
+        return convertView;
     }
 }
