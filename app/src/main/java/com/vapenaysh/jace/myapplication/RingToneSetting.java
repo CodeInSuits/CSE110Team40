@@ -28,12 +28,14 @@ public class RingToneSetting extends AppCompatActivity {
 
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
         //intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, currenturi);
+
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select ringtone for Location");
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
-        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
-        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, false);
+        //intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
         startActivityForResult(intent, 3);
     }
 
@@ -42,8 +44,10 @@ public class RingToneSetting extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
+
         Toast.makeText(getApplicationContext(), resultCode+"yes", Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(), Activity.RESULT_OK+"yes", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), Activity.RESULT_CANCELED+"", Toast.LENGTH_SHORT).show();
 
 
         if(resultCode == Activity.RESULT_OK && requestCode == 3){

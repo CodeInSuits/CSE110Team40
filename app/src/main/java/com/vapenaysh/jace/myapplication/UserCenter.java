@@ -262,6 +262,16 @@ public class UserCenter extends AppCompatActivity {
 
             }
         });
+
+        if(partnerEmail == null){
+            partnerEmail = "";
+        }
+
+        if(partnerName == null){
+            partnerName = "";
+        }
+
+
         if(partnerEmail.equals("")){
             return true;
         }
@@ -337,11 +347,12 @@ public class UserCenter extends AppCompatActivity {
                 };
                 ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
                 flls.clear();
-                for (FavoriteLocation i : data)
-                {
-                    flls.add(i);
+                if (data != null) {
+                    for (FavoriteLocation i : data) {
+                        flls.add(i);
+                    }
+                    fla.notifyDataSetChanged();
                 }
-                fla.notifyDataSetChanged();
             }
 
             @Override
