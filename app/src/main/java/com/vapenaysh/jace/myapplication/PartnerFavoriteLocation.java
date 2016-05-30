@@ -61,6 +61,7 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                 // whenever data at this location is updated.
                 GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
                 };
+
                 fll = dataSnapshot.getValue(t);
 
                 if (fll != null) {
@@ -80,10 +81,7 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                         int myPosition = position;
 
                         String itemClickedId = listView.getItemAtPosition(myPosition).toString();
-
                         Toast.makeText(getApplicationContext(), "Id Clicked: " + itemClickedId, Toast.LENGTH_LONG).show();
-
-
                     }
                 });
 

@@ -15,7 +15,7 @@ public class FavoriteLocation {
     private String name;
     private Date date;
     private int vibeTone;
-    private int ringTone;
+    private String ringTone;
     private boolean visited = false;
 
     public FavoriteLocation(){}
@@ -28,11 +28,11 @@ public class FavoriteLocation {
         this.vibeTone = vibeTone;
     }
 
-    public int getRingTone() {
+    public String getRingTone() {
         return ringTone;
     }
 
-    public void setRingTone(int ringTone) {
+    public void setRingTone(String ringTone) {
         this.ringTone = ringTone;
     }
 

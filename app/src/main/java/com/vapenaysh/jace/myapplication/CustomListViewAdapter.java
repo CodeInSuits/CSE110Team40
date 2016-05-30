@@ -96,7 +96,7 @@ public class CustomListViewAdapter extends BaseAdapter  {
 
                     Intent i = new Intent(mContext, VibeToneSetting.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    i.putExtra(mLocation.getName(), true);
+                    i.putExtra("locName", mLocation.getName());
                     mContext.startActivity(i);
 
                 }
