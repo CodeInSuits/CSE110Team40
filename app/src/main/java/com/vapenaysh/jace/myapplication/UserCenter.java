@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,8 +25,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,6 +57,9 @@ public class UserCenter extends AppCompatActivity {
     private String userName;
     private String partnerName;
     private String imageUri;
+    private ListView lv;
+    FavoriteLocationAdapter fla;
+    private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
 
 
 
@@ -72,6 +82,8 @@ public class UserCenter extends AppCompatActivity {
         Log.d(TAG, "ImageUrl" + imageUri);
 
 
+
+
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
@@ -79,9 +91,6 @@ public class UserCenter extends AppCompatActivity {
         profile = (CircleImageView) v.findViewById(R.id.profile_image);
         displayName = (TextView) v.findViewById(R.id.username);
         displayEmail = (TextView) v.findViewById(R.id.email);
-
-
-
 
         displayEmail.setText(userEmail + "@gmail.com");
         displayName.setText(userName);
@@ -208,6 +217,25 @@ public class UserCenter extends AppCompatActivity {
 
         //Setting the actionbarToggle to drawer layout
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        lv = (ListView) findViewById(R.id.listView);
+        fla = new FavoriteLocationAdapter(this, R.layout.user_center_list_row, flls);
+        lv.setAdapter(fla);
+        loadData();
+        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh()
+            {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        loadData();
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 50);
+            }
+        });
 
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
@@ -231,6 +259,16 @@ public class UserCenter extends AppCompatActivity {
 
             }
         });
+
+        if(partnerEmail == null){
+            partnerEmail = "";
+        }
+
+        if(partnerName == null){
+            partnerName = "";
+        }
+
+
         if(partnerEmail.equals("")){
             return true;
         }
@@ -282,9 +320,36 @@ public class UserCenter extends AppCompatActivity {
 
     private void startNotificationService(){
         Intent notifsIntent = new Intent(this, NotificationService.class);
-        notifsIntent.putExtra(Constants.PARTNER_EMAIL, partnerEmail );
+        notifsIntent.putExtra(Constants.PARTNER_EMAIL, partnerEmail);
 
         startService(notifsIntent);
     }
 
+    private boolean loadData()
+    {
+        DatabaseReference partnerDb = database.getReference(partnerEmail + Constants.LOC_URL);
+
+        partnerDb.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener()
+        {
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
+                };
+                ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
+                flls.clear();
+                if (data != null) {
+                    for (FavoriteLocation i : data) {
+                        flls.add(i);
+                    }
+                    fla.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return true;
+    }
 }

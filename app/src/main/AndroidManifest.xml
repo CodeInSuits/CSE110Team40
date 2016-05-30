@@ -37,6 +37,7 @@
         <activity
             android:name=".CreateAccount"
             android:label="@string/title_activity_create_account" />
+
         <activity
             android:name=".AddPartner"
             android:label="@string/title_activity_activity_add_partner" />
@@ -101,7 +102,8 @@
         <activity
             android:name=".RingToneSetting"
             android:label="@string/title_activity_sound_tone_setting"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme"
+            android:launchMode="singleTop">
         </activity>
         <activity
             android:name=".VibeToneSetting"

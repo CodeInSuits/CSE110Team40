@@ -43,7 +43,12 @@ public class CustomListViewAdapter extends BaseAdapter  {
 
     @Override
     public int getCount() {
-        return locations.size();
+        if(locations != null) {
+            return locations.size();
+        }
+        else {
+            return 0;
+        }
     }
 
     @Override
@@ -70,6 +75,8 @@ public class CustomListViewAdapter extends BaseAdapter  {
             Button soundButton = (Button) view.findViewById(R.id.button_ringTone);
             Button vibeButton = (Button) view.findViewById(R.id.button_vibe);
 
+            final FavoriteLocation mLocation = locations.get(position);
+            title.setText(mLocation.getName());
 
             soundButton.setOnClickListener(new View.OnClickListener() {
 
@@ -89,12 +96,12 @@ public class CustomListViewAdapter extends BaseAdapter  {
 
                     Intent i = new Intent(mContext, VibeToneSetting.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.putExtra("locName", mLocation.getName());
                     mContext.startActivity(i);
+
                 }
             });
 
-            FavoriteLocation mLocation = locations.get(position);
-            title.setText(mLocation.getName());
         }
 
         return view;
