@@ -99,9 +99,7 @@ public class AddPartner extends Activity implements View.OnClickListener {
                         DatabaseReference userDatabase = firebaseDatabase.getReference("users").child(userEmail);
                         userDatabase.child(Constants.DATABASE_PARTNER_KEY).setValue(phoneNumber);
                         userDatabase.child(Constants.DATABASE_PARTNER_NAME).setValue(name);
-                        Intent i = new Intent(AddPartner.this, UserCenter.class);
-                        i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
-                        startActivity(i);
+                        finish();
                         Toast.makeText(getApplicationContext(), "Partner added", Toast.LENGTH_LONG).show();
 
 

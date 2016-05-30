@@ -61,9 +61,9 @@ public class PartnerSettings extends Activity {
                 myRef.child(userEmail).child(Constants.DATABASE_PARTNER_KEY).setValue("");
                 Log.v("PartnerSettings", "Removed partner");
                 Toast.makeText(getApplicationContext(), "Partner removed", Toast.LENGTH_LONG).show();
-                Intent i = new Intent(PartnerSettings.this, UserCenter.class);
-                i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
-                startActivity(i);
+                stopService(new Intent(PartnerSettings.this, NotificationService.class));
+                stopService(new Intent(PartnerSettings.this, GPSTrackerService.class));
+                finish();
             }
         });
 

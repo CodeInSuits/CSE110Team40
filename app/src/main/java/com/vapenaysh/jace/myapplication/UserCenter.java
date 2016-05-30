@@ -292,4 +292,11 @@ public class UserCenter extends AppCompatActivity {
 
         startService(notifsIntent);
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(partnerEmail == null || partnerEmail.equals(""))
+            isSingle(userEmail); //read partner info in case it got updated
+    }
 }
