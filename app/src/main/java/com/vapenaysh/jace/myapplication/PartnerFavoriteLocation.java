@@ -1,5 +1,9 @@
 package com.vapenaysh.jace.myapplication;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PartnerFavoriteLocation extends AppCompatActivity {
 
@@ -33,7 +39,6 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
 
 
      */
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +98,7 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                 Log.w("ERROR:", "Failed to read value.", firebaseError.toException());
             }
         });
+
 
 
 
