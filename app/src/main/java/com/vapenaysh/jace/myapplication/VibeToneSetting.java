@@ -187,8 +187,8 @@ public class VibeToneSetting extends Activity {
 
     public void save(){
 
-        DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
-        fll = new ArrayList<>();
+        //DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
+        //fll = new ArrayList<>();
 
     }
 
