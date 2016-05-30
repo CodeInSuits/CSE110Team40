@@ -1,7 +1,12 @@
 package com.vapenaysh.jace.myapplication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,20 +15,23 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import android.support.v7.app.ActionBarActivity;
 import java.util.ArrayList;
 
 import static android.support.v4.app.ActivityCompat.startActivity;
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 /**
  * Created by paulodichone on 2/4/15.
  */
-public class CustomListViewAdapter extends BaseAdapter {
+public class CustomListViewAdapter extends BaseAdapter  {
 
     private Context mContext;
-    private  ArrayList<FavoriteLocation> locations;
+    private ArrayList<FavoriteLocation> locations;
     private static LayoutInflater inflater = null;
-
+    private String tonePath;
+    private Activity activity;
 
     public CustomListViewAdapter(Context context, ArrayList<FavoriteLocation> data){
 
@@ -52,7 +60,6 @@ public class CustomListViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View view = convertView;
-        FavoriteLocation currFavLoc = locations.get(position);
 
         if (convertView == null){
 
@@ -68,11 +75,11 @@ public class CustomListViewAdapter extends BaseAdapter {
 
                 @Override
                 public void onClick(View v) {
-
-                    Intent i = new Intent(mContext, SoundToneSetting.class);
+                    Intent i = new Intent(mContext, RingToneSetting.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(i);
                 }
+
             });
 
             vibeButton.setOnClickListener(new View.OnClickListener() {
