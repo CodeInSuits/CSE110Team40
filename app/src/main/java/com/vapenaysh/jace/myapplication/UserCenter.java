@@ -90,9 +90,6 @@ public class UserCenter extends AppCompatActivity {
         displayName = (TextView) v.findViewById(R.id.username);
         displayEmail = (TextView) v.findViewById(R.id.email);
 
-
-
-
         displayEmail.setText(userEmail + "@gmail.com");
         displayName.setText(userName);
         Picasso.with(getApplicationContext()).load(imageUri).into(profile);
@@ -242,8 +239,6 @@ public class UserCenter extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
 
     }
-
-
 
 
     // Checks if current user is single, and reports information to UI and return value.

@@ -2,6 +2,7 @@ package com.vapenaysh.jace.myapplication;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -16,24 +17,28 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class VibeToneSetting extends Activity {
 
     private RadioGroup radioGroup;
     private static int VibeToneIndex;
-
     FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     private static SharedPreferences sp;
-
+    private String locName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vibe_tone_setting);
 
-        radioGroup = (RadioGroup) findViewById(R.id.myRadioGroup);
+        Intent intent = getIntent();
+        locName = intent.getStringExtra("locName");
 
+        radioGroup = (RadioGroup) findViewById(R.id.myRadioGroup);
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
@@ -182,6 +187,8 @@ public class VibeToneSetting extends Activity {
 
     public void save(){
 
+        DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
+        fll = new ArrayList<>();
 
     }
 
