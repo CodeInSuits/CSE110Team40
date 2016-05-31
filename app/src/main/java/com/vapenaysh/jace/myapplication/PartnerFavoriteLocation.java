@@ -1,9 +1,5 @@
 package com.vapenaysh.jace.myapplication;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,9 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PartnerFavoriteLocation extends AppCompatActivity {
 
@@ -49,7 +42,7 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
 
         String uid = getIntent().getStringExtra("PartnerEmail");
         this.email = uid;
-        Toast.makeText(getApplicationContext(), "Partner is " + uid, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "My Partner is " + uid, Toast.LENGTH_SHORT).show();
 
         DatabaseReference db;
         db = locationsDB.getReference(uid + Constants.LOC_URL);
@@ -75,8 +68,6 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                 listView = (ListView) findViewById(R.id.list);
 
                 /////test code //////////////////////////////////////////
-                fll = new ArrayList<>();
-                fll.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
 
                 customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), fll);
                 listView.setAdapter(customListViewAdapter);
