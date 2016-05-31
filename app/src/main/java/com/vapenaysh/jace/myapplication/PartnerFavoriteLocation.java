@@ -31,6 +31,7 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
     private CustomListViewAdapter customListViewAdapter;
     FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     ArrayList<FavoriteLocation> fll;
+    private static String email;
 
     /*
      TODO: 1. Fully integrate with the customListViewAdapter
@@ -47,7 +48,8 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         String uid = getIntent().getStringExtra("PartnerEmail");
-        Toast.makeText(getApplicationContext(),"Partner is " + uid, Toast.LENGTH_SHORT).show();
+        this.email = uid;
+        Toast.makeText(getApplicationContext(), "Partner is " + uid, Toast.LENGTH_SHORT).show();
 
         DatabaseReference db;
         db = locationsDB.getReference(uid + Constants.LOC_URL);
@@ -69,7 +71,13 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "Partner has " + fll.size() + " favorite locations", Toast.LENGTH_SHORT).show();
                 }
 
+
                 listView = (ListView) findViewById(R.id.list);
+
+                /////test code //////////////////////////////////////////
+                fll = new ArrayList<>();
+                fll.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
                 customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), fll);
                 listView.setAdapter(customListViewAdapter);
 
@@ -95,12 +103,10 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
             }
         });
 
+    }
 
-
-
-
-
-
+    public static String getPartnerEmail(){
+        return email;
     }
 
 }

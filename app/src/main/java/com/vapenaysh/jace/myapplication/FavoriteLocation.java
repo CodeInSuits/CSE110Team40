@@ -8,13 +8,13 @@ import java.util.Date;
  * Created by Matt on 4/29/16.
  * FavoriteLocation class - stores a MyLatLng and a custom name for the location.
  */
-public class FavoriteLocation {
+public class FavoriteLocation implements Comparable<FavoriteLocation>{
 
     private MyLatLng myLatLng;
     private String name;
     private MyDate myDate;
-    private int vibeTone;
-    private String ringTone;
+    private int vibeTone = 0;
+    private String ringTone = "content://media/internal/audio/media/63";
     private boolean visited = false;
 
     public FavoriteLocation(){}
@@ -148,5 +148,10 @@ public class FavoriteLocation {
 
         return getDate().after(cutoff);
 
+    }
+
+    @Override
+    public int compareTo(FavoriteLocation another) {
+        return getDate().compareTo(another.getDate());
     }
 }

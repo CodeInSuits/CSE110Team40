@@ -29,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -244,19 +246,21 @@ public class UserCenter extends AppCompatActivity {
     // Checks if current user is single, and reports information to UI and return value.
     public boolean isSingle(String userPath){
         DatabaseReference myRef = database.getReference("users");
-        myRef.child(userPath).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User storedUser = dataSnapshot.getValue(User.class);
-                partnerEmail = storedUser.getPartnerEmail();
-                Toast.makeText(getBaseContext(), "Partner email is " + partnerEmail, Toast.LENGTH_SHORT).show();
-            }
+        if (myRef != null && userPath != null) {
+            myRef.child(userPath).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User storedUser = dataSnapshot.getValue(User.class);
+                    partnerEmail = storedUser.getPartnerEmail();
+                    Toast.makeText(getBaseContext(), "Partner email is " + partnerEmail, Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
 
         if(partnerEmail == null){
             partnerEmail = "";
@@ -341,8 +345,9 @@ public class UserCenter extends AppCompatActivity {
                 GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
                 };
                 ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
-                flls.clear();
                 if (data != null) {
+                    Collections.sort(data);
+                    flls.clear();
                     for (FavoriteLocation i : data) {
                         flls.add(i);
                     }
