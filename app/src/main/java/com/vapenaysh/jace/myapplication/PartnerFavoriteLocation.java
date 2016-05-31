@@ -25,6 +25,7 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
     private CustomListViewAdapter customListViewAdapter;
     FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     ArrayList<FavoriteLocation> fll;
+    private static String email;
 
     /*
      TODO: 1. Fully integrate with the customListViewAdapter
@@ -41,7 +42,8 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         String uid = getIntent().getStringExtra("PartnerEmail");
-        Toast.makeText(getApplicationContext(),"Partner is " + uid, Toast.LENGTH_SHORT).show();
+        this.email = uid;
+        Toast.makeText(getApplicationContext(), "Partner is " + uid, Toast.LENGTH_SHORT).show();
 
         DatabaseReference db;
         db = locationsDB.getReference(uid + Constants.LOC_URL);
@@ -88,13 +90,10 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                 Log.w("ERROR:", "Failed to read value.", firebaseError.toException());
             }
         });
+    }
 
-
-
-
-
-
-
+    public static String getPartnerEmail(){
+        return email;
     }
 
 }

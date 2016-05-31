@@ -13,14 +13,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+
+import java.util.ArrayList;
+
 public class RingToneSetting extends AppCompatActivity {
 
-    String tonePath;
+    private String tonePath;
+    private String locName;
+    FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
+    FavoriteLocationAdapter fla;
+    private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_tone_setting);
+        Intent intent = getIntent();
+        locName = intent.getStringExtra("locName");
         setRingTone();
     }
 
@@ -57,8 +70,50 @@ public class RingToneSetting extends AppCompatActivity {
                 tonePath = toneUri.toString();
                 Log.i("tonepath", tonePath);
                 Toast.makeText(getApplicationContext(), tonePath, Toast.LENGTH_SHORT).show();
+                save();
             }
         }
+    }
+
+
+    public void save(){
+
+        PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
+        String uid = loc.getPartnerEmail();
+        DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
+        db.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
+                };
+                ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
+
+                flls.clear();
+                if (data != null) {
+                    for (FavoriteLocation i : data) {
+                        flls.add(i);
+                    }
+                    fla.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        FavoriteLocationList tmp = new FavoriteLocationList(uid);
+        FavoriteLocation currentLoc = null;
+        for (FavoriteLocation i : flls ){
+            if (i.getName().equals(locName)){
+                currentLoc = i;
+                break;
+            }
+        }
+        currentLoc.setRingTone(tonePath);
+        tmp.writeLocation(currentLoc);
     }
 
 }

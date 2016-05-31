@@ -17,8 +17,10 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
 
@@ -26,9 +28,11 @@ public class VibeToneSetting extends Activity {
 
     private RadioGroup radioGroup;
     private static int VibeToneIndex;
-    FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     private static SharedPreferences sp;
     private String locName;
+    FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
+    FavoriteLocationAdapter fla;
+    private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +155,7 @@ public class VibeToneSetting extends Activity {
                         VibeToneIndex = 10;
                         break;
                 }
+                save();
             }
         });
 
@@ -187,9 +192,42 @@ public class VibeToneSetting extends Activity {
 
     public void save(){
 
-        //DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
-        //fll = new ArrayList<>();
+        PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
+        String uid = loc.getPartnerEmail();
+        DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
+        db.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
 
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
+                };
+                ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
+
+                flls.clear();
+                if (data != null) {
+                    for (FavoriteLocation i : data) {
+                        flls.add(i);
+                    }
+                    fla.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        FavoriteLocationList tmp = new FavoriteLocationList(uid);
+        FavoriteLocation currentLoc = null;
+        for (FavoriteLocation i : flls ){
+            if (i.getName().equals(locName)){
+                currentLoc = i;
+                break;
+            }
+        }
+        currentLoc.setVibeTone(getVibeToneIndex());
+        tmp.writeLocation(currentLoc);
     }
 
 }
