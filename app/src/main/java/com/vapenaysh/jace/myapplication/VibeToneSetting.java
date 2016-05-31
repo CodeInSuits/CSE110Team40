@@ -238,8 +238,10 @@ public class VibeToneSetting extends Activity {
             }
         }
 
-        currentLoc.setVibeTone(VibeToneIndex);
-        tmp.writeLocation(currentLoc);
+        if (currentLoc != null) {
+            currentLoc.setVibeTone(VibeToneIndex);
+            tmp.writeLocation(currentLoc);
+        }
     }
 
 }

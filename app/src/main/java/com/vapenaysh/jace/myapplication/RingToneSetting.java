@@ -76,7 +76,7 @@ public class RingToneSetting extends AppCompatActivity {
     }
 
 
-    public void save(){
+    public void save() {
 
         PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
         String uid = loc.getPartnerEmail();
@@ -106,14 +106,17 @@ public class RingToneSetting extends AppCompatActivity {
 
         FavoriteLocationList tmp = new FavoriteLocationList(uid);
         FavoriteLocation currentLoc = null;
-        for (FavoriteLocation i : flls ){
-            if (i.getName().equals(locName)){
+        for (FavoriteLocation i : flls) {
+            if (i.getName().equals(locName)) {
                 currentLoc = i;
                 break;
             }
         }
-        currentLoc.setRingTone(tonePath);
-        tmp.writeLocation(currentLoc);
+        if (currentLoc != null) {
+
+            currentLoc.setRingTone(tonePath);
+            tmp.writeLocation(currentLoc);
+        }
     }
 
 }

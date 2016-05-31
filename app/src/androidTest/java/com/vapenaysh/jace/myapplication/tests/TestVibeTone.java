@@ -66,7 +66,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     assertEquals(checkedButton.getId(), button1.getId());
 
                     // Click Save Button
-                    // saveButton.callOnClick();
+                    saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
                     assertEquals(1, vibeToneSetting.getVibeToneIndex());
@@ -122,7 +122,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     assertEquals(checkedButton.getId(), button2.getId());
 
                     // Click Save Button
-                    // saveButton.callOnClick();
+                    saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
                     assertEquals(2, vibeToneSetting.getVibeToneIndex());
@@ -179,7 +179,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     assertEquals(checkedButton.getId(), button3.getId());
 
                     // Click Save Button
-                    // saveButton.callOnClick();
+                    saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
                     assertEquals(3, vibeToneSetting.getVibeToneIndex());
@@ -236,7 +236,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     assertEquals(checkedButton.getId(), button4.getId());
 
                     // Click Save Button
-                    // saveButton.callOnClick();
+                    saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
                     assertEquals(4, vibeToneSetting.getVibeToneIndex());
@@ -292,7 +292,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     assertEquals(checkedButton.getId(), button5.getId());
 
                     // Click Save Button
-                    // saveButton.callOnClick();
+                    saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
                     assertEquals(5, vibeToneSetting.getVibeToneIndex());
@@ -348,7 +348,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     assertEquals(checkedButton.getId(), button6.getId());
 
                     // Click Save Button
-                    // saveButton.callOnClick();
+                    saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
                     assertEquals(6, vibeToneSetting.getVibeToneIndex());
@@ -404,7 +404,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     assertEquals(checkedButton.getId(), button7.getId());
 
                     // Click Save Button
-                    // saveButton.callOnClick();
+                    saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
                     assertEquals(7, vibeToneSetting.getVibeToneIndex());
@@ -460,7 +460,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     assertEquals(checkedButton.getId(), button8.getId());
 
                     // Click Save Button
-                    // saveButton.callOnClick();
+                    saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
                     assertEquals(8, vibeToneSetting.getVibeToneIndex());
@@ -516,7 +516,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     assertEquals(checkedButton.getId(), button9.getId());
 
                     // Click Save Button
-                    // saveButton.callOnClick();
+                    saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
                     assertEquals(9, vibeToneSetting.getVibeToneIndex());
@@ -571,7 +571,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     assertEquals(checkedButton.getId(), button10.getId());
 
                     // Click Save Button
-                    // saveButton.callOnClick();
+                    saveButton.callOnClick();
 
                     // Assert that VibeTone10 was saved
                     assertEquals(10, vibeToneSetting.getVibeToneIndex());
@@ -631,7 +631,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     assertEquals(checkedButton.getId(), button2.getId());
 
                     // Click Save Button
-                    //saveButton.callOnClick();
+                    saveButton.callOnClick();
 
                     // Assert that VibeTone2 was saved
                     assertEquals(2, vibeToneSetting.getVibeToneIndex());

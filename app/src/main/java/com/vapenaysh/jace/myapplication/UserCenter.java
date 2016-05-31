@@ -247,19 +247,21 @@ public class UserCenter extends AppCompatActivity {
     // Checks if current user is single, and reports information to UI and return value.
     public boolean isSingle(String userPath){
         DatabaseReference myRef = database.getReference("users");
-        myRef.child(userPath).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User storedUser = dataSnapshot.getValue(User.class);
-                partnerEmail = storedUser.getPartnerEmail();
-                Toast.makeText(getBaseContext(), "Partner email is " + partnerEmail, Toast.LENGTH_SHORT).show();
-            }
+        if (myRef != null) {
+            myRef.child(userPath).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User storedUser = dataSnapshot.getValue(User.class);
+                    partnerEmail = storedUser.getPartnerEmail();
+                    Toast.makeText(getBaseContext(), "Partner email is " + partnerEmail, Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
 
         if(partnerEmail == null){
             partnerEmail = "";
