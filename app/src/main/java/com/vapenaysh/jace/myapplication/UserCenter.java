@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -336,6 +337,7 @@ public class UserCenter extends AppCompatActivity {
                 GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
                 };
                 ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
+                Collections.sort(data);
                 flls.clear();
                 if (data != null) {
                     for (FavoriteLocation i : data) {
