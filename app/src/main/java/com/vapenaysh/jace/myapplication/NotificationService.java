@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +30,6 @@ public class NotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.v("NotificationService", "Service Started");
         visitedList = new ArrayList<>();
 
         //ring = new RingToneManager();
@@ -40,27 +40,31 @@ public class NotificationService extends IntentService {
                 String partner = intent.getStringExtra(Constants.PARTNER_EMAIL);
                 FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
                 partnerDb = locationsDB.getReference(partner + Constants.LOC_URL);
+                Log.v("NotificationService", "Service Started - reading from " + partner);
 
+                partnerDb.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                partnerDb.addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+                    }
 
                     @Override
-                    public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                        GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {};
-                        ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        FavoriteLocation data = dataSnapshot.getValue(FavoriteLocation.class);
+                        Log.v("NotifService", "Received data change: " + data);
 
-                        FavoriteLocation latest = getMostRecentlyVisited(data);
+
                         NotificationCompat.Builder mBuilder = null;
 
                         clearListIfAfterCutoff();
 
                         //ARRIVED AT A LOCATION
-                        if (latest != null && !visitedList.contains(latest) && latest.afterCutoffTime() && latest.isVisited() ) {
-                            visitedList.add(latest);
+                        if (data != null && !visitedList.contains(data) && data.isVisited() ) {
+                            visitedList.add(data);
                             mBuilder = new NotificationCompat.Builder(getApplicationContext())
-                                            .setSmallIcon(R.drawable.heart2)
-                                            .setContentTitle("Arrival")
-                                            .setContentText("Partner arrived at " + latest.getName());
+                                    .setSmallIcon(R.drawable.heart2)
+                                    .setContentTitle("Arrival")
+                                    .setContentText("Partner arrived at " + data.getName());
 
 
                             // code for calling arrival sound notification method (FavoriteLocation object)
@@ -76,12 +80,12 @@ public class NotificationService extends IntentService {
                             //vibe.playTone(latest);
                         }
                         //DEPARTED FROM A LOCATION
-                        else if(latest != null && visitedList.contains(latest) && !latest.isVisited() ){
+                        else if(data != null && visitedList.contains(data) && !data.isVisited() ){
                             mBuilder = new NotificationCompat.Builder(getApplicationContext())
                                     .setSmallIcon(R.drawable.heart2)
                                     .setContentTitle("Departure")
-                                    .setContentText("Partner departed from " + latest.getName());
-                            visitedList.remove(latest);
+                                    .setContentText("Partner departed from " + data.getName());
+                            visitedList.remove(data);
 
                             // code for calling departure sound notification method (FavoriteLocation object)
                             // ring.playDepartureTone();
@@ -95,8 +99,17 @@ public class NotificationService extends IntentService {
                         if( mBuilder != null){
                             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                             manager.notify(1, mBuilder.build());
-                            Log.e("HELLO", mBuilder.build().toString());
                         }
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
                     }
 
                     @Override
@@ -104,6 +117,7 @@ public class NotificationService extends IntentService {
 
                     }
                 });
+
             }
         }
     }
@@ -139,6 +153,7 @@ public class NotificationService extends IntentService {
 
         for(FavoriteLocation favLoc : visitedList ){
             if(!favLoc.afterCutoffTime()) {
+                Log.v("NotificationService", favLoc.getName() + " removed");
                 visitedList.remove(favLoc);
             }
         }
