@@ -247,7 +247,7 @@ public class UserCenter extends AppCompatActivity {
     // Checks if current user is single, and reports information to UI and return value.
     public boolean isSingle(String userPath){
         DatabaseReference myRef = database.getReference("users");
-        if (myRef != null) {
+        if (myRef != null && userPath != null) {
             myRef.child(userPath).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

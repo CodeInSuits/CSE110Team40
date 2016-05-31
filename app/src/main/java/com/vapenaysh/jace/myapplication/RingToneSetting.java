@@ -57,12 +57,6 @@ public class RingToneSetting extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-
-        Toast.makeText(getApplicationContext(), resultCode+"yes", Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), Activity.RESULT_OK+"yes", Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), Activity.RESULT_CANCELED+"", Toast.LENGTH_SHORT).show();
-
-
         if(resultCode == Activity.RESULT_OK && requestCode == 3){
             Uri toneUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
             //RingtoneManager.setActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION, toneUri);

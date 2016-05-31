@@ -72,10 +72,12 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                 }
 
 
+                listView = (ListView) findViewById(R.id.list);
+
                 /////test code //////////////////////////////////////////
+                fll = new ArrayList<>();
                 fll.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
 
-                listView = (ListView) findViewById(R.id.list);
                 customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), fll);
                 listView.setAdapter(customListViewAdapter);
 

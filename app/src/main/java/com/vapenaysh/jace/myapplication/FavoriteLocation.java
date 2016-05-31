@@ -15,7 +15,7 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
     private String name;
     private Date date;
     private int vibeTone = 0;
-    private String ringTone;
+    private String ringTone = "content://media/internal/audio/media/63";
     private boolean visited = false;
 
     public FavoriteLocation(){}
@@ -177,8 +177,7 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
     }
 
     @Override
-    public int compareTo(FavoriteLocation another)
-    {
+    public int compareTo(FavoriteLocation another) {
         return this.date.compareTo(another.getDate());
     }
 }
