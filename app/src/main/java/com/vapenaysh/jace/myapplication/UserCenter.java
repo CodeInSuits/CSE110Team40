@@ -30,7 +30,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -217,6 +216,11 @@ public class UserCenter extends AppCompatActivity {
 
         //Setting the actionbarToggle to drawer layout
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+
+
+
+
         lv = (ListView) findViewById(R.id.listView);
         fla = new FavoriteLocationAdapter(this, R.layout.user_center_list_row, flls);
         lv.setAdapter(fla);
