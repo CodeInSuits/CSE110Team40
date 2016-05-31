@@ -337,9 +337,9 @@ public class UserCenter extends AppCompatActivity {
                 GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
                 };
                 ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
-                Collections.sort(data);
-                flls.clear();
                 if (data != null) {
+                    Collections.sort(data);
+                    flls.clear();
                     for (FavoriteLocation i : data) {
                         flls.add(i);
                     }
