@@ -84,6 +84,7 @@ public class CustomListViewAdapter extends BaseAdapter  {
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, RingToneSetting.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.putExtra("locName", mLocation.getName());
                     mContext.startActivity(i);
                 }
 
