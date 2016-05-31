@@ -136,8 +136,8 @@ public class NotificationService extends IntentService {
         FavoriteLocation latest = null; //the location last visited
         Date mostRecent = new Date(Long.MAX_VALUE);
         for (FavoriteLocation fl : set) {
-            if (fl.getDate().before(mostRecent)) {
-                mostRecent = fl.getDate();
+            if (fl.date().before(mostRecent)) {
+                mostRecent = fl.date();
                 latest = fl;
             }
         }

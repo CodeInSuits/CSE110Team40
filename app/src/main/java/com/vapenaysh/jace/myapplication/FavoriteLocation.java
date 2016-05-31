@@ -64,12 +64,12 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
         this.visited = visited;
     }
 
-    public Date getDate()
+    public Date date()
     {
         return myDate.getDate();
     }
 
-    public void setDate (Date timeStamp)
+    public void date (Date timeStamp)
     {
         this.myDate = new MyDate(timeStamp);
     }
@@ -146,12 +146,12 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
             cutoff = new Date(now.getYear(), now.getMonth(), now.getDate(), 3, now.getMinutes());
         }
 
-        return getDate().after(cutoff);
+        return date().after(cutoff);
 
     }
 
     @Override
     public int compareTo(FavoriteLocation another) {
-        return getDate().compareTo(another.getDate());
+        return date().compareTo(another.date());
     }
 }

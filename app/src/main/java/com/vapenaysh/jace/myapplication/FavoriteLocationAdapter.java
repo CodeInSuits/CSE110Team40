@@ -24,7 +24,7 @@ public class FavoriteLocationAdapter extends ArrayAdapter<FavoriteLocation>
         FavoriteLocation favoriteLocation = getItem(pos);
         if (favoriteLocation != null)
         {
-            if (favoriteLocation.getDate() != null && favoriteLocation.isVisited())
+            if (favoriteLocation.date() != null && favoriteLocation.isVisited())
             {
                 View v = convertView;
                 if (v == null)
@@ -36,7 +36,7 @@ public class FavoriteLocationAdapter extends ArrayAdapter<FavoriteLocation>
                 TextView title = (TextView) v.findViewById(R.id.name);
                 TextView visited = (TextView) v.findViewById(R.id.visited);
                 title.setText(favoriteLocation.getName());
-                visited.setText("LAST VISITED ON " + favoriteLocation.getDate().toString());
+                visited.setText("LAST VISITED ON " + favoriteLocation.date().toString());
                 return v;
             }
         }

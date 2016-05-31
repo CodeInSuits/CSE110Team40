@@ -30,7 +30,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -349,7 +348,7 @@ public class UserCenter extends AppCompatActivity {
                     Collections.sort(data);
                     flls.clear();
                     for (FavoriteLocation i : data) {
-                        flls.add(i);
+                            flls.add(i);
                     }
                     fla.notifyDataSetChanged();
                 }
