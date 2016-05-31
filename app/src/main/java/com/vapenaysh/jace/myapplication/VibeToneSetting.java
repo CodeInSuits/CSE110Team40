@@ -28,9 +28,9 @@ public class VibeToneSetting extends Activity {
 
     private RadioGroup radioGroup;
     private static int VibeToneIndex;
-    FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     private static SharedPreferences sp;
     private String locName;
+    FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     FavoriteLocationAdapter fla;
     private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
 
