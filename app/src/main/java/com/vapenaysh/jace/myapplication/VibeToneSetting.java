@@ -183,9 +183,14 @@ public class VibeToneSetting extends Activity {
 
     // testing code // need to be removed later
     public void testVibe(){
+
+
+        FavoriteLocation currentLoc = new FavoriteLocation();
+        currentLoc.setVibeTone(4);
+
         Vibrator e  = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         VibeToneManager vibe = new VibeToneManager(e);
-        vibe.testPlayTone();
+        vibe.playTone(currentLoc);
     }
 
     public static int getVibeToneIndex() {
