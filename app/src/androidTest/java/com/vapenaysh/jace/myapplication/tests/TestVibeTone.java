@@ -598,6 +598,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
         vibeToneSetting = getActivity();
         running = true;
         if(vibeToneSetting != null) {
+
             vibeToneSetting.runOnUiThread(new Runnable() {
 
                 @Override

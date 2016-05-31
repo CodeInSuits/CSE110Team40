@@ -65,7 +65,13 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "Partner has " + fll.size() + " favorite locations", Toast.LENGTH_SHORT).show();
                 }
 
+
                 listView = (ListView) findViewById(R.id.list);
+
+                /////test code //////////////////////////////////////////
+                fll = new ArrayList<>();
+                fll.add(new FavoriteLocation(new LatLng(1.0, 10), "CS LAB"));
+
                 customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), fll);
                 listView.setAdapter(customListViewAdapter);
 
@@ -90,6 +96,7 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                 Log.w("ERROR:", "Failed to read value.", firebaseError.toException());
             }
         });
+
     }
 
     public static String getPartnerEmail(){

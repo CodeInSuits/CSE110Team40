@@ -53,42 +53,52 @@ public class VibeToneSetting extends Activity {
                     case R.id.radioButton:
                         Toast.makeText(getApplicationContext(),
                                 "choice: Ring Tone 1", Toast.LENGTH_SHORT).show();
+                        VibeToneIndex = 1;
                         break;
                     case R.id.radioButton2:
                         Toast.makeText(getApplicationContext(),
                                 "choice: Ring Tone 2", Toast.LENGTH_SHORT).show();
+                        VibeToneIndex = 2;
                         break;
                     case R.id.radioButton3:
                         Toast.makeText(getApplicationContext(),
                                 "choice: Ring Tone 3", Toast.LENGTH_SHORT).show();
+                        VibeToneIndex = 3;
                         break;
                     case R.id.radioButton4:
                         Toast.makeText(getApplicationContext(),
                                 "choice: Ring Tone 4", Toast.LENGTH_SHORT).show();
+                        VibeToneIndex = 4;
                         break;
                     case R.id.radioButton5:
                         Toast.makeText(getApplicationContext(),
                                 "choice: Ring Tone 5", Toast.LENGTH_SHORT).show();
+                        VibeToneIndex = 5;
                         break;
                     case R.id.radioButton6:
                         Toast.makeText(getApplicationContext(),
                                 "choice: Ring Tone 6", Toast.LENGTH_SHORT).show();
+                        VibeToneIndex = 6;
                         break;
                     case R.id.radioButton7:
                         Toast.makeText(getApplicationContext(),
                                 "choice: Ring Tone 7", Toast.LENGTH_SHORT).show();
+                        VibeToneIndex = 7;
                         break;
                     case R.id.radioButton8:
                         Toast.makeText(getApplicationContext(),
                                 "choice: Ring Tone 8", Toast.LENGTH_SHORT).show();
+                        VibeToneIndex = 8;
                         break;
                     case R.id.radioButton9:
                         Toast.makeText(getApplicationContext(),
                                 "choice: Ring Tone 9", Toast.LENGTH_SHORT).show();
+                        VibeToneIndex = 9;
                         break;
                     case R.id.radioButton10:
                         Toast.makeText(getApplicationContext(),
                                 "choice: Ring Tone 10", Toast.LENGTH_SHORT).show();
+                        VibeToneIndex = 10;
                         break;
                 }
             }
@@ -173,9 +183,14 @@ public class VibeToneSetting extends Activity {
 
     // testing code // need to be removed later
     public void testVibe(){
+
+
+        FavoriteLocation currentLoc = new FavoriteLocation();
+        currentLoc.setVibeTone(4);
+
         Vibrator e  = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         VibeToneManager vibe = new VibeToneManager(e);
-        vibe.testPlayTone();
+        vibe.playTone(currentLoc);
     }
 
     public static int getVibeToneIndex() {
@@ -220,14 +235,18 @@ public class VibeToneSetting extends Activity {
 
         FavoriteLocationList tmp = new FavoriteLocationList(uid);
         FavoriteLocation currentLoc = null;
+
         for (FavoriteLocation i : flls ){
             if (i.getName().equals(locName)){
                 currentLoc = i;
                 break;
             }
         }
-        currentLoc.setVibeTone(getVibeToneIndex());
-        tmp.writeLocation(currentLoc);
+
+        if (currentLoc != null) {
+            currentLoc.setVibeTone(VibeToneIndex);
+            tmp.writeLocation(currentLoc);
+        }
     }
 
 }

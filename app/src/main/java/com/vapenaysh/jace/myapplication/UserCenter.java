@@ -1,7 +1,6 @@
 package com.vapenaysh.jace.myapplication;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -106,7 +105,7 @@ public class UserCenter extends AppCompatActivity {
             i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
             startService(i);
 
-            //startNotificationService();
+            startNotificationService();
         }
 
 
@@ -247,19 +246,21 @@ public class UserCenter extends AppCompatActivity {
     // Checks if current user is single, and reports information to UI and return value.
     public boolean isSingle(String userPath){
         DatabaseReference myRef = database.getReference("users");
-        myRef.child(userPath).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User storedUser = dataSnapshot.getValue(User.class);
-                partnerEmail = storedUser.getPartnerEmail();
-                Toast.makeText(getBaseContext(), "Partner email is " + partnerEmail, Toast.LENGTH_SHORT).show();
-            }
+        if (myRef != null && userPath != null) {
+            myRef.child(userPath).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User storedUser = dataSnapshot.getValue(User.class);
+                    partnerEmail = storedUser.getPartnerEmail();
+                    Toast.makeText(getBaseContext(), "Partner email is " + partnerEmail, Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
 
         if(partnerEmail == null){
             partnerEmail = "";
@@ -326,6 +327,13 @@ public class UserCenter extends AppCompatActivity {
         startService(notifsIntent);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (partnerEmail == null || partnerEmail.equals(""))
+            isSingle(userEmail); //read partner info in case it got updated
+    }
+
     private boolean loadData()
     {
         DatabaseReference partnerDb = database.getReference(partnerEmail + Constants.LOC_URL);
@@ -337,9 +345,9 @@ public class UserCenter extends AppCompatActivity {
                 GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
                 };
                 ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
-                Collections.sort(data);
-                flls.clear();
                 if (data != null) {
+                    Collections.sort(data);
+                    flls.clear();
                     for (FavoriteLocation i : data) {
                         flls.add(i);
                     }

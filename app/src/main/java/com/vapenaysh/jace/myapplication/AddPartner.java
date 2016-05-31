@@ -11,8 +11,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 //import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -72,18 +75,45 @@ public class AddPartner extends Activity implements View.OnClickListener {
             dialog.show();
         }
         else{
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference partnerNameDatabase = firebaseDatabase.getReference("users").child(userEmail).child("partnerName");
-            DatabaseReference partnerEmailDatabase = firebaseDatabase.getReference("users").child(userEmail).child("partnerEmail");
+            final FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference partnersDatabase = firebaseDatabase.getReference("users").child(partnerEmail);
+            partnersDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        //partner does not exist in database yet
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(AddPartner.this);
+                        dialog.setTitle("Partner Does Not Exist");
+                        dialog.setMessage("No match for " + partnerEmail);
+                        dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
 
+                            }
+                        });
+                        dialog.show();
+                    } else { //make partner connection
+                        DatabaseReference userDatabase = firebaseDatabase.getReference("users").child(userEmail);
+                        userDatabase.child(Constants.DATABASE_PARTNER_KEY).setValue(partnerEmail);
+                        userDatabase.child(Constants.DATABASE_PARTNER_NAME).setValue(partnerName);
+                        finish();
+                        Toast.makeText(getApplicationContext(), "Partner added", Toast.LENGTH_LONG).show();
+                    }
+                }
 
-            partnerEmailDatabase.setValue(partnerEmail);
-            partnerNameDatabase.setValue(partnerName);
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+
+            });
+
 
             startTracking();
             startNotificationService();
             finish();
         }
+
     }
 
     @Override

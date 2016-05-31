@@ -46,7 +46,7 @@ public class VibeToneManager extends AppCompatActivity {
             //int vibeToneindex = loc.getVibeToneIndex();
 
             // hardcoded the vibeToneindex for now
-            int vibeToneindex = 0;
+            int vibeToneindex = loc.getVibeTone();
 
             if (checkMode(this.notificationMode)) {
                 vibrate.vibrate(vibeToneArray[vibeToneindex], -1);

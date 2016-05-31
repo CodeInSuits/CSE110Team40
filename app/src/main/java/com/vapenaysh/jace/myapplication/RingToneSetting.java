@@ -57,12 +57,6 @@ public class RingToneSetting extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-
-        Toast.makeText(getApplicationContext(), resultCode+"yes", Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), Activity.RESULT_OK+"yes", Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), Activity.RESULT_CANCELED+"", Toast.LENGTH_SHORT).show();
-
-
         if(resultCode == Activity.RESULT_OK && requestCode == 3){
             Uri toneUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
             //RingtoneManager.setActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION, toneUri);
@@ -76,7 +70,7 @@ public class RingToneSetting extends AppCompatActivity {
     }
 
 
-    public void save(){
+    public void save() {
 
         PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
         String uid = loc.getPartnerEmail();
@@ -106,14 +100,17 @@ public class RingToneSetting extends AppCompatActivity {
 
         FavoriteLocationList tmp = new FavoriteLocationList(uid);
         FavoriteLocation currentLoc = null;
-        for (FavoriteLocation i : flls ){
-            if (i.getName().equals(locName)){
+        for (FavoriteLocation i : flls) {
+            if (i.getName().equals(locName)) {
                 currentLoc = i;
                 break;
             }
         }
-        currentLoc.setRingTone(tonePath);
-        tmp.writeLocation(currentLoc);
+        if (currentLoc != null) {
+
+            currentLoc.setRingTone(tonePath);
+            tmp.writeLocation(currentLoc);
+        }
     }
 
 }

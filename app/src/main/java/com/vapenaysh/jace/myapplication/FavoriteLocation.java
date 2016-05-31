@@ -2,7 +2,6 @@ package com.vapenaysh.jace.myapplication;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -13,9 +12,9 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
 
     private MyLatLng myLatLng;
     private String name;
-    private Date date;
+    private MyDate myDate;
     private int vibeTone = 0;
-    private String ringTone;
+    private String ringTone = "content://media/internal/audio/media/63";
     private boolean visited = false;
 
     public FavoriteLocation(){}
@@ -39,23 +38,40 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
     public FavoriteLocation(LatLng coord, String name){
         this.myLatLng = new MyLatLng(coord.latitude, coord.longitude);
         this.name = name;
+        this.myDate = new MyDate(new Date());
     }
 
     public FavoriteLocation(LatLng coord, String name, Date timeStamp){
         this.myLatLng = new MyLatLng(coord.latitude, coord.longitude);
         this.name = name;
-        this.date = timeStamp;
+        this.myDate = new MyDate(timeStamp);
     }
 
 
+    public void setMyLatLng(MyLatLng myLatLng) {
+        this.myLatLng = myLatLng;
+    }
+
+    public MyDate getMyDate() {
+        return myDate;
+    }
+
+    public void setMyDate(MyDate myDate) {
+        this.myDate = myDate;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
     public Date getDate()
     {
-        return date;
+        return myDate.getDate();
     }
 
     public void setDate (Date timeStamp)
     {
-        this.date = timeStamp;
+        this.myDate = new MyDate(timeStamp);
     }
 
     public String getName() {
@@ -122,63 +138,20 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
      */
     public boolean afterCutoffTime() {
         Date now = new Date();
-        Calendar cal = new Calendar() {
-            @Override
-            public void add(int i, int i1) {
-
-            }
-
-            @Override
-            protected void computeFields() {
-
-            }
-
-            @Override
-            protected void computeTime() {
-
-            }
-
-            @Override
-            public int getGreatestMinimum(int i) {
-                return 0;
-            }
-
-            @Override
-            public int getLeastMaximum(int i) {
-                return 0;
-            }
-
-            @Override
-            public int getMaximum(int i) {
-                return 0;
-            }
-
-            @Override
-            public int getMinimum(int i) {
-                return 0;
-            }
-
-            @Override
-            public void roll(int i, boolean b) {
-
-            }
-        };
-        cal.setTime(now);
-        if(cal.get(Calendar.HOUR_OF_DAY) < 3) { //between 12am and 3am so should not reset
-            return false;
+        Date cutoff;
+        if(now.getHours() < 3) { //cutoff is day before
+            cutoff = new Date(now.getYear(), now.getMonth(), now.getDate() - 1, 3, now.getMinutes());
+        }
+        else{ //cutoff is today
+            cutoff = new Date(now.getYear(), now.getMonth(), now.getDate(), 3, now.getMinutes());
         }
 
-        cal.set(Calendar.HOUR_OF_DAY, 3);
-        Date cutoff = cal.getTime();
-
         return getDate().after(cutoff);
-
 
     }
 
     @Override
-    public int compareTo(FavoriteLocation another)
-    {
-        return this.date.compareTo(another.getDate());
+    public int compareTo(FavoriteLocation another) {
+        return getDate().compareTo(another.getDate());
     }
 }

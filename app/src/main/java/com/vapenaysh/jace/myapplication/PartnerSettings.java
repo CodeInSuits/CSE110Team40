@@ -1,6 +1,7 @@
 package com.vapenaysh.jace.myapplication;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -65,6 +66,10 @@ public class PartnerSettings extends Activity {
                 myRef.child(userEmail).child(Constants.DATABASE_PARTNER_KEY).setValue("");
                 Log.v("PartnerSettings", "Removed partner");
                 Toast.makeText(getApplicationContext(), "Partner removed", Toast.LENGTH_LONG).show();
+                stopService(new Intent(PartnerSettings.this, NotificationService.class));
+                stopService(new Intent(PartnerSettings.this, GPSTrackerService.class));
+                finish();
+
                 onBackPressed();
             }
         });
