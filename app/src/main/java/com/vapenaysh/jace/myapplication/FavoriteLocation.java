@@ -14,7 +14,7 @@ public class FavoriteLocation {
     private MyLatLng myLatLng;
     private String name;
     private Date date;
-    private int vibeTone;
+    private int vibeTone = 0;
     private String ringTone;
     private boolean visited = false;
 
