@@ -70,6 +70,7 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                 /////test code //////////////////////////////////////////
 
                 customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), fll);
+                customListViewAdapter.setPartnerEmail(getPartnerEmail());
                 listView.setAdapter(customListViewAdapter);
 
 

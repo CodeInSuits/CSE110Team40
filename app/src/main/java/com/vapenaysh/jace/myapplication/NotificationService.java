@@ -32,12 +32,15 @@ public class NotificationService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         visitedList = new ArrayList<>();
 
-        //ring = new RingToneManager();
-        //vibe = new VibeToneManager((Vibrator) getSystemService(VIBRATOR_SERVICE));
+
 
         if (intent != null) {
             synchronized (this) {
                 String partner = intent.getStringExtra(Constants.PARTNER_EMAIL);
+
+                //ring = new RingToneManager();
+                //vibe = new VibeToneManager((Vibrator) getSystemService(VIBRATOR_SERVICE), partner+Constants.LOC_URL);
+
                 FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
                 partnerDb = locationsDB.getReference(partner + Constants.LOC_URL);
                 Log.v("NotificationService", "Service Started - reading from " + partner);

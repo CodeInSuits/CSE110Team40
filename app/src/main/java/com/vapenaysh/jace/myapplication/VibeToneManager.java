@@ -35,7 +35,7 @@ public class VibeToneManager extends AppCompatActivity {
     public VibeToneManager(Vibrator vib) {
 
         vibrate = vib;
-        SharedPreferences sharedPreferences = VibeToneSetting.getSharedPreferences();
+        SharedPreferences sharedPreferences = getSharedPreferences("notif_mode", MODE_PRIVATE);
         this.notificationMode = Integer.parseInt(sharedPreferences.getString("mode", "1"));
     }
 
