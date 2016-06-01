@@ -5,25 +5,19 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
 
 public class RingToneSetting extends AppCompatActivity {
 
     private String tonePath;
-    private String locName;
+    private int locIndex;
     FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     FavoriteLocationAdapter fla;
     private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
@@ -33,7 +27,8 @@ public class RingToneSetting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_tone_setting);
         Intent intent = getIntent();
-        locName = intent.getStringExtra("locName");
+        locIndex = intent.getExtras().getInt("locIndex");
+        Toast.makeText(getBaseContext(), "What partner email " + locIndex, Toast.LENGTH_SHORT).show();
         setRingTone();
     }
 
@@ -74,43 +69,11 @@ public class RingToneSetting extends AppCompatActivity {
 
         PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
         String uid = loc.getPartnerEmail();
+        Toast.makeText(getBaseContext(), "What partner email " + uid, Toast.LENGTH_SHORT).show();
         DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
-        db.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+        db.child(""+locIndex).child("ringTone").setValue(tonePath);
 
-            @Override
-            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
-                };
-                ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
-
-                flls.clear();
-                if (data != null) {
-                    for (FavoriteLocation i : data) {
-                        flls.add(i);
-                    }
-                    fla.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        FavoriteLocationList tmp = new FavoriteLocationList(uid);
-        FavoriteLocation currentLoc = null;
-        for (FavoriteLocation i : flls) {
-            if (i.getName().equals(locName)) {
-                currentLoc = i;
-                break;
-            }
-        }
-        if (currentLoc != null) {
-
-            currentLoc.setRingTone(tonePath);
-            tmp.writeLocation(currentLoc);
-        }
     }
+
 
 }

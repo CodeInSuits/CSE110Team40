@@ -1,7 +1,6 @@
 package com.vapenaysh.jace.myapplication;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -106,7 +104,7 @@ public class UserCenter extends AppCompatActivity {
             i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
             startService(i);
 
-            //startNotificationService();
+            startNotificationService();
         }
 
 
@@ -218,6 +216,11 @@ public class UserCenter extends AppCompatActivity {
 
         //Setting the actionbarToggle to drawer layout
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+
+
+
+
         lv = (ListView) findViewById(R.id.listView);
         fla = new FavoriteLocationAdapter(this, R.layout.user_center_list_row, flls);
         lv.setAdapter(fla);
@@ -328,6 +331,13 @@ public class UserCenter extends AppCompatActivity {
         startService(notifsIntent);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (partnerEmail == null || partnerEmail.equals(""))
+            isSingle(userEmail); //read partner info in case it got updated
+    }
+
     private boolean loadData()
     {
         DatabaseReference partnerDb = database.getReference(partnerEmail + Constants.LOC_URL);
@@ -343,7 +353,7 @@ public class UserCenter extends AppCompatActivity {
                     Collections.sort(data);
                     flls.clear();
                     for (FavoriteLocation i : data) {
-                        flls.add(i);
+                            flls.add(i);
                     }
                     fla.notifyDataSetChanged();
                 }

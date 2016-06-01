@@ -137,7 +137,7 @@ public class GPSTrackerService extends Service implements LocationListener
             Log.v("TESTING LOCATION" + fli.toString(), "distance between: " + distanceBetween);
             if( distanceBetween < .1 && !fli.isVisited() ) //arriving for the first time
             {
-                fli.setDate(new Date());
+                fli.date(new Date());
                 fli.setVisited();
 
                 //push to firebase
@@ -147,7 +147,7 @@ public class GPSTrackerService extends Service implements LocationListener
             }
             //departing
             else if( distanceBetween > .1 && fli.isVisited() ){
-                fli.setDate(new Date());
+                fli.date(new Date());
                 fli.clearVisited();
                 Log.d("NOTIFICATION", "DEPARTING " + fli.getName() );
 
