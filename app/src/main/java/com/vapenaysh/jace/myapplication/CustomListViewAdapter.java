@@ -22,6 +22,7 @@ public class CustomListViewAdapter extends BaseAdapter  {
     private static LayoutInflater inflater = null;
     private String tonePath;
     private Activity activity;
+    private String partnerEmail;
 
     public CustomListViewAdapter(Context context, ArrayList<FavoriteLocation> data){
 
@@ -30,6 +31,9 @@ public class CustomListViewAdapter extends BaseAdapter  {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    public void setPartnerEmail(String email){
+        partnerEmail  = email;
+    }
 
     @Override
     public int getCount() {
@@ -52,7 +56,7 @@ public class CustomListViewAdapter extends BaseAdapter  {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
 
         View view = convertView;
         final int currPosition = position;
@@ -91,6 +95,7 @@ public class CustomListViewAdapter extends BaseAdapter  {
                     Intent i = new Intent(mContext, VibeToneSetting.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("locName", mLocation.getName());
+                    i.putExtra("position", position);
                     mContext.startActivity(i);
 
                 }
