@@ -39,7 +39,7 @@ public class NotificationService extends IntentService {
                 String partner = intent.getStringExtra(Constants.PARTNER_EMAIL);
 
                 //ring = new RingToneManager();
-                //vibe = new VibeToneManager((Vibrator) getSystemService(VIBRATOR_SERVICE), partner+Constants.LOC_URL);
+                //vibe = new VibeToneManager((Vibrator) getSystemService(VIBRATOR_SERVICE));
 
                 FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
                 partnerDb = locationsDB.getReference(partner + Constants.LOC_URL);
