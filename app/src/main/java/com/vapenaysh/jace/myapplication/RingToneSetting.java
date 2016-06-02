@@ -69,7 +69,6 @@ public class RingToneSetting extends AppCompatActivity {
 
         PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
         String uid = loc.getPartnerEmail();
-        Toast.makeText(getBaseContext(), "What partner email " + uid, Toast.LENGTH_SHORT).show();
         DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
         db.child(""+locIndex).child("ringTone").setValue(tonePath);
 
