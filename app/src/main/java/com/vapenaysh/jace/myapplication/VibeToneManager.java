@@ -5,6 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+
+import java.util.ArrayList;
+
 /**
  * Created by XuanpeiEstherOuyang on 5/29/16.
  */
@@ -31,6 +38,9 @@ public class VibeToneManager extends AppCompatActivity {
 
     // default notification mode is both sound and vibration tone
     private int notificationMode = 1;
+    FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
+    FavoriteLocationAdapter fla;
+    private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
 
     public VibeToneManager(Vibrator vib) {
 
@@ -44,11 +54,11 @@ public class VibeToneManager extends AppCompatActivity {
         if (vibrate != null) {
 
             //int vibeToneindex = loc.getVibeToneIndex();
-
             // hardcoded the vibeToneindex for now
             int vibeToneindex = loc.getVibeTone();
 
             if (checkMode(this.notificationMode)) {
+                vibeToneindex = getVibeToneFromFirebase(loc.getName());
                 vibrate.vibrate(vibeToneArray[vibeToneindex], -1);
             }
         }
@@ -95,6 +105,52 @@ public class VibeToneManager extends AppCompatActivity {
         }
         else {
             return false;
+        }
+    }
+
+    private int getVibeToneFromFirebase(String locName ) {
+
+        PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
+        String uid = loc.getPartnerEmail();
+        DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
+        db.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
+                };
+                ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
+
+                flls.clear();
+                if (data != null) {
+                    for (FavoriteLocation i : data) {
+                        flls.add(i);
+                    }
+                    fla.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        FavoriteLocationList tmp = new FavoriteLocationList(uid);
+        FavoriteLocation currentLoc = null;
+
+        for (FavoriteLocation i : flls) {
+            if (i.getName().equals(locName)) {
+                currentLoc = i;
+                break;
+            }
+        }
+
+        if (currentLoc != null) {
+            return currentLoc.getVibeTone();
+        }
+        else {
+            return 0;
         }
     }
 }
