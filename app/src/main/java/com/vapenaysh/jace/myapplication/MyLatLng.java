@@ -18,6 +18,11 @@ public class MyLatLng {
         return lat;
     }
 
+    @Override
+    public String toString() {
+        return lat + ", " + lon;
+    }
+
     public double getLon(){
         return lon;
     }
