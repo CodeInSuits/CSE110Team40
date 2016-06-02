@@ -25,7 +25,7 @@ public class GPSTrackerService extends Service implements LocationListener
     private ArrayList<FavoriteLocation> fll;
     protected LocationManager locManager;
     private Context context;
-    private static final long TIME = 60*1000; //ONE MINUTE
+    private static final long TIME = 10*1000; //TEN SEC
     private static final float DISTANCE = 50;
 
     //when user is within location limit, add to firebase

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 /**
  * Created by XuanpeiEstherOuyang on 5/29/16.
@@ -35,8 +36,14 @@ public class VibeToneManager extends AppCompatActivity {
     public VibeToneManager(Vibrator vib) {
 
         vibrate = vib;
-        SharedPreferences sharedPreferences = getSharedPreferences("notif_mode", MODE_PRIVATE);
+    }
+
+    public VibeToneManager(Vibrator vib, Context context ){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("notif_mode", MODE_PRIVATE);
         this.notificationMode = Integer.parseInt(sharedPreferences.getString("mode", "1"));
+
+        vibrate = vib;
+
     }
 
     public void playTone(FavoriteLocation loc){
@@ -50,6 +57,8 @@ public class VibeToneManager extends AppCompatActivity {
 
             if (checkMode(this.notificationMode)) {
                 vibrate.vibrate(vibeToneArray[vibeToneindex], -1);
+                Log.v("VibeToneManager", "Played location VibeTone");
+
             }
         }
     }
@@ -59,6 +68,7 @@ public class VibeToneManager extends AppCompatActivity {
         if (vibrate != null){
             if (checkMode(this.notificationMode)) {
                 vibrate.vibrate(arrivalTone, -1);
+                Log.v("VibeToneManager", "Played Arrival VibeTone");
             }
         }
     }
@@ -69,6 +79,8 @@ public class VibeToneManager extends AppCompatActivity {
         if (vibrate != null){
             if (checkMode(this.notificationMode)) {
                 vibrate.vibrate(departureTone, -1);
+                Log.v("VibeToneManager", "Played Departure VibeTone");
+
             }
         }
     }
