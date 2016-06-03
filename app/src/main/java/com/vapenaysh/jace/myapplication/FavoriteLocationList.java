@@ -91,6 +91,21 @@ public class FavoriteLocationList extends Observable{
         return true;
     }
 
+    public boolean removeLocation(String loc){
+        FavoriteLocation fave = null;
+        for(FavoriteLocation l : fll ){
+            if(l.getName().equals(loc)){
+                fave = l;
+            }
+        }
+        if(fave != null){
+            return removeLocation(fave);
+        }
+        else{
+            return false;
+        }
+    }
+
     public int getSize(){
         return fll.size();
     }

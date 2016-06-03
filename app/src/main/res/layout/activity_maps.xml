@@ -62,5 +62,23 @@
             android:id="@+id/save_btn" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/delete_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
+
+        <Button
+            android:text="Delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/delete_loc_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:onClick="deleteLocation"/>
+
+    </RelativeLayout>
+
 
 </LinearLayout>
