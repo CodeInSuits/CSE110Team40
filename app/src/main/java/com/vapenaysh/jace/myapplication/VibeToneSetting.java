@@ -170,7 +170,7 @@ public class VibeToneSetting extends Activity implements Observer {
         String uid = loc.getPartnerEmail();
         DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
         db.child(""+position).child("vibeTone").setValue(VibeToneIndex);
-        Toast.makeText(getApplicationContext(), "VibeTone " + VibeToneIndex + " saved", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "VibeTone " + (VibeToneIndex+1) + " saved", Toast.LENGTH_SHORT).show();
     }
 
 
