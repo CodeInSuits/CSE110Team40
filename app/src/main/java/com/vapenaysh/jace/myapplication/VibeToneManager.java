@@ -56,11 +56,6 @@ public class VibeToneManager extends AppCompatActivity {
     public void playTone(FavoriteLocation loc){
 
         if (vibrate != null) {
-
-            //int vibeToneindex = loc.getVibeToneIndex();
-            // hardcoded the vibeToneindex for now
-            //int vibeToneindex = loc.getVibeTone();
-
             if (playMode()) {
 
                 int vibeToneindex = loc.getVibeTone();
@@ -130,6 +125,8 @@ public class VibeToneManager extends AppCompatActivity {
                     for (FavoriteLocation i : data) {
                         flls.add(i);
                     }
+                   // fla.notifyDataSetChanged();
+
                 }
             }
 

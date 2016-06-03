@@ -60,9 +60,10 @@ public class RingToneSetting extends AppCompatActivity {
                 Log.i("tonepath", tonePath);
                 Toast.makeText(getApplicationContext(), tonePath, Toast.LENGTH_SHORT).show();
                 save();
-                finish();
             }
         }
+        finish();
+
     }
 
 
