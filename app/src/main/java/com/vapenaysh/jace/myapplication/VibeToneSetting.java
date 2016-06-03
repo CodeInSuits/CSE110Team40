@@ -55,7 +55,8 @@ public class VibeToneSetting extends Activity implements Observer {
 
         radioGroup = (RadioGroup) findViewById(R.id.myRadioGroup);
 
-        String uid = intent.getExtras().getString("uid");
+        //String uid = intent.getExtras().getString("uid");
+        String uid = intent.getStringExtra("uid");
 
         FavoriteLocationList fl = new FavoriteLocationList(uid);
         RadioButton button1 = (RadioButton) findViewById(R.id.radioButton);
