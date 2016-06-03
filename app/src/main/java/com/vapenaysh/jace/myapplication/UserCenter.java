@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,8 +57,8 @@ public class UserCenter extends AppCompatActivity {
     private String userName;
     private String partnerName;
     private String imageUri;
-    private ListView lv;
-    FavoriteLocationAdapter fla;
+    private ListView listView;
+    private FavoriteLocationAdapter favoriteLocationAdapter;
     private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
 
 
@@ -95,17 +96,61 @@ public class UserCenter extends AppCompatActivity {
         displayName.setText(userName);
         Picasso.with(getApplicationContext()).load(imageUri).into(profile);
 
-        //new ImageLoadTask(imageUri, profile).execute();
-
         if(!isSingle(userEmail)){
             setUpPartnerSettings();
             //WARNING: UNTESTED CODE
+            loadData();
+
+
             Intent i = new Intent(this, GPSTrackerService.class);
             i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
             startService(i);
-
             startNotificationService();
         }
+
+
+        listView = (ListView) findViewById(R.id.listView);
+
+        /////test code //////////////////////////////////////////
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                int myPosition = position;
+
+                String itemClickedId = listView.getItemAtPosition(myPosition).toString();
+                Toast.makeText(getApplicationContext(), "Id Clicked: " + itemClickedId, Toast.LENGTH_LONG).show();
+            }
+        });
+        favoriteLocationAdapter = new FavoriteLocationAdapter(getApplicationContext(), flls);
+        listView.setAdapter(favoriteLocationAdapter);
+        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(!isSingle(userEmail)){
+                            loadData();
+                            favoriteLocationAdapter = new FavoriteLocationAdapter(getApplicationContext(), flls);
+                            listView.setAdapter(favoriteLocationAdapter);
+                            swipeLayout.setRefreshing(false);
+                        }
+                        else{
+                            flls.clear();
+                            favoriteLocationAdapter = new FavoriteLocationAdapter(getApplicationContext(), flls);
+                            listView.setAdapter(favoriteLocationAdapter);
+                            swipeLayout.setRefreshing(false);
+                        }
+
+                    }
+                }, 50);
+            }
+        });
+
+        //new ImageLoadTask(imageUri, profile).execute();
 
 
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
@@ -176,8 +221,7 @@ public class UserCenter extends AppCompatActivity {
                             });
                             dialog.show();
 
-                        }
-                        else{
+                        } else {
                             Intent i_partnerFavLoc = new Intent(UserCenter.this, PartnerFavoriteLocation.class);
                             i_partnerFavLoc.putExtra("PartnerEmail", partnerEmail);
                             startActivity(i_partnerFavLoc);
@@ -219,25 +263,7 @@ public class UserCenter extends AppCompatActivity {
         //Setting the actionbarToggle to drawer layout
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
-        lv = (ListView) findViewById(R.id.listView);
-        fla = new FavoriteLocationAdapter(this, R.layout.user_center_list_row, flls);
-        lv.setAdapter(fla);
-        loadData();
-        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh()
-            {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run()
-                    {
-                        loadData();
-                        swipeLayout.setRefreshing(false);
-                    }
-                }, 50);
-            }
-        });
+
 
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
@@ -274,12 +300,14 @@ public class UserCenter extends AppCompatActivity {
             partnerEmail = "";
         }
 
-
-        if(partnerEmail.equals("") || partnerName.equals("")){
+        if(partnerEmail.equals("")){
+            Toast.makeText(getBaseContext(), "I am single now", Toast.LENGTH_SHORT).show();
             return true;
         }
         else{
+            Toast.makeText(getBaseContext(), "I am married now", Toast.LENGTH_SHORT).show();
             return false;
+
         }
     }
 
@@ -350,12 +378,15 @@ public class UserCenter extends AppCompatActivity {
                 };
                 ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
                 if (data != null) {
+                    //Log.d("HELLO", data.get(0).date().toString());
+
                     Collections.sort(data);
                     flls.clear();
                     for (FavoriteLocation i : data) {
-                            flls.add(i);
+                            if(i.afterCutoffTime()){
+                                flls.add(i);
+                            }
                     }
-                    fla.notifyDataSetChanged();
                 }
             }
 

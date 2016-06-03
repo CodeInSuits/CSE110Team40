@@ -38,7 +38,7 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
     public FavoriteLocation(LatLng coord, String name){
         this.myLatLng = new MyLatLng(coord.latitude, coord.longitude);
         this.name = name;
-        this.myDate = new MyDate(new Date());
+        this.myDate = new MyDate(new Date(0));
     }
 
     public FavoriteLocation(LatLng coord, String name, Date timeStamp){
