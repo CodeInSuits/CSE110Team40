@@ -75,7 +75,6 @@ public class NotificationService extends IntentService {
                             // code for calling arrival vibration notification method (FavoriteLocation obejct)
                             vibe.playArrivalTone();
 
-
                             // code for calling arrival sound notification method (FavoriteLocation object)
                             ring.playArrivalTone();
 
@@ -87,23 +86,22 @@ public class NotificationService extends IntentService {
                             ring.playTone(data);
 
                         }
+
                         //DEPARTED FROM A LOCATION
                         else if(data != null && visitedList.contains(data) && !data.isVisited() ){
                             mBuilder = new NotificationCompat.Builder(getApplicationContext())
                                     .setSmallIcon(R.drawable.heart2)
                                     .setContentTitle("Departure")
                                     .setContentText("Partner departed from " + data.getName());
+
+                            Log.e("departure","departure notification");
                             visitedList.remove(data);
 
                             // code for calling departure sound notification method (FavoriteLocation object)
                             ring.playDepartureTone();
 
-                            Log.e("ring.playDepartureTone", "finish playing departure tone");
-
                             // code for calling departure vibration notification method (FavoriteLocation obejct)
                             vibe.playDepartureTone();
-
-                            Log.e("vibe.playDepartureTone", "finish playing departure tone");
 
                         }
 
