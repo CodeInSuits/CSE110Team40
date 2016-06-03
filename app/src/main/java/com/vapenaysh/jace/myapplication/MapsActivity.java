@@ -2,6 +2,7 @@ package com.vapenaysh.jace.myapplication;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -53,13 +54,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private TextView namePrompt;
 
-    private RelativeLayout namePromptLayout;
+    private RelativeLayout namePromptLayout, deleteLayout;
 
     private SearchView sV;
 
     private LocationManager locationManager;
 
     private FavoriteLocationList favoriteLocationList;
+    private String currentLocName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         namePrompt = (TextView) findViewById(R.id.custom_name_prompt);
         namePromptLayout = (RelativeLayout) findViewById(R.id.custom_name_layout);
         namePromptLayout.setVisibility(View.GONE);
+
+        deleteLayout = (RelativeLayout) findViewById(R.id.delete_name_layout);
 
         String user = getIntent().getStringExtra(Constants.DISPLAY_EMAIL);
         favoriteLocationList = new FavoriteLocationList(user);
@@ -171,7 +175,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 favoriteLocationList.writeLocation(fave);
 
-                currentMarker.setTitle(name);
+                currentMarker.setTitle("SAVED: " + name);
                 currentMarker.setSnippet(getSnippetString(currentMarker));
 
                 currentMarker = null; //so that the old marker stays on the map
@@ -341,15 +345,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker)
     {
+        currentMarker = marker;
+
         //isnt a marker that was previously saved
         if(marker.getTitle() == null) {
-            currentMarker = marker;
             namePromptLayout.setVisibility(View.VISIBLE);
             namePrompt.setText(R.string.add_custom_name);
+            deleteLayout.setVisibility(View.GONE);
         }
         else{
             marker.showInfoWindow();
             moveMap( marker.getPosition() );
+            deleteLayout.setVisibility(View.VISIBLE);
+            namePromptLayout.setVisibility(View.GONE);
+            String[] words = marker.getTitle().split(" ");
+            currentLocName = words.length > 1 ? words[1] : words[0];
         }
         return true;
     }
@@ -366,5 +376,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void update(Observable observable, Object o) {
         addSavedLocationMarkers();
+    }
+
+    public boolean deleteLocation(View view){
+        deleteLayout.setVisibility(View.GONE);
+
+        if(favoriteLocationList.removeLocation(currentLocName)){
+            Toast.makeText(getApplicationContext(), "Location removed", Toast.LENGTH_SHORT).show();
+            currentMarker.remove();
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+            return true;
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Error removing location", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 }
