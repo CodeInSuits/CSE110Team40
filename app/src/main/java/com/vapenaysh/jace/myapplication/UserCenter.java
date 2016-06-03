@@ -142,6 +142,7 @@ public class UserCenter extends AppCompatActivity {
                     // For rest of the options we just show a toast on click
 
                     case R.id.partnersetting:
+
                         if (isSingle(userEmail)) {
                             Intent i2 = new Intent(UserCenter.this, AddPartner.class);
                             i2.putExtra(Constants.DISPLAY_EMAIL, userEmail);
@@ -161,6 +162,7 @@ public class UserCenter extends AppCompatActivity {
                     case R.id.partnerfavlocationdispaly:
 
                         if(isSingle(userEmail)){
+
                             //partner does not exist in database yet
                             AlertDialog.Builder dialog = new AlertDialog.Builder(UserCenter.this);
                             dialog.setTitle("Partner Does Not Exist");
@@ -245,6 +247,7 @@ public class UserCenter extends AppCompatActivity {
 
     // Checks if current user is single, and reports information to UI and return value.
     public boolean isSingle(String userPath){
+
         DatabaseReference myRef = database.getReference("users");
         if (myRef != null && userPath != null) {
             myRef.child(userPath).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -262,7 +265,17 @@ public class UserCenter extends AppCompatActivity {
             });
         }
 
-        if(partnerEmail == null || partnerName == null){
+
+        if(partnerName == null){
+            partnerName = "";
+        }
+
+        if(partnerEmail == null){
+            partnerEmail = "";
+        }
+
+
+        if(partnerEmail.equals("") || partnerName.equals("")){
             return true;
         }
         else{
