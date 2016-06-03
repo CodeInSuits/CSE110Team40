@@ -26,6 +26,7 @@ import com.vapenaysh.jace.myapplication.R;
  */
 
 public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner> {
+
     AddPartner addPartner;
 
     // Constructor
@@ -36,13 +37,16 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
     }
 
     public void test_textViewName() {
+
         addPartner = getActivity();
         TextView name = (TextView) addPartner.findViewById(R.id.textView);
         assertNotNull(name);
         String partnerName = name.getText().toString();
         assertEquals("Name:", partnerName);
     }
+
     public void test_textViewPhone() {
+
         addPartner = getActivity();
         TextView phone = (TextView) addPartner.findViewById(R.id.textView4);
         assertNotNull(phone);
