@@ -1,6 +1,9 @@
 package com.vapenaysh.jace.myapplication;
 
 /**
+ * Constants.java
+ *
+ * Class for storing the constants for CoupleTone project
  * Created by Matt on 5/6/16.
  */
 public class Constants {

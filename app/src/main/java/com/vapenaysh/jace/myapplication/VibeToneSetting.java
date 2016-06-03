@@ -27,6 +27,13 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * VibeToneSetting.java
+ *
+ * Class for managing the vibeTone information and UI setting for vibeTone activity.
+ *
+ * Created by XuanpeiEstherOuyang on 5/29/16.
+ */
 public class VibeToneSetting extends Activity implements Observer {
 
     private RadioGroup radioGroup;

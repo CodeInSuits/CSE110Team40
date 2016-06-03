@@ -41,6 +41,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;*/
 
+/**
+ * UserCenter.java
+ *
+ * Class for displaying all the information in the home page, starting service
+ *
+ * Created by Jace on 5/29/16.
+ */
 public class UserCenter extends AppCompatActivity {
     //Defining Variables
     private Toolbar toolbar;

@@ -40,14 +40,14 @@ public class TestAddPartner extends ActivityInstrumentationTestCase2<AddPartner>
         TextView name = (TextView) addPartner.findViewById(R.id.textView);
         assertNotNull(name);
         String partnerName = name.getText().toString();
-        assertEquals("Name:", partnerName);
+        assertEquals("Please Enter Your Partner's Information Below:", partnerName);
     }
     public void test_textViewPhone() {
         addPartner = getActivity();
         TextView phone = (TextView) addPartner.findViewById(R.id.textView4);
         assertNotNull(phone);
         String partnerPhone = phone.getText().toString();
-        assertEquals("Email Address:", partnerPhone);
+        assertEquals("Name:", partnerPhone);
     }
 
     // Test Name Text Edit Field

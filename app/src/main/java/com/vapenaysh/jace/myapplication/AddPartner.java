@@ -19,6 +19,12 @@ import com.google.firebase.database.ValueEventListener;
 
 //import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+/**
+ * AddPartner.java
+ *
+ * Class for user to add partner by entering partner's name and email
+ * Including the setting for firebase integration and UI setting
+ */
 public class AddPartner extends Activity implements View.OnClickListener {
     private Button btnRegId;
     private Button addPar;

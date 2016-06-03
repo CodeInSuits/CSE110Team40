@@ -3,7 +3,11 @@ package com.vapenaysh.jace.myapplication;
 import java.util.Date;
 
 /**
- * Created by Matt on 5/30/16.
+ * MyDate.java
+ *
+ * Class for storing customized Date information
+ *
+ * Created by Matt on 5/26/16.
  */
 public class MyDate {
     private int year, month, day, hrs, min, sec;

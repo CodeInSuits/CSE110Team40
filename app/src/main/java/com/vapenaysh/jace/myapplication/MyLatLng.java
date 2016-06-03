@@ -1,6 +1,10 @@
 package com.vapenaysh.jace.myapplication;
 
 /**
+ * MyLatLng.java
+ *
+ * Class for storing customized LatLng information
+ *
  * Created by Matt on 5/26/16.
  */
 public class MyLatLng {

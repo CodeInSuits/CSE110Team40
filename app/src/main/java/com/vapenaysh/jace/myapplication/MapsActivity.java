@@ -37,12 +37,17 @@ import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * MapsActivity.java
+ *
+ * Class for displaying Google Map and adding new favorite locations
+ *
+ * Created by Jerry on 5/23/16.
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMapClickListener,
         GoogleMap.OnMarkerClickListener,
-        Observer
-
-{
+        Observer {
 
     private GoogleMap mMap;
 

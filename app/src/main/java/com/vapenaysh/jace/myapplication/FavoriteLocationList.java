@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 /**
+ * FavoriteLocationList.java
+ *
+ * Class for storing the list of favorite location information,
+ * including LatLng, name Data, vibeTone and ringTone
+ *
  * Created by Matt on 5/24/16.
  */
 public class FavoriteLocationList extends Observable{
@@ -63,8 +68,7 @@ public class FavoriteLocationList extends Observable{
         int i = fll.indexOf(favoriteLocation);
         if(i != -1){
             fll.set(i, favoriteLocation); //overwrite the previous one with an updated version
-        }
-        else {
+        } else {
             fll.add(favoriteLocation);
         }
 

@@ -41,7 +41,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
+/**
+ * LoginPage.java
+ *
+ * Class for displaying the Google integrated Login Page
+ *
+ * Created by Jace on 4/29/16.
+ */
 public class LoginPage extends FragmentActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
     //backend object

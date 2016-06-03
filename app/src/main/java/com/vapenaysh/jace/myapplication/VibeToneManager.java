@@ -14,6 +14,10 @@ import com.google.firebase.database.GenericTypeIndicator;
 import java.util.ArrayList;
 
 /**
+ * VibeToneManager.java
+ *
+ * Class for managing the vibeTone information and playing vibeTone.
+ *
  * Created by XuanpeiEstherOuyang on 5/29/16.
  */
 public class VibeToneManager extends AppCompatActivity {

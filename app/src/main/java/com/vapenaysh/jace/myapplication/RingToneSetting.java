@@ -18,6 +18,13 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * RingToneSetting.java
+ *
+ * Class for managing the ringTone information and UI setting for ringTone activity.
+ *
+ * Created by XuanpeiEstherOuyang on 5/29/16.
+ */
 public class RingToneSetting extends AppCompatActivity implements Observer{
 
     private String tonePath;

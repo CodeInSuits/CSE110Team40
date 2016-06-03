@@ -18,6 +18,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
+ * NotificationService.java
+ *
+ * Class for sending push notification, playing ringTone, vibeTone to user
+ *
  * Created by Matt on 5/23/16.
  */
 public class NotificationService extends IntentService {

@@ -1,6 +1,8 @@
 package com.vapenaysh.jace.myapplication;
 
 /**
+ * ContentFregment.java
+ *
  * Created by Jace on 5/12/16.
  */
 import android.os.Bundle;
@@ -10,9 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Admin on 04-06-2015.
- */
 public class ContentFragment extends Fragment {
 
     @Nullable

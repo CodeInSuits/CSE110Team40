@@ -21,6 +21,10 @@ import java.util.TimerTask;
 
 
 /**
+ * RingToneManager.java
+ *
+ * Class for managing the ringTone information and playing ringTone.
+ *
  * Created by XuanpeiEstherOuyang on 5/29/16.
  */
 public class RingToneManager extends AppCompatActivity {

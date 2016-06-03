@@ -10,7 +10,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by imouto on 5/30/16.
+ * FavoriteLocationAdapter.java
+ *
+ * Adapter class for storing the favorite location information,
+ * including LatLng, name Data, vibeTone and ringTone
+ *
+ * Created by matt on 5/30/16.
  */
 public class FavoriteLocationAdapter extends BaseAdapter
 {

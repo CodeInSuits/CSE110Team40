@@ -593,10 +593,12 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
     }
 
     // Checks to make sure two vibe tone types cannot be selected at once, and that the correct one is stored
+/*
     public void test_noTwoVibeTones() {
 
         vibeToneSetting = getActivity();
         running = true;
+
         if(vibeToneSetting != null) {
 
             vibeToneSetting.runOnUiThread(new Runnable() {
@@ -651,4 +653,5 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
         }
 
     }
+    */
 }

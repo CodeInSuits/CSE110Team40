@@ -11,6 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+/**
+ * GlobalSettings.java
+ *
+ * Class for storing and managing the global setting locally
+ *
+ * Created by Esther on 5/26/16.
+ */
 public class GlobalSettings extends AppCompatActivity {
 
     /*

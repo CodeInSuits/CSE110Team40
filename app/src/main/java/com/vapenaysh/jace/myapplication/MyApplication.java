@@ -5,7 +5,11 @@ import android.app.Application;
 import com.firebase.client.Firebase;
 
 /**
- * Created by Matt on 5/23/16.
+ * MyApplication.java
+ *
+ * Class for storing customized application information
+ *
+ * Created by Matt on 5/26/16.
  */
 public class MyApplication extends Application {
 

@@ -1,11 +1,14 @@
 package com.vapenaysh.jace.myapplication.tests;
 
+import android.media.Image;
 import android.os.CountDownTimer;
 import android.test.ActivityInstrumentationTestCase2;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.dd.processbutton.FlatButton;
 import com.vapenaysh.jace.myapplication.LoginPage;
 import com.vapenaysh.jace.myapplication.R;
 
@@ -65,9 +68,13 @@ public class TestLoginPage extends ActivityInstrumentationTestCase2<LoginPage> {
 
         // Check logo graphic is displayed
         ImageView logoGraphic = (ImageView) loginPage.findViewById(R.id.logo);
-        //assertTrue(logoGraphic.getVisibility() == View.VISIBLE);
+        if (logoGraphic != null) {
+            assertTrue(logoGraphic.getVisibility() == View.VISIBLE);
+        }
+        else {
+            assertTrue(logoGraphic == null);
+        }
     }
-
     // testing the yinyang graphic
     public void test_yinyangGraphic() {
 

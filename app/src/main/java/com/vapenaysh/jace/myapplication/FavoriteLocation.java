@@ -5,8 +5,12 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.Date;
 
 /**
+ * FavoriteLocation.java
+ *
+ * Class for storing the favorite location information, including LatLng, name
+ * Data, vibeTone and ringTone
+ *
  * Created by Matt on 4/29/16.
- * FavoriteLocation class - stores a MyLatLng and a custom name for the location.
  */
 public class FavoriteLocation implements Comparable<FavoriteLocation>{
 

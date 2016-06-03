@@ -20,6 +20,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**
+ * PartnerFavoriteLocation.java
+ *
+ * Class for displaying the partner favorite location information.
+ * This class uses a adapter class for UI.
+ *
+ * Created by Esther on 5/29/16.
+ */
 public class PartnerFavoriteLocation extends AppCompatActivity {
 
     private ListView listView;

@@ -19,6 +19,13 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.Date;
 import java.util.ArrayList;
 
+/**
+ * GPSTrackerService.java
+ *
+ * Class for tracking user's GPS and location information
+ *
+ * Created by Jerry on 5/26/16.
+ */
 public class GPSTrackerService extends Service implements LocationListener
 {
 

@@ -18,6 +18,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
 
+
+/**
+ * PartnerSettings.java
+ *
+ * Class for managing the parnter information and UI setting for
+ * displaying partner information.
+ *
+ * Created by XuanpeiEstherOuyang on 5/29/16.
+ */
 public class PartnerSettings extends Activity {
 
     private static String name;

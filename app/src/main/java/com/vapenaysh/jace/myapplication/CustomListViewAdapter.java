@@ -13,7 +13,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by paulodichone on 2/4/15.
+ * CustomListViewAdapter.java
+ *
+ * Adapter class for displaying UI for partner's favorite location
+ * information, including name, vibeTone, ringTone and location information
+ *
+ * Created by jace on 2/4/15.
  */
 public class CustomListViewAdapter extends BaseAdapter  {
 
