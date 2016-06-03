@@ -1,10 +1,12 @@
 package com.vapenaysh.jace.myapplication;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.util.Log;
 
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,6 +16,8 @@ import com.google.firebase.database.GenericTypeIndicator;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -28,28 +32,42 @@ public class RingToneManager extends AppCompatActivity {
     private Uri departureRingTone = Uri.parse("content://media/internal/audio/media/62");
 
     FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
-    FavoriteLocationAdapter fla;
     private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
+    private Context context;
+    private long ringDelay = 4000;
 
-
-    public RingToneManager() {
-
-        SharedPreferences sharedPreferences = getSharedPreferences("notif_mode", MODE_PRIVATE);
-        this.notificationMode = Integer.parseInt(sharedPreferences.getString("mode", "1"));
+    public RingToneManager(Context context) {
+        this.context = context;
     }
 
     public void playTone(FavoriteLocation loc){
 
-        if(playMode(this.notificationMode)) {
-            String stringURI = getRingToneFromFirebase(loc.getName());
+        if(playMode()) {
+            //String stringURI = getRingToneFromFirebase(loc.getName());
+
+            String stringURI = loc.getRingTone();
             Uri uri = Uri.parse(stringURI);
-            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), uri);
+
+            final Ringtone r = RingtoneManager.getRingtone(context, uri);
             r.play();
+
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    r.stop();
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(task, ringDelay);
         }
     }
 
-    private boolean playMode(int mode){
-        if (mode == 1 || mode == 2){
+    private boolean playMode(){
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences("notif_mode", MODE_PRIVATE);
+        this.notificationMode = Integer.parseInt(sharedPreferences.getString("mode", "1"));
+
+        if (notificationMode == 1 || notificationMode == 2){
             return true;
         }
         else {
@@ -57,17 +75,50 @@ public class RingToneManager extends AppCompatActivity {
         }
     }
 
-    public void playDepartureTone(){
-        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), this.departureRingTone);
-        r.play();
+    public void playDepartureTone() {
 
+        if (playMode()) {
+            final Ringtone r = RingtoneManager.getRingtone(context, this.departureRingTone);
+            r.play();
+
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    r.stop();
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(task, ringDelay);
+        }
     }
 
-    public void playArrivalTone(){
-        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), this.arrivalRingTone);
-        r.play();
+    public void playArrivalTone() {
+
+        if (playMode()) {
+
+            final Ringtone r = RingtoneManager.getRingtone(context, this.arrivalRingTone);
+            r.play();
+
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    r.stop();
+                }
+            };
+
+            Timer timer = new Timer();
+            timer.schedule(task, 3000);
+
+            try {
+                Thread.sleep(3500);
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+
+        }
     }
 
+    /*
     public String getRingToneFromFirebase(String locName) {
         PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
         String uid = loc.getPartnerEmail();
@@ -85,7 +136,6 @@ public class RingToneManager extends AppCompatActivity {
                     for (FavoriteLocation i : data) {
                         flls.add(i);
                     }
-                    fla.notifyDataSetChanged();
                 }
             }
 
@@ -109,8 +159,10 @@ public class RingToneManager extends AppCompatActivity {
             return currentLoc.getRingTone();
         }
         else {
-            return "";
+            return "N/A";
         }
     }
+    */
+
 
 }

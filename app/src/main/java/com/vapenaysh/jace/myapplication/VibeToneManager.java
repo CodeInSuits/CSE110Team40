@@ -20,10 +20,10 @@ public class VibeToneManager extends AppCompatActivity {
 
     protected Vibrator vibrate;
 
-    private long[] vibeTone1 = { 0, 100 };
-    private long[] vibeTone2 = { 0, 100, 400, 100 };
-    private long[] vibeTone3 = { 0, 100, 400, 100, 400, 100 };
-    private long[] vibeTone4 = { 0, 100, 400, 100, 400, 100, 400, 100 };
+    private long[] vibeTone1 = { 0, 300, 300 , 1000, 1000, 1000, 300, 300};
+    private long[] vibeTone2 = { 0, 100, 400, 100, 1000 };
+    private long[] vibeTone3 = { 0, 100, 400, 100, 400, 100, 500 };
+    private long[] vibeTone4 = { 0, 100, 400, 100, 400, 100, 400, 100, 1000};
     private long[] vibeTone5 = { 0, 100, 400, 100, 400, 100, 400, 100, 400, 100 };
     private long[] vibeTone6 = { 0, 100, 400, 100, 400, 100, 400, 100, 400, 100, 400, 100 };
     private long[] vibeTone7 = { 0, 100, 400, 100, 400, 100 ,400, 100, 400, 100, 400, 100, 400, 100 };
@@ -31,7 +31,7 @@ public class VibeToneManager extends AppCompatActivity {
     private long[] vibeTone9 = { 0, 100, 100, 100, 100, 110 };
     private long[] vibeTone10 = { 0, 100, 500, 100, 500, 500, 500, 500, 500 };
 
-    private long[] arrivalTone = {0, 1000, 1000, 1000, 1000, 1000};
+    private long[] arrivalTone = {0, 1000,};
     private long[] departureTone = {0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100};
 
     private long[][] vibeToneArray = {vibeTone1, vibeTone2, vibeTone3, vibeTone4, vibeTone5, vibeTone6,
@@ -40,8 +40,8 @@ public class VibeToneManager extends AppCompatActivity {
     // default notification mode is both sound and vibration tone
     private int notificationMode = 1;
     FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
-    FavoriteLocationAdapter fla;
     private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
+    private Context context;
 
     public VibeToneManager(Vibrator vib) {
 
@@ -49,23 +49,18 @@ public class VibeToneManager extends AppCompatActivity {
     }
 
     public VibeToneManager(Vibrator vib, Context context ){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("notif_mode", MODE_PRIVATE);
-        this.notificationMode = Integer.parseInt(sharedPreferences.getString("mode", "1"));
-
+        this.context = context;
         vibrate = vib;
-
     }
 
     public void playTone(FavoriteLocation loc){
 
         if (vibrate != null) {
+            if (playMode()) {
 
-            //int vibeToneindex = loc.getVibeToneIndex();
-            // hardcoded the vibeToneindex for now
-            int vibeToneindex = loc.getVibeTone();
+                int vibeToneindex = loc.getVibeTone();
 
-            if (checkMode(this.notificationMode)) {
-                vibeToneindex = getVibeToneFromFirebase(loc.getName());
+                //vibeToneindex = getVibeToneFromFirebase(loc.getName());
                 vibrate.vibrate(vibeToneArray[vibeToneindex], -1);
                 Log.v("VibeToneManager", "Played location VibeTone");
 
@@ -76,7 +71,8 @@ public class VibeToneManager extends AppCompatActivity {
     public void playArrivalTone(){
 
         if (vibrate != null){
-            if (checkMode(this.notificationMode)) {
+            if (playMode()) {
+
                 vibrate.vibrate(arrivalTone, -1);
                 Log.v("VibeToneManager", "Played Arrival VibeTone");
             }
@@ -87,7 +83,8 @@ public class VibeToneManager extends AppCompatActivity {
     public void playDepartureTone(){
 
         if (vibrate != null){
-            if (checkMode(this.notificationMode)) {
+            if (playMode()) {
+
                 vibrate.vibrate(departureTone, -1);
                 Log.v("VibeToneManager", "Played Departure VibeTone");
 
@@ -95,24 +92,13 @@ public class VibeToneManager extends AppCompatActivity {
         }
     }
 
-    public void testPlayTone(){
 
-        if (vibrate != null) {
+    private boolean playMode(){
 
-            //int vibeToneindex = loc.getVibeToneIndex();
-            // for testing so far
+        SharedPreferences sharedPreferences = context.getSharedPreferences("notif_mode", MODE_PRIVATE);
+        this.notificationMode = Integer.parseInt(sharedPreferences.getString("mode", "1"));
 
-            int vibeToneindex = 2;
-
-            if (checkMode(this.notificationMode)) {
-                vibrate.vibrate(vibeToneArray[vibeToneindex], -1);
-            }
-        }
-    }
-
-
-    private boolean checkMode(int mode){
-        if (mode == 1 || mode == 3){
+        if (notificationMode == 1 || notificationMode == 3){
             return true;
         }
         else {
@@ -120,6 +106,7 @@ public class VibeToneManager extends AppCompatActivity {
         }
     }
 
+    /*
     private int getVibeToneFromFirebase(String locName ) {
 
         PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
@@ -138,7 +125,8 @@ public class VibeToneManager extends AppCompatActivity {
                     for (FavoriteLocation i : data) {
                         flls.add(i);
                     }
-                    fla.notifyDataSetChanged();
+                   // fla.notifyDataSetChanged();
+
                 }
             }
 
@@ -165,4 +153,5 @@ public class VibeToneManager extends AppCompatActivity {
             return 0;
         }
     }
+    */
 }

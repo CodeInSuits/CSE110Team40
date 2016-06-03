@@ -93,29 +93,8 @@ public class VibeToneSetting extends Activity {
             }
         });
 
-        Button b = (Button) findViewById(R.id.button_test);
-        b.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                testVibe();
-            }
-        });
     }
 
-
-
-    // testing code // need to be removed later
-    public void testVibe(){
-
-
-        FavoriteLocation currentLoc = new FavoriteLocation();
-        currentLoc.setVibeTone(4);
-
-        Vibrator e  = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        VibeToneManager vibe = new VibeToneManager(e);
-        vibe.playTone(currentLoc);
-    }
 
     public static int getVibeToneIndex() {
         return VibeToneIndex;

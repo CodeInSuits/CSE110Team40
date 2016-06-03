@@ -32,7 +32,7 @@ public class FavoriteLocationList extends Observable{
 
         fll = new ArrayList<>();
 
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
+        db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -41,14 +41,13 @@ public class FavoriteLocationList extends Observable{
                 if(o instanceof ArrayList) { //error checking
                     GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {};
                     fll = dataSnapshot.getValue(t);
-                    Log.d("NOTE", "Locations: " + fll.toString());
                     setChanged();
                     notifyObservers();
                 }
                 else{
                     fll = new ArrayList<>();
                 }
-                Log.d("NOTE", "GOT LOCATIONS FROM FIREBASE FOR USER " + uid);
+                Log.d("NOTE", "GOT UPDATED LOCATIONS FROM FIREBASE FOR USER " + uid);
             }
 
             @Override
