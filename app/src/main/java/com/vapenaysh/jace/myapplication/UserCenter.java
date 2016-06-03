@@ -96,6 +96,18 @@ public class UserCenter extends AppCompatActivity {
         displayName.setText(userName);
         Picasso.with(getApplicationContext()).load(imageUri).into(profile);
 
+        if(!isSingle(userEmail)){
+            setUpPartnerSettings();
+            //WARNING: UNTESTED CODE
+            loadData();
+
+
+            Intent i = new Intent(this, GPSTrackerService.class);
+            i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
+            startService(i);
+            startNotificationService();
+        }
+
 
         listView = (ListView) findViewById(R.id.listView);
 
@@ -111,38 +123,34 @@ public class UserCenter extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Id Clicked: " + itemClickedId, Toast.LENGTH_LONG).show();
             }
         });
-
-        //new ImageLoadTask(imageUri, profile).execute();
-
-        if(!isSingle(userEmail)){
-            setUpPartnerSettings();
-            //WARNING: UNTESTED CODE
-            loadData();
-            favoriteLocationAdapter = new FavoriteLocationAdapter(getApplicationContext(), flls);
-            listView.setAdapter(favoriteLocationAdapter);
-
-            final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-            swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+        favoriteLocationAdapter = new FavoriteLocationAdapter(getApplicationContext(), flls);
+        listView.setAdapter(favoriteLocationAdapter);
+        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(!isSingle(userEmail)){
                             loadData();
                             favoriteLocationAdapter = new FavoriteLocationAdapter(getApplicationContext(), flls);
                             listView.setAdapter(favoriteLocationAdapter);
                             swipeLayout.setRefreshing(false);
                         }
-                    }, 50);
-                }
-            });
+                        else{
+                            flls.clear();
+                            favoriteLocationAdapter = new FavoriteLocationAdapter(getApplicationContext(), flls);
+                            listView.setAdapter(favoriteLocationAdapter);
+                            swipeLayout.setRefreshing(false);
+                        }
 
+                    }
+                }, 50);
+            }
+        });
 
-            Intent i = new Intent(this, GPSTrackerService.class);
-            i.putExtra(Constants.DISPLAY_EMAIL, userEmail);
-            startService(i);
-            startNotificationService();
-        }
+        //new ImageLoadTask(imageUri, profile).execute();
 
 
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
@@ -373,7 +381,7 @@ public class UserCenter extends AppCompatActivity {
                     Collections.sort(data);
                     flls.clear();
                     for (FavoriteLocation i : data) {
-                            if(i.isVisited()){
+                            if(i.afterCutoffTime()){
                                 flls.add(i);
                             }
                     }
