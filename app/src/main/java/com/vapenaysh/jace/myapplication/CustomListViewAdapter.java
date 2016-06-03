@@ -66,12 +66,14 @@ public class CustomListViewAdapter extends BaseAdapter  {
             view = inflater.inflate(R.layout.list_row, null);
 
             TextView title = (TextView) view.findViewById(R.id.title);
+            TextView coordination = (TextView) view.findViewById(R.id.coordinates);
 
             Button soundButton = (Button) view.findViewById(R.id.button_ringTone);
             Button vibeButton = (Button) view.findViewById(R.id.button_vibe);
 
             final FavoriteLocation mLocation = locations.get(position);
             title.setText(mLocation.getName());
+            coordination.setText(mLocation.getMyLatLng().toString());
 
             soundButton.setOnClickListener(new View.OnClickListener() {
 
