@@ -72,13 +72,13 @@ public class NotificationService extends IntentService {
 
 
                             // code for calling arrival sound notification method (FavoriteLocation object)
-                            ring.playArrivalTone();
+                            //ring.playArrivalTone();
 
                             // code for calling arrival vibration notification method (FavoriteLocation obejct)
                             vibe.playArrivalTone();
 
                             // code for calling location sound notification method (FavoriteLocation object)
-                            ring.playTone(data);
+                            //ring.playTone(data);
 
                             // code for calling location vibration notification method (FavoriteLocation obejct)
                             vibe.playTone(data);
@@ -93,7 +93,7 @@ public class NotificationService extends IntentService {
                             visitedList.remove(data);
 
                             // code for calling departure sound notification method (FavoriteLocation object)
-                            ring.playDepartureTone();
+                            //ring.playDepartureTone();
 
                             // code for calling departure vibration notification method (FavoriteLocation obejct)
                             vibe.playDepartureTone();

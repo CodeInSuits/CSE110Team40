@@ -138,7 +138,7 @@ public class VibeToneManager extends AppCompatActivity {
                     for (FavoriteLocation i : data) {
                         flls.add(i);
                     }
-                    fla.notifyDataSetChanged();
+                   // fla.notifyDataSetChanged();
                 }
             }
 

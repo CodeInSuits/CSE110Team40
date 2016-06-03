@@ -97,6 +97,9 @@ public class AddPartner extends Activity implements View.OnClickListener {
                         DatabaseReference userDatabase = firebaseDatabase.getReference("users").child(userEmail);
                         userDatabase.child(Constants.DATABASE_PARTNER_KEY).setValue(partnerEmail);
                         userDatabase.child(Constants.DATABASE_PARTNER_NAME).setValue(partnerName);
+
+                        startTracking();
+                        startNotificationService();
                         finish();
                         Toast.makeText(getApplicationContext(), "Partner added", Toast.LENGTH_LONG).show();
                     }
@@ -108,10 +111,6 @@ public class AddPartner extends Activity implements View.OnClickListener {
 
             });
 
-
-            startTracking();
-            startNotificationService();
-            finish();
         }
 
     }
