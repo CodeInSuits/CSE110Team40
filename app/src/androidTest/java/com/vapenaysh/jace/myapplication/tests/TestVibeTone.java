@@ -69,7 +69,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
-                    assertEquals(1, vibeToneSetting.getVibeToneIndex());
+                    assertEquals(1, vibeToneSetting.getVibeToneIndex()+1);
                     running = false;
                 }
 
@@ -125,7 +125,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
-                    assertEquals(2, vibeToneSetting.getVibeToneIndex());
+                    assertEquals(2, vibeToneSetting.getVibeToneIndex()+1);
                     running = false;
                 }
 
@@ -182,7 +182,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
-                    assertEquals(3, vibeToneSetting.getVibeToneIndex());
+                    assertEquals(3, vibeToneSetting.getVibeToneIndex()+1);
                     running = false;
                 }
 
@@ -239,7 +239,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
-                    assertEquals(4, vibeToneSetting.getVibeToneIndex());
+                    assertEquals(4, vibeToneSetting.getVibeToneIndex()+1);
                     running = false;
                 }
 
@@ -295,7 +295,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
-                    assertEquals(5, vibeToneSetting.getVibeToneIndex());
+                    assertEquals(5, vibeToneSetting.getVibeToneIndex()+1);
                     running = false;
                 }
 
@@ -351,7 +351,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
-                    assertEquals(6, vibeToneSetting.getVibeToneIndex());
+                    assertEquals(6, vibeToneSetting.getVibeToneIndex()+1);
                     running = false;
                 }
 
@@ -407,7 +407,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
-                    assertEquals(7, vibeToneSetting.getVibeToneIndex());
+                    assertEquals(7, vibeToneSetting.getVibeToneIndex()+1);
                     running = false;
                 }
 
@@ -463,7 +463,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
-                    assertEquals(8, vibeToneSetting.getVibeToneIndex());
+                    assertEquals(8, vibeToneSetting.getVibeToneIndex()+1);
                     running = false;
                 }
 
@@ -519,7 +519,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
-                    assertEquals(9, vibeToneSetting.getVibeToneIndex());
+                    assertEquals(9, vibeToneSetting.getVibeToneIndex()+1);
                     running = false;
                 }
 
@@ -574,7 +574,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     saveButton.callOnClick();
 
                     // Assert that VibeTone10 was saved
-                    assertEquals(10, vibeToneSetting.getVibeToneIndex());
+                    assertEquals(10, vibeToneSetting.getVibeToneIndex()+1);
                     running = false;
                 }
 
@@ -634,7 +634,7 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     saveButton.callOnClick();
 
                     // Assert that VibeTone2 was saved
-                    assertEquals(2, vibeToneSetting.getVibeToneIndex());
+                    assertEquals(2, vibeToneSetting.getVibeToneIndex()+1);
                     running = false;
                 }
 
