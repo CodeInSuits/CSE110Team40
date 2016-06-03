@@ -20,6 +20,7 @@ public class GlobalSettings extends AppCompatActivity {
      4 - Mute
      */
     private static int notificationMode;
+    private String mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +28,15 @@ public class GlobalSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_global_settings);
 
-        Button both = (Button) findViewById(R.id.both);
-        Button soundOnly = (Button) findViewById(R.id.soundonly);
-        Button vibeOnly = (Button) findViewById(R.id.vibeonly);
-        Button mute = (Button) findViewById(R.id.mute);
+        SharedPreferences sharedPreferences = getSharedPreferences("notif_mode", MODE_PRIVATE);
+        mode = sharedPreferences.getString("mode", "");
 
+        final Button both = (Button) findViewById(R.id.both);
+        final Button soundOnly = (Button) findViewById(R.id.soundonly);
+        final Button vibeOnly = (Button) findViewById(R.id.vibeonly);
+        final Button mute = (Button) findViewById(R.id.mute);
+
+        setColor(mode, both, soundOnly, vibeOnly, mute);
 
         both.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +45,9 @@ public class GlobalSettings extends AppCompatActivity {
                 setNotificationSetting(true, true);
                 Toast.makeText(getApplicationContext(), "Sound & Vibration", Toast.LENGTH_SHORT).show();
                 saveSettings();
+                setColor(mode, both, soundOnly, vibeOnly, mute);
+
+
             }
         });
 
@@ -50,6 +58,8 @@ public class GlobalSettings extends AppCompatActivity {
                 setNotificationSetting(true, false);
                 Toast.makeText(getApplicationContext(), "Sound Only", Toast.LENGTH_SHORT).show();
                 saveSettings();
+                setColor(mode, both, soundOnly, vibeOnly, mute);
+
             }
         });
 
@@ -60,6 +70,8 @@ public class GlobalSettings extends AppCompatActivity {
                 setNotificationSetting(false, true);
                 Toast.makeText(getApplicationContext(), "Vibration Only", Toast.LENGTH_SHORT).show();
                 saveSettings();
+                setColor(mode, both, soundOnly, vibeOnly, mute);
+
             }
         });
 
@@ -71,6 +83,8 @@ public class GlobalSettings extends AppCompatActivity {
                 setNotificationSetting(false, false);
                 Toast.makeText(getApplicationContext(), "Mute", Toast.LENGTH_SHORT).show();
                 saveSettings();
+                setColor(mode, both, soundOnly, vibeOnly, mute);
+
             }
         });
     }
@@ -96,10 +110,35 @@ public class GlobalSettings extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("mode", notificationMode+"");
         editor.apply();
+        mode = notificationMode+"";
     }
 
     public static int getNotificationMode(){
         return notificationMode;
+    }
+
+    private void setColor(String mode, Button both, Button soundOnly, Button vibeOnly, Button mute){
+        final int newColor = 0xFF66ccff;
+        final int startColor = 0xFFc2c2d6;
+
+        both.setBackgroundColor(startColor);
+        soundOnly.setBackgroundColor(startColor);
+        vibeOnly.setBackgroundColor(startColor);
+        mute.setBackgroundColor(startColor);
+
+        switch(mode){
+            case "1":
+                both.setBackgroundColor(newColor);
+                break;
+            case "2":
+                soundOnly.setBackgroundColor(newColor);
+                break;
+            case "3":
+                vibeOnly.setBackgroundColor(newColor);
+                break;
+            case "4":
+                mute.setBackgroundColor(newColor);
+        }
     }
 
 }
