@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
+    android:background="@drawable/list_selector"
     android:orientation="horizontal"
     android:padding="5dp"
     android:layout_height="wrap_content">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/userrow"
+        android:padding="3dp"
+        android:layout_alignParentLeft="true"
+        android:background="#ffeeeade"
+        android:layout_marginRight="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/name"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="282dp" />
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/loc_image"
+            android:layout_width="50dp"
+            android:src="@drawable/blue_swirl"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
 
     <TextView
+        android:id="@+id/locname"
+        android:layout_alignTop="@+id/userrow"
+        android:text="UCSD"
+        android:textStyle="bold"
+        android:textColor="#040404"
+        android:layout_toRightOf="@+id/userrow"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/loccoordinates"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="visited"
-        android:id="@+id/visited"
-        android:layout_below="@+id/name"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/locname"
+        android:text="location"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="#040404"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@+id/userrow"/>
+
+
 </RelativeLayout>
