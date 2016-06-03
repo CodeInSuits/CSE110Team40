@@ -378,6 +378,8 @@ public class UserCenter extends AppCompatActivity {
                 };
                 ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
                 if (data != null) {
+                    //Log.d("HELLO", data.get(0).date().toString());
+
                     Collections.sort(data);
                     flls.clear();
                     for (FavoriteLocation i : data) {
