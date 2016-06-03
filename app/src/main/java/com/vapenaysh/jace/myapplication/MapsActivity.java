@@ -2,6 +2,7 @@ package com.vapenaysh.jace.myapplication;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -383,6 +384,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(favoriteLocationList.removeLocation(currentLocName)){
             Toast.makeText(getApplicationContext(), "Location removed", Toast.LENGTH_SHORT).show();
             currentMarker.remove();
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
             return true;
         }
         else{
