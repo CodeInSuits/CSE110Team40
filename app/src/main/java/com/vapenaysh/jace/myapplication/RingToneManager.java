@@ -107,7 +107,7 @@ public class RingToneManager extends AppCompatActivity {
             };
 
             Timer timer = new Timer();
-            timer.schedule(task, 3000);
+            timer.schedule(task, 2500);
 
             try {
                 Thread.sleep(3500);

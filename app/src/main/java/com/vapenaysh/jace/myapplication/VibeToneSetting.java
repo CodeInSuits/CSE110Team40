@@ -49,9 +49,10 @@ public class VibeToneSetting extends Activity implements Observer {
         radioGroup = (RadioGroup) findViewById(R.id.myRadioGroup);
 
         String uid = intent.getExtras().getString("uid");
-        Log.e("uid", uid);
 
         FavoriteLocationList fl = new FavoriteLocationList(uid);
+        RadioButton button1 = (RadioButton) findViewById(R.id.radioButton);
+        button1.setChecked(true);
 
         fl.addObserver(this);
 
@@ -64,34 +65,34 @@ public class VibeToneSetting extends Activity implements Observer {
                 // find which radio button is selected
                 switch (checkedId) {
                     case R.id.radioButton:
-                        VibeToneIndex = 1;
+                        VibeToneIndex = 0;
                         break;
                     case R.id.radioButton2:
-                        VibeToneIndex = 2;
+                        VibeToneIndex = 1;
                         break;
                     case R.id.radioButton3:
-                        VibeToneIndex = 3;
+                        VibeToneIndex = 2;
                         break;
                     case R.id.radioButton4:
-                        VibeToneIndex = 4;
+                        VibeToneIndex = 3;
                         break;
                     case R.id.radioButton5:
-                        VibeToneIndex = 5;
+                        VibeToneIndex = 4;
                         break;
                     case R.id.radioButton6:
-                        VibeToneIndex = 6;
+                        VibeToneIndex = 5;
                         break;
                     case R.id.radioButton7:
-                        VibeToneIndex = 7;
+                        VibeToneIndex = 6;
                         break;
                     case R.id.radioButton8:
-                        VibeToneIndex = 8;
+                        VibeToneIndex = 7;
                         break;
                     case R.id.radioButton9:
-                        VibeToneIndex = 9;
+                        VibeToneIndex = 8;
                         break;
                     case R.id.radioButton10:
-                        VibeToneIndex = 10;
+                        VibeToneIndex = 9;
                         break;
                 }
             }
@@ -113,43 +114,43 @@ public class VibeToneSetting extends Activity implements Observer {
         int currVibeTone = flls.get(position).getVibeTone();
 
         switch (currVibeTone) {
-            case 1:
+            case 0:
                 RadioButton button1 = (RadioButton) findViewById(R.id.radioButton);
                 button1.setChecked(true);
                 break;
-            case 2:
+            case 1:
                 RadioButton button2 = (RadioButton) findViewById(R.id.radioButton2);
                 button2.setChecked(true);
                 break;
-            case 3:
+            case 2:
                 RadioButton button3 = (RadioButton) findViewById(R.id.radioButton3);
                 button3.setChecked(true);
                 break;
-            case 4:
+            case 3:
                 RadioButton button4 = (RadioButton) findViewById(R.id.radioButton4);
                 button4.setChecked(true);
                 break;
-            case 5:
+            case 4:
                 RadioButton button5 = (RadioButton) findViewById(R.id.radioButton5);
                 button5.setChecked(true);
                 break;
-            case 6:
+            case 5:
                 RadioButton button6 = (RadioButton) findViewById(R.id.radioButton6);
                 button6.setChecked(true);
                 break;
-            case 7:
+            case 6:
                 RadioButton button7 = (RadioButton) findViewById(R.id.radioButton7);
                 button7.setChecked(true);
                 break;
-            case 8:
+            case 7:
                 RadioButton button8 = (RadioButton) findViewById(R.id.radioButton8);
                 button8.setChecked(true);
                 break;
-            case 9:
+            case 8:
                 RadioButton button9 = (RadioButton) findViewById(R.id.radioButton9);
                 button9.setChecked(true);
                 break;
-            case 10:
+            case 9:
                 RadioButton button10 = (RadioButton) findViewById(R.id.radioButton10);
                 button10.setChecked(true);
                 break;
