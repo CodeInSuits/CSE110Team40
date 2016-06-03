@@ -72,12 +72,6 @@ public class NotificationService extends IntentService {
                                     .setContentText("Partner arrived at " + data.getName());
 
 
-                            // code for calling arrival sound notification method (FavoriteLocation object)
-                            ring.playArrivalTone();
-
-                            Log.e("ring.playArrivalTone","finish playing arrival tone");
-
-
                             // code for calling arrival vibration notification method (FavoriteLocation obejct)
                             vibe.playArrivalTone();
 
@@ -85,16 +79,23 @@ public class NotificationService extends IntentService {
                             Log.e("vibe.playArrivalTone", "finish playing arrival tone");
 
 
-                            // code for calling location sound notification method (FavoriteLocation object)
-                            ring.playTone(data);
+                            // code for calling arrival sound notification method (FavoriteLocation object)
+                            ring.playArrivalTone();
 
-                            Log.e("ring.playLocationTone", "finish playing location tone");
+                            Log.e("ring.playArrivalTone","finish playing arrival tone");
 
 
                             // code for calling location vibration notification method (FavoriteLocation obejct)
                             vibe.playTone(data);
 
                             Log.e("vibe.playLocationTone", "finish playing location tone");
+
+
+                            // code for calling location sound notification method (FavoriteLocation object)
+                            ring.playTone(data);
+
+                            Log.e("ring.playLocationTone", "finish playing location tone");
+
 
                         }
                         //DEPARTED FROM A LOCATION

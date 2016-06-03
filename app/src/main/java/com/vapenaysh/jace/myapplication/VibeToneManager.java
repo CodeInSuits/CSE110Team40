@@ -20,7 +20,7 @@ public class VibeToneManager extends AppCompatActivity {
 
     protected Vibrator vibrate;
 
-    private long[] vibeTone1 = { 0, 10000 };
+    private long[] vibeTone1 = { 0, 300, 300 , 1000, 1000, 1000, 300, 300};
     private long[] vibeTone2 = { 0, 100, 400, 100, 1000 };
     private long[] vibeTone3 = { 0, 100, 400, 100, 400, 100, 500 };
     private long[] vibeTone4 = { 0, 100, 400, 100, 400, 100, 400, 100, 1000};
@@ -31,7 +31,7 @@ public class VibeToneManager extends AppCompatActivity {
     private long[] vibeTone9 = { 0, 100, 100, 100, 100, 110 };
     private long[] vibeTone10 = { 0, 100, 500, 100, 500, 500, 500, 500, 500 };
 
-    private long[] arrivalTone = {0, 1000, 1000, 1000, 1000, 1000};
+    private long[] arrivalTone = {0, 1000,};
     private long[] departureTone = {0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100};
 
     private long[][] vibeToneArray = {vibeTone1, vibeTone2, vibeTone3, vibeTone4, vibeTone5, vibeTone6,

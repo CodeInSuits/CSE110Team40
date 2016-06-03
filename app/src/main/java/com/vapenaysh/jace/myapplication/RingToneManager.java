@@ -34,7 +34,7 @@ public class RingToneManager extends AppCompatActivity {
     FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
     private Context context;
-    private long ringDelay = 3000;
+    private long ringDelay = 4000;
 
     public RingToneManager(Context context) {
         this.context = context;
@@ -42,22 +42,11 @@ public class RingToneManager extends AppCompatActivity {
 
     public void playTone(FavoriteLocation loc){
 
-        Log.e("play.in", "inside the method playTone");
-        Log.e("play.mode", playMode()+"");
-
         if(playMode()) {
             //String stringURI = getRingToneFromFirebase(loc.getName());
 
             String stringURI = loc.getRingTone();
-
-            if (!stringURI.equals("N/A")) {
-
-                Log.e("play.uri", stringURI);
-            }
-
             Uri uri = Uri.parse(stringURI);
-            Log.e("play.in", "inside the if statement");
-            Log.e("play.uri", stringURI);
 
             final Ringtone r = RingtoneManager.getRingtone(context, uri);
             r.play();
@@ -68,10 +57,6 @@ public class RingToneManager extends AppCompatActivity {
                     r.stop();
                 }
             };
-
-            Thread thread = new Thread(new MyThread());
-            thread.start();
-
             Timer timer = new Timer();
             timer.schedule(task, ringDelay);
         }
@@ -110,16 +95,26 @@ public class RingToneManager extends AppCompatActivity {
     public void playArrivalTone() {
 
         if (playMode()) {
+
             final Ringtone r = RingtoneManager.getRingtone(context, this.arrivalRingTone);
             r.play();
+
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
                     r.stop();
                 }
             };
+
             Timer timer = new Timer();
-            timer.schedule(task, ringDelay);
+            timer.schedule(task, 3000);
+
+            try {
+                Thread.sleep(3500);
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+
         }
     }
 
@@ -169,25 +164,5 @@ public class RingToneManager extends AppCompatActivity {
     }
     */
 
-
-    final class MyThread implements Runnable
-    {
-
-        public MyThread(){ }
-
-        @Override
-        public void run() {
-
-            synchronized (this) {
-
-                try{
-                    wait(8000);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
 }
