@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,14 +34,14 @@ public class NotificationService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         visitedList = new ArrayList<>();
         Vibrator e  = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        vibe = new VibeToneManager(e, getApplicationContext());
+
 
         if (intent != null) {
             synchronized (this) {
                 String partner = intent.getStringExtra(Constants.PARTNER_EMAIL);
 
-                //ring = new RingToneManager();
-                //vibe = new VibeToneManager((Vibrator) getSystemService(VIBRATOR_SERVICE));
+                vibe = new VibeToneManager(e, getApplicationContext());
+                ring = new RingToneManager(getApplicationContext());
 
                 FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
                 partnerDb = locationsDB.getReference(partner + Constants.LOC_URL);
@@ -74,14 +75,26 @@ public class NotificationService extends IntentService {
                             // code for calling arrival sound notification method (FavoriteLocation object)
                             ring.playArrivalTone();
 
+                            Log.e("ring.playArrivalTone","finish playing arrival tone");
+
+
                             // code for calling arrival vibration notification method (FavoriteLocation obejct)
                             vibe.playArrivalTone();
+
+
+                            Log.e("vibe.playArrivalTone", "finish playing arrival tone");
+
 
                             // code for calling location sound notification method (FavoriteLocation object)
                             ring.playTone(data);
 
+                            Log.e("ring.playLocationTone", "finish playing location tone");
+
+
                             // code for calling location vibration notification method (FavoriteLocation obejct)
                             vibe.playTone(data);
+
+                            Log.e("vibe.playLocationTone", "finish playing location tone");
 
                         }
                         //DEPARTED FROM A LOCATION
@@ -95,8 +108,12 @@ public class NotificationService extends IntentService {
                             // code for calling departure sound notification method (FavoriteLocation object)
                             ring.playDepartureTone();
 
+                            Log.e("ring.playDepartureTone", "finish playing departure tone");
+
                             // code for calling departure vibration notification method (FavoriteLocation obejct)
                             vibe.playDepartureTone();
+
+                            Log.e("vibe.playDepartureTone", "finish playing departure tone");
 
                         }
 
