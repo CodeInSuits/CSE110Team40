@@ -104,7 +104,6 @@ public class CustomListViewAdapter extends BaseAdapter  {
                     i.putExtra("position", position);
                     i.putExtra("uid", partnerEmail);
                     mContext.startActivity(i);
-
                 }
             });
 

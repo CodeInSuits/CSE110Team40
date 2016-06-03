@@ -1,11 +1,13 @@
 package com.vapenaysh.jace.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
     FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     ArrayList<FavoriteLocation> fll;
     private static String email;
+    private Button refreshBu;
 
     /*
      TODO: 1. Fully integrate with the customListViewAdapter
@@ -79,6 +82,7 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
 
                         String itemClickedId = listView.getItemAtPosition(myPosition).toString();
                         Toast.makeText(getApplicationContext(), "Id Clicked: " + itemClickedId, Toast.LENGTH_LONG).show();
+
                     }
                 });
             }
@@ -90,10 +94,23 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
             }
         });
 
+        refreshBu = (Button)findViewById(R.id.buttonref);
+
+        refreshBu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        });
     }
 
     public static String getPartnerEmail(){
         return email;
     }
 
+    private void refresh(){
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
 }

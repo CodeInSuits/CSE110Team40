@@ -7,6 +7,15 @@
     android:orientation="vertical"
     tools:context="com.vapenaysh.jace.myapplication.PartnerFavoriteLocation">
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Refresh"
+        android:id="@+id/buttonref"
+        android:layout_gravity="center_horizontal"
+        android:onClick="refresh" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,8 +25,7 @@
         android:textSize="35dp"
         android:textAlignment="center"
         android:gravity="center"
-        android:layout_gravity="center_horizontal|top"
-        android:paddingTop="@dimen/abc_action_bar_icon_vertical_padding_material" />
+        android:layout_gravity="center_horizontal|top" />
 
     <ListView
         android:id="@+id/list"
