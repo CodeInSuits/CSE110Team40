@@ -37,9 +37,7 @@ public class FavoriteLocationAdapter extends ArrayAdapter<FavoriteLocation>
                     title.setText(favoriteLocation.getName());
                     visited.setText("LAST VISITED ON " + favoriteLocation.date().toString());
                 }
-
             }
-
         }
 
         return v;

@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -23,8 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
-public class VibeToneSetting extends Activity {
+public class VibeToneSetting extends Activity implements Observer {
 
     private RadioGroup radioGroup;
     private static int VibeToneIndex;
@@ -44,6 +47,15 @@ public class VibeToneSetting extends Activity {
         position = intent.getIntExtra("position", 0);
 
         radioGroup = (RadioGroup) findViewById(R.id.myRadioGroup);
+
+        String uid = intent.getExtras().getString("uid");
+        Log.e("uid", uid);
+
+        FavoriteLocationList fl = new FavoriteLocationList(uid);
+
+        fl.addObserver(this);
+
+
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
@@ -95,6 +107,54 @@ public class VibeToneSetting extends Activity {
 
     }
 
+    public void update(Observable o, Object object){
+
+        flls = ((FavoriteLocationList)o).getLocations();
+        int currVibeTone = flls.get(position).getVibeTone();
+
+        switch (currVibeTone) {
+            case 1:
+                RadioButton button1 = (RadioButton) findViewById(R.id.radioButton);
+                button1.setChecked(true);
+                break;
+            case 2:
+                RadioButton button2 = (RadioButton) findViewById(R.id.radioButton2);
+                button2.setChecked(true);
+                break;
+            case 3:
+                RadioButton button3 = (RadioButton) findViewById(R.id.radioButton3);
+                button3.setChecked(true);
+                break;
+            case 4:
+                RadioButton button4 = (RadioButton) findViewById(R.id.radioButton4);
+                button4.setChecked(true);
+                break;
+            case 5:
+                RadioButton button5 = (RadioButton) findViewById(R.id.radioButton5);
+                button5.setChecked(true);
+                break;
+            case 6:
+                RadioButton button6 = (RadioButton) findViewById(R.id.radioButton6);
+                button6.setChecked(true);
+                break;
+            case 7:
+                RadioButton button7 = (RadioButton) findViewById(R.id.radioButton7);
+                button7.setChecked(true);
+                break;
+            case 8:
+                RadioButton button8 = (RadioButton) findViewById(R.id.radioButton8);
+                button8.setChecked(true);
+                break;
+            case 9:
+                RadioButton button9 = (RadioButton) findViewById(R.id.radioButton9);
+                button9.setChecked(true);
+                break;
+            case 10:
+                RadioButton button10 = (RadioButton) findViewById(R.id.radioButton10);
+                button10.setChecked(true);
+                break;
+        }
+    }
 
     public static int getVibeToneIndex() {
         return VibeToneIndex;
@@ -109,8 +169,8 @@ public class VibeToneSetting extends Activity {
         String uid = loc.getPartnerEmail();
         DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
         db.child(""+position).child("vibeTone").setValue(VibeToneIndex);
-
         Toast.makeText(getApplicationContext(), "VibeTone " + VibeToneIndex + " saved", Toast.LENGTH_SHORT).show();
     }
+
 
 }

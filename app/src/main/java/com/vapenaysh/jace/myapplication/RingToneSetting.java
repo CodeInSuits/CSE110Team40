@@ -9,25 +9,39 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
-public class RingToneSetting extends AppCompatActivity {
+public class RingToneSetting extends AppCompatActivity implements Observer{
 
     private String tonePath;
     private int locIndex;
     FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     FavoriteLocationAdapter fla;
     private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
+    private String currenturi = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_tone_setting);
         Intent intent = getIntent();
         locIndex = intent.getExtras().getInt("locIndex");
+        String uid = intent.getExtras().getString("uid");
+
+        FavoriteLocationList fl = new FavoriteLocationList(uid);
+
+        fl.addObserver(this);
+
+
         Toast.makeText(getBaseContext(), "What partner email " + locIndex, Toast.LENGTH_SHORT).show();
         setRingTone();
     }
@@ -38,12 +52,10 @@ public class RingToneSetting extends AppCompatActivity {
 
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        //intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, currenturi);
-
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select ringtone for Location");
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
-        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, false);
-        //intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(this.currenturi));
         startActivityForResult(intent, 3);
     }
 
@@ -73,8 +85,12 @@ public class RingToneSetting extends AppCompatActivity {
         String uid = loc.getPartnerEmail();
         DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
         db.child(""+locIndex).child("ringTone").setValue(tonePath);
-
     }
 
+    public void update(Observable o, Object object){
+
+        flls = ((FavoriteLocationList)o).getLocations();
+        currenturi = flls.get(locIndex).getRingTone();
+    }
 
 }

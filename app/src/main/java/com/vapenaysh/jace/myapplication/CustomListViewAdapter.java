@@ -82,6 +82,7 @@ public class CustomListViewAdapter extends BaseAdapter  {
                     Intent i = new Intent(mContext, RingToneSetting.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("locIndex", currPosition);
+                    i.putExtra("uid", partnerEmail);
                     mContext.startActivity(i);
                 }
 
@@ -96,6 +97,7 @@ public class CustomListViewAdapter extends BaseAdapter  {
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("locName", mLocation.getName());
                     i.putExtra("position", position);
+                    i.putExtra("uid", partnerEmail);
                     mContext.startActivity(i);
 
                 }
