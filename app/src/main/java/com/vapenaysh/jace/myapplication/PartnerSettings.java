@@ -38,6 +38,7 @@ public class PartnerSettings extends Activity {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         final DatabaseReference myRef = database.getReference("users");
+
         if(userEmail != null) {
             myRef.child(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -50,6 +51,8 @@ public class PartnerSettings extends Activity {
                     String email = map.get(Constants.DATABASE_PARTNER_KEY);
                     name_partner.setText(name);
                     number_partner.setText(email);
+                    setName(name);
+                    setNumber(email);
                 }
 
                 @Override
@@ -64,6 +67,8 @@ public class PartnerSettings extends Activity {
             public void onClick(View v) {
                 myRef.child(userEmail).child(Constants.DATABASE_PARTNER_NAME).setValue("");
                 myRef.child(userEmail).child(Constants.DATABASE_PARTNER_KEY).setValue("");
+                setName("");
+                setNumber("");
                 Log.v("PartnerSettings", "Removed partner");
                 Toast.makeText(getApplicationContext(), "Partner removed", Toast.LENGTH_LONG).show();
                 stopService(new Intent(PartnerSettings.this, NotificationService.class));
@@ -73,8 +78,6 @@ public class PartnerSettings extends Activity {
                 onBackPressed();
             }
         });
-
-
 
     }
 

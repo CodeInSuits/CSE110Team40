@@ -71,9 +71,14 @@ public class CustomListViewAdapter extends BaseAdapter  {
             Button soundButton = (Button) view.findViewById(R.id.button_ringTone);
             Button vibeButton = (Button) view.findViewById(R.id.button_vibe);
 
+
             final FavoriteLocation mLocation = locations.get(position);
             title.setText(mLocation.getName());
             coordination.setText(mLocation.getMyLatLng().toString());
+            String ringToneName = mLocation.getRingTone().substring(
+                    mLocation.getRingTone().length()-2, mLocation.getRingTone().length());
+            soundButton.setText("Ring Tone " + ringToneName);
+            vibeButton.setText("Vibe Tone " + (mLocation.getVibeTone()+1));
 
             soundButton.setOnClickListener(new View.OnClickListener() {
 
@@ -82,6 +87,7 @@ public class CustomListViewAdapter extends BaseAdapter  {
                     Intent i = new Intent(mContext, RingToneSetting.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("locIndex", currPosition);
+                    i.putExtra("uid", partnerEmail);
                     mContext.startActivity(i);
                 }
 
@@ -96,6 +102,7 @@ public class CustomListViewAdapter extends BaseAdapter  {
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("locName", mLocation.getName());
                     i.putExtra("position", position);
+                    i.putExtra("uid", partnerEmail);
                     mContext.startActivity(i);
 
                 }

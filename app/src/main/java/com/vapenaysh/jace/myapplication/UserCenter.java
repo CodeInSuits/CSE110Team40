@@ -71,7 +71,6 @@ public class UserCenter extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         //get content from login page
         userName = getIntent().getStringExtra("DisplayName");
         userEmail = getIntent().getStringExtra("DisplayEmail");
@@ -81,9 +80,6 @@ public class UserCenter extends AppCompatActivity {
         imageUri = getIntent().getStringExtra("ImageURL");
         Log.d(TAG, "ImageUrl" + imageUri);
 
-
-
-
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
@@ -91,12 +87,12 @@ public class UserCenter extends AppCompatActivity {
         profile = (CircleImageView) v.findViewById(R.id.profile_image);
         displayName = (TextView) v.findViewById(R.id.username);
         displayEmail = (TextView) v.findViewById(R.id.email);
-
         displayEmail.setText(userEmail + "@gmail.com");
         displayName.setText(userName);
         Picasso.with(getApplicationContext()).load(imageUri).into(profile);
 
         if(!isSingle(userEmail)){
+
             setUpPartnerSettings();
             //WARNING: UNTESTED CODE
             loadData();
@@ -110,8 +106,6 @@ public class UserCenter extends AppCompatActivity {
 
 
         listView = (ListView) findViewById(R.id.listView);
-
-        /////test code //////////////////////////////////////////
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -206,7 +200,7 @@ public class UserCenter extends AppCompatActivity {
 
                     case R.id.partnerfavlocationdispaly:
 
-                        if(isSingle(userEmail)){
+                        if (isSingle(userEmail)) {
 
                             //partner does not exist in database yet
                             AlertDialog.Builder dialog = new AlertDialog.Builder(UserCenter.this);
@@ -264,7 +258,6 @@ public class UserCenter extends AppCompatActivity {
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
 
-
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
@@ -275,6 +268,7 @@ public class UserCenter extends AppCompatActivity {
     public boolean isSingle(String userPath){
 
         DatabaseReference myRef = database.getReference("users");
+        final PartnerSettings set = new PartnerSettings();
         if (myRef != null && userPath != null) {
             myRef.child(userPath).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -282,6 +276,7 @@ public class UserCenter extends AppCompatActivity {
                     User storedUser = dataSnapshot.getValue(User.class);
                     partnerEmail = storedUser.getPartnerEmail();
                     Toast.makeText(getBaseContext(), "Partner email is " + partnerEmail, Toast.LENGTH_SHORT).show();
+                    set.setNumber(partnerEmail);
                 }
 
                 @Override
@@ -291,7 +286,6 @@ public class UserCenter extends AppCompatActivity {
             });
         }
 
-
         if(partnerName == null){
             partnerName = "";
         }
@@ -300,14 +294,16 @@ public class UserCenter extends AppCompatActivity {
             partnerEmail = "";
         }
 
-        if(partnerEmail.equals("")){
-            Toast.makeText(getBaseContext(), "I am single now", Toast.LENGTH_SHORT).show();
+        if(partnerEmail.equals("") || partnerEmail.equals("")){
             return true;
         }
         else{
-            Toast.makeText(getBaseContext(), "I am married now", Toast.LENGTH_SHORT).show();
-            return false;
-
+            if(set.getNumber() != null && set.getNumber().equals("")) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 

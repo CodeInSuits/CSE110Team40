@@ -66,9 +66,6 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
 
 
                 listView = (ListView) findViewById(R.id.list);
-
-                /////test code //////////////////////////////////////////
-
                 customListViewAdapter = new CustomListViewAdapter(getApplicationContext(), fll);
                 customListViewAdapter.setPartnerEmail(getPartnerEmail());
                 listView.setAdapter(customListViewAdapter);
@@ -84,8 +81,6 @@ public class PartnerFavoriteLocation extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Id Clicked: " + itemClickedId, Toast.LENGTH_LONG).show();
                     }
                 });
-
-
             }
 
             @Override
