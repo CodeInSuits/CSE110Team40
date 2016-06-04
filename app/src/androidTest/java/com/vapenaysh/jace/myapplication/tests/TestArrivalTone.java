@@ -219,6 +219,146 @@ public class TestArrivalTone extends TestCase {
 
     }
 
+    /* User Stories: 4.3, 7.3
+
+    4.3
+    Scenario 3: I get notified by the fixed and unique departure sound tone
+    Given that that my partner is in the vicinity of one of their favorite locations
+    And I already got an entering location notification from my partner
+    When my partner leave or is no longer within 1/10 of a mile of the favorite location he/her was at
+    Then I will get notified by the departure tone which is a fixed sound notification
+
+    7.3
+    Scenario 3: I will only be notified by the sound
+    Given that I leave vibration notification off but sound notification on in the global settings
+    When my partner visits one of his/her favorite locations
+    And leaves that location later
+    Then I will get a notification message shown in the top of app screen and notified by arrival tone
+     sounds, location tone sounds and departure tone sounds without any vibration.
+     */
+
+    public void testArrival_SettingRing_Default() {
+
+        /* PRECONDITIONS */
+
+        // GlobalSettings - sound: true, vibe: true
+        settings.setNotificationSetting(RING, NO_VIBE);
+
+        // Instantiate Location
+        location = new FavoriteLocation(new LatLng(1,1), "Location1");
+        location.setVisited(true);
+
+        // Ringtone / VibeTone retain default values
+        vibe.setVibeToneIndex(1);
+        ring.save();
+
+        /* Test */
+
+        // check isVisited()
+        if(location.isVisited()) {
+
+            assertTrue(location.isVisited());
+
+            // check correct notification type
+            if(settings.getNotificationMode() == 1) {
+
+                assertEquals(1, settings.getNotificationMode());
+
+                // check current RingTone / VibeTone
+                ring.save();
+
+
+                if(vibe.getVibeToneIndex() == 1) {
+
+                    assertNotNull(vibe);
+                    assertNotNull(ring);
+
+                } else {
+
+                    // Wrong VibeTone
+                    fail();
+                }
+
+            }
+
+        } else {
+
+            // isVisited was unset, so notification did not occur
+            fail();
+        }
+
+    }
+
+    /* User Stories: 4.3, 7.3
+
+    4.3
+    Scenario 3: I get notified by the fixed and unique departure sound tone
+    Given that that my partner is in the vicinity of one of their favorite locations
+    And I already got an entering location notification from my partner
+    When my partner leave or is no longer within 1/10 of a mile of the favorite location he/her was at
+    Then I will get notified by the departure tone which is a fixed sound notification
+
+    7.3
+    Scenario 3: I will only be notified by the sound
+    Given that I leave vibration notification off but sound notification on in the global settings
+    When my partner visits one of his/her favorite locations
+    And leaves that location later
+    Then I will get a notification message shown in the top of app screen and notified by arrival tone
+     sounds, location tone sounds and departure tone sounds without any vibration.
+
+    */
+    public void testArrival_SettingRing_Custom() {
+
+        /* PRECONDITIONS */
+
+        // GlobalSettings - sound: true, vibe: true
+        settings.setNotificationSetting(RING, NO_VIBE);
+
+        // Instantiate Location
+        location = new FavoriteLocation(new LatLng(1,1), "Location1");
+        location.setVisited(true);
+
+        // Ringtone retains default / VibeTone is custom
+        vibe.setVibeToneIndex(8);
+        ring.save();
+
+        /* Test */
+
+        // check isVisited()
+        if(location.isVisited()) {
+
+            assertTrue(location.isVisited());
+
+            // check correct notification type
+            if(settings.getNotificationMode() == 1) {
+
+                assertEquals(1, settings.getNotificationMode());
+
+                // check current Ring / VibeTone
+                ring.save();
+
+                if(vibe.getVibeToneIndex() == 8) {
+
+                    assertEquals(8, vibe.getVibeToneIndex());
+
+                } else {
+
+                    // Wrong VibeTone
+                    fail();
+                }
+
+            }
+
+        } else {
+
+            // isVisited was unset, so notification did not occur
+            fail();
+        }
+
+    }
+
+
+
     /* User Stories: 6.1, 7.2
 
     6.1
