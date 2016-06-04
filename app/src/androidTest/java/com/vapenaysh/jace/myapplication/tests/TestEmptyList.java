@@ -43,6 +43,16 @@ public class TestEmptyList extends ActivityInstrumentationTestCase2<UserCenter>
         favoriteLocationList.removeAllLocations();
         favoriteLocationList.writeLocation(new FavoriteLocation(new LatLng(0, 0), "rand paul is a meme", new Date(System.currentTimeMillis()-2*24*60*60*1000)));
     }
+    /*Test 1: (User Stories 1.1, 1.2) {(pass 3am),cleared empty list}
+        Click on app icon to launch the app
+        Log into the app
+        Assume the current time is 2:59am
+        If the list of partners recently visited locations is empty, nothing happens and the test is over. Otherwise...
+        On rollover to 3:00am, the list of partners recently visited locations will be cleared. [US 1.3]
+        The list will be reloaded following this to display it as empty in the UI.
+        The partner then visits one of their favorite locations.
+        It is then added to the user’s list of favorite locations history. [1.2]
+     */
     /*Test 2: (User Stories 1.1, 1.2) {(not pass 3am, haven’t visit any location), empty list}
         Click on app icon to launch the app
         Log into the app
@@ -52,7 +62,7 @@ public class TestEmptyList extends ActivityInstrumentationTestCase2<UserCenter>
         The list will used to display an empty list in the UI. [1.1]
         Then the partner then visits one of their favorite locations.
         It is then added to the user’s list of favorite locations history. [1.2]*/
-    public void test_empty_list()
+    public void test_empty_list_unvisited()
     {
         userCenter = getActivity();
         final ListView lv = (ListView) userCenter.findViewById(R.id.listView);
