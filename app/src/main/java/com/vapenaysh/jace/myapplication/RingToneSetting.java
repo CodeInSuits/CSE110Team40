@@ -27,11 +27,18 @@ import java.util.Observer;
  */
 public class RingToneSetting extends AppCompatActivity implements Observer{
 
+    // the tonePath
     private String tonePath;
+
+    // the current index of current location
     private int locIndex;
     FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     FavoriteLocationAdapter fla;
+
+    // the favorite location list
     private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
+
+    // the current location ring tone uri
     private String currenturi = "";
 
 
@@ -53,6 +60,9 @@ public class RingToneSetting extends AppCompatActivity implements Observer{
         setRingTone();
     }
 
+    /**
+     * Method for setting the ring tone
+     */
     public void setRingTone(){
 
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
@@ -85,7 +95,9 @@ public class RingToneSetting extends AppCompatActivity implements Observer{
 
     }
 
-
+    /**
+     * Method for saving the ring tone
+     */
     public void save() {
 
         PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
@@ -94,6 +106,9 @@ public class RingToneSetting extends AppCompatActivity implements Observer{
         db.child(""+locIndex).child("ringTone").setValue(tonePath);
     }
 
+    /**
+     * Method for getting the updated ring tone
+     */
     public void update(Observable o, Object object){
 
         flls = ((FavoriteLocationList)o).getLocations();

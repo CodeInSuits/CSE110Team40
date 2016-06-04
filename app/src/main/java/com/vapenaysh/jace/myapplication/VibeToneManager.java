@@ -24,6 +24,7 @@ public class VibeToneManager extends AppCompatActivity {
 
     protected Vibrator vibrate;
 
+    // vibeTone Database
     private long[] vibeTone1 = { 0, 300, 300 , 1000, 1000, 1000, 300, 300};
     private long[] vibeTone2 = { 0, 100, 400, 100, 1000 };
     private long[] vibeTone3 = { 0, 100, 400, 100, 400, 100, 500 };
@@ -34,12 +35,11 @@ public class VibeToneManager extends AppCompatActivity {
     private long[] vibeTone8 = { 0, 500, 500, 500, 500, 500 };
     private long[] vibeTone9 = { 0, 100, 100, 100, 100, 110 };
     private long[] vibeTone10 = { 0, 100, 500, 100, 500, 500, 500, 500, 500 };
-
     private long[] arrivalTone = {0, 1000,};
     private long[] departureTone = {0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100};
-
     private long[][] vibeToneArray = {vibeTone1, vibeTone2, vibeTone3, vibeTone4, vibeTone5, vibeTone6,
             vibeTone7, vibeTone8, vibeTone9, vibeTone10};
+
 
     // default notification mode is both sound and vibration tone
     private int notificationMode = 1;
@@ -47,16 +47,24 @@ public class VibeToneManager extends AppCompatActivity {
     private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
     private Context context;
 
+    /**
+     * Constructor for creating VibeToneManager
+     */
     public VibeToneManager(Vibrator vib) {
-
         vibrate = vib;
     }
 
+    /**
+     * Constructor for creating VibeToneManager
+     */
     public VibeToneManager(Vibrator vib, Context context ){
         this.context = context;
         vibrate = vib;
     }
 
+    /**
+     * Method for playing the corresponding vibe tone
+     */
     public void playTone(FavoriteLocation loc){
 
         if (vibrate != null) {
@@ -72,6 +80,9 @@ public class VibeToneManager extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method for playing the arrival vibe tone
+     */
     public void playArrivalTone(){
 
         if (vibrate != null){
@@ -83,7 +94,9 @@ public class VibeToneManager extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Method for playing the departure vibe tone
+     */
     public void playDepartureTone(){
 
         if (vibrate != null){
@@ -96,66 +109,18 @@ public class VibeToneManager extends AppCompatActivity {
         }
     }
 
-
-    private boolean playMode(){
+    /**
+     * Method for checking if the current mode allows playing vibe tone
+     */
+    private boolean playMode() {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("notif_mode", MODE_PRIVATE);
         this.notificationMode = Integer.parseInt(sharedPreferences.getString("mode", "1"));
 
-        if (notificationMode == 1 || notificationMode == 3){
+        if (notificationMode == 1 || notificationMode == 3) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
-
-    /*
-    private int getVibeToneFromFirebase(String locName ) {
-
-        PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
-        String uid = loc.getPartnerEmail();
-        DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
-        db.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
-
-            @Override
-            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
-                };
-                ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
-
-                flls.clear();
-                if (data != null) {
-                    for (FavoriteLocation i : data) {
-                        flls.add(i);
-                    }
-                   // fla.notifyDataSetChanged();
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        FavoriteLocationList tmp = new FavoriteLocationList(uid);
-        FavoriteLocation currentLoc = null;
-
-        for (FavoriteLocation i : flls) {
-            if (i.getName().equals(locName)) {
-                currentLoc = i;
-                break;
-            }
-        }
-
-        if (currentLoc != null) {
-            return currentLoc.getVibeTone();
-        }
-        else {
-            return 0;
-        }
-    }
-    */
 }

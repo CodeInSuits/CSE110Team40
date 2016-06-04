@@ -26,12 +26,19 @@ import java.util.Observer;
  */
 public class VibeToneSetting extends Activity implements Observer {
 
+    // the group of radio buttons
     private RadioGroup radioGroup;
+
+    // the index of the current vibeTone
     private static int VibeToneIndex;
+
+    // favorite location and favorite location list
     private String locName;
     FirebaseDatabase locationsDB = FirebaseDatabase.getInstance();
     FavoriteLocationAdapter fla;
     private ArrayList<FavoriteLocation> flls = new ArrayList<FavoriteLocation>();
+
+    // the index of the current location
     private int position;
 
     @Override
@@ -51,10 +58,9 @@ public class VibeToneSetting extends Activity implements Observer {
         FavoriteLocationList fl = new FavoriteLocationList(uid);
         RadioButton button1 = (RadioButton) findViewById(R.id.radioButton);
         button1.setChecked(true);
-
         fl.addObserver(this);
 
-
+        // Checking the UI setting for button
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
@@ -106,6 +112,9 @@ public class VibeToneSetting extends Activity implements Observer {
 
     }
 
+    /**
+     * Method for getting the updated vibe tone
+     */
     public void update(Observable o, Object object){
 
         flls = ((FavoriteLocationList)o).getLocations();
@@ -155,14 +164,23 @@ public class VibeToneSetting extends Activity implements Observer {
         }
     }
 
+    /**
+     * Getter Method
+     */
     public static int getVibeToneIndex() {
         return VibeToneIndex;
     }
 
+    /**
+     * Setter Method
+     */
     public void setVibeToneIndex(int vibeToneIndex) {
         VibeToneIndex = vibeToneIndex;
     }
 
+    /**
+     * Method for saving the vibe tone
+     */
     public void save(){
         PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
         String uid = loc.getPartnerEmail();

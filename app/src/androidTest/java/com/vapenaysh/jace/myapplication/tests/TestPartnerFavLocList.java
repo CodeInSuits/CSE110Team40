@@ -64,6 +64,7 @@ public class TestPartnerFavLocList extends ActivityInstrumentationTestCase2<Part
             }
         });
     }
+
     @SmallTest
     public void testAddItem() {
         partnerFavoriteLocation = getActivity();

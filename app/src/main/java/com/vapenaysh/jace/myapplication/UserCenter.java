@@ -301,7 +301,7 @@ public class UserCenter extends AppCompatActivity {
             partnerEmail = "";
         }
 
-        if(partnerEmail.equals("") || partnerEmail.equals("")){
+        if(partnerEmail.equals("") || partnerName.equals("")){
             return true;
         }
         else{
@@ -327,7 +327,6 @@ public class UserCenter extends AppCompatActivity {
     private void setUpPartnerSettings(){
         PartnerSettings.setNumber(partnerEmail);
         PartnerSettings.setName(partnerName);
-
     }
 
     @Override

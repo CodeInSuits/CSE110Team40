@@ -40,10 +40,16 @@ public class RingToneManager extends AppCompatActivity {
     private Context context;
     private long ringDelay = 4000;
 
+    /**
+     * Constructor for creating the RingToneManager
+     */
     public RingToneManager(Context context) {
         this.context = context;
     }
 
+    /**
+     * Method for playing the corresponding ring tone
+     */
     public void playTone(FavoriteLocation loc){
 
         if(playMode()) {
@@ -66,6 +72,9 @@ public class RingToneManager extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method for checking if the current mode allows playing ring tone
+     */
     private boolean playMode(){
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("notif_mode", MODE_PRIVATE);
@@ -79,6 +88,9 @@ public class RingToneManager extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method for playing the departure ring tone
+     */
     public void playDepartureTone() {
 
         if (playMode()) {
@@ -96,6 +108,9 @@ public class RingToneManager extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method for playing the arrival ring tone
+     */
     public void playArrivalTone() {
 
         if (playMode()) {
@@ -121,52 +136,4 @@ public class RingToneManager extends AppCompatActivity {
 
         }
     }
-
-    /*
-    public String getRingToneFromFirebase(String locName) {
-        PartnerFavoriteLocation loc = new PartnerFavoriteLocation();
-        String uid = loc.getPartnerEmail();
-        DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
-        db.addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
-
-            @Override
-            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<ArrayList<FavoriteLocation>> t = new GenericTypeIndicator<ArrayList<FavoriteLocation>>() {
-                };
-                ArrayList<FavoriteLocation> data = dataSnapshot.getValue(t);
-
-                flls.clear();
-                if (data != null) {
-                    for (FavoriteLocation i : data) {
-                        flls.add(i);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        FavoriteLocationList tmp = new FavoriteLocationList(uid);
-        FavoriteLocation currentLoc = null;
-
-        for (FavoriteLocation i : flls) {
-            if (i.getName().equals(locName)) {
-                currentLoc = i;
-                break;
-            }
-        }
-
-        if (currentLoc != null) {
-            return currentLoc.getRingTone();
-        }
-        else {
-            return "N/A";
-        }
-    }
-    */
-
-
 }
