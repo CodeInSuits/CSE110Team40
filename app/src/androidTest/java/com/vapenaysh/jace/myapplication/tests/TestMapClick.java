@@ -12,25 +12,24 @@ import com.vapenaysh.jace.myapplication.MapsActivity;
 import java.util.ArrayList;
 
 /**
- * Tests scenarios involving map clicking and added a location with a custom/default name
- * Created by Matt on 5/1/16.
  *
- * Scneario 1 The location is given a customized name when it is set via tapping on the map
+ * Story 2: User wants to set a favorite location
  *
+ *
+ * Scenario 1:  The location is given a customized name when it is set via search bar
+ * Given that the user types the address into the search bar
+ * When the user selects the location,
+ * And the user enters a name for the favorite location
+ * Then that location should be added to a list of their favorite locations with the name the
+ * user entered And the location on the map will be marked with a red pin and location name
+ *
+ *
+ * Scenario 2: The location is given a customized name when it is set via tapping on the map
  * Given that the user taps a coordinate/address on the map
  * When the user selects the coordinate,
  * And the user enters a name for the favorite location
  * Then the location should be added to the list of favorites with the name the user entered
  * and a default notification sound associated with the location.
- * And the location on the map will be marked with a red pin and location name
- *
- * Scenario 2 The location is given a default name when it is set via tapping on the map
- *
- * Given that the user taps a coordinate/address on the map
- * When the user selects the coordinate,
- * And the user doesn’t enter a name for the favorite location
- * Then the location should be added to the list of favorites with an enumerated default name
- * (such as “Location 1”) and a default notification sound associated with the location.
  * And the location on the map will be marked with a red pin and location name
  *
  */

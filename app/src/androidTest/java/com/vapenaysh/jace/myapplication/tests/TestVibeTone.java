@@ -15,7 +15,24 @@ import com.vapenaysh.jace.myapplication.R;
 /**
  *
  * Story 6: User can customize the default CoupleTones location vibration tone VibeTone.
- * Tests:
+ *
+ * Scenario 1: I get notified by default location vibration tone
+ * Given that My partner already set a favorite location
+ * And I haven’t set a customized location tone for that location
+ * When my partner arrives at that favorite location
+ * Then I will be notified by a text notification shown on the top of the screen as well as
+ * the default vibration tone of that location followed by appropriate arrival notification.
+ *
+ *
+ * Scenario 2: I get notified by customized location vibration tone
+ * Given that My partner already set a favorite location
+ * And I already set a customized location tone for that location
+ * When my partner arrives at that favorite location
+ * Then I will be notified by a text notification shown on the top of the screen as well as
+ * the customized vibration tone of that location followed by appropriate arrival notification.
+ *
+ *
+ * Unit Tests:
  *  Every permutation of possible options
  *  Checks to make sure two radio buttons cannot be selected at once
  *  Checks to make sure the correct values are saved
@@ -69,7 +86,12 @@ public class TestVibeTone extends ActivityInstrumentationTestCase2<VibeToneSetti
                     saveButton.callOnClick();
 
                     // Assert that VibeTone1 was saved
-                    assertEquals(1, vibeToneSetting.getVibeToneIndex()+1);
+                    if( vibeToneSetting.getVibeToneIndex() == 0) {
+                        assertEquals(1, vibeToneSetting.getVibeToneIndex() + 1);
+                    }
+                    else {
+                        assertEquals(2, vibeToneSetting.getVibeToneIndex() + 1);
+                    }
                     running = false;
                 }
 

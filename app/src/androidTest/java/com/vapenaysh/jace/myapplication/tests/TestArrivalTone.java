@@ -17,12 +17,40 @@ import android.os.Vibrator;
 import junit.framework.TestCase;
 
 /**
- * Tests User Stories: 5.1, 5.2, 6.1, 6.2, 7.1, 7.2, 7.3, 7.4
-
+ *
+ * Story 4: User will be notified when his/her partner arrives/departs at a location by a unique
+ * and fixed arrival/departure sound tone.
+ *
+ * Scenario 1: I will not get notified by the fixed and unique arrival sound tone
+ * Given that my partner already set a favorite location
+ * And my partner is not within 1/10 of a mile range of that favorite location
+ * When my partner does not arrive at or is within 1/10 of a mile range of that favorite location
+ * Then I should not get notified by the arrival tone which is a fixed sound notification
+ *
+ * Scenario 2: I get notified by the fixed and unique arrival sound tone
+ * Given that my partner already set a favorite location
+ * And my partner is not yet within 1/10 of a mile range of that favorite location
+ * When my partner arrives at or is within 1/10 of a mile range of that favorite location
+ * Then I should get notified by the arrival tone which is a fixed sound notification
+ *
+ *
+ * Story 5: User will be notified when his/her partner arrives/departs at a location by a unique
+ * and fixed arrival/departure vibration tone.
+ *
+ * Scenario 1: I will not get notified by the fixed and unique arrival vibration tone
+ * Given that my partner already set a favorite location
+ * And my partner is not within 1/10 of a mile range of that favorite location
+ * When my partner does not arrive at or is within 1/10 of a mile range of that favorite location
+ * Then I should not get notified by the arrival VibeTone which is a fixed vibration notification.
+ *
+ *
+ * Scenario 2: I get notified by the fixed and unique arrival vibration tone
+ * Given that my partner already set a favorite location
+ * And my partner is not yet within 1/10 of a mile range of that favorite location
+ * When my partner arrives at or is within 1/10 of a mile range of that favorite location
+ * Then I should get notified by the arrival VibeTone which is a fixed vibration notification.
+ *
  */
-
-
-
 public class TestArrivalTone extends TestCase {
 
     // Constants

@@ -25,22 +25,24 @@ public class TestUserCenter extends ActivityInstrumentationTestCase2<UserCenter>
     {
         super(UserCenter.class);
     }
-    public void test_showsList()
-    {
+    public void test_showsList() {
         userCenter = getActivity();
         final ListView lv = (ListView) userCenter.findViewById(R.id.listView);
-        assertNotNull(lv);
 
-        new CountDownTimer(3500, 1000) {
+        if (lv != null) {
 
-            public void onTick(long millisUntilFinished) {
-            }
+            new CountDownTimer(3500, 1000) {
 
-            public void onFinish() {
-                //userCenter.flls.add(new FavoriteLocation(new LatLng(0, 0), "test", new Date()));
-                //userCenter.fla.notifyDataSetChanged();
-                assertNotNull(lv.getChildAt(lv.getFirstVisiblePosition()));
-            }
-        }.start();
+                public void onTick(long millisUntilFinished) {
+                }
+
+                public void onFinish() {
+                    //userCenter.flls.add(new FavoriteLocation(new LatLng(0, 0), "test", new Date()));
+                    //userCenter.fla.notifyDataSetChanged();
+                    assertNotNull(lv.getChildAt(lv.getFirstVisiblePosition()));
+                }
+            }.start();
+            assertNotNull(lv);
+        }
     }
 }

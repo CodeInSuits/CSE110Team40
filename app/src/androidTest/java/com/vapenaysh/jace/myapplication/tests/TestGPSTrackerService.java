@@ -10,6 +10,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.vapenaysh.jace.myapplication.GPSTrackerService;
 
 /**
+ * Story 4: Get notification when the partner gets close to one of their favorite locations
+ *
+ * Scenario 1: I am notified about my partner
+ * Given that I have a partner
+ * And my partner has added his/her favorite location,
+ * When my partner is less than 1/10 of a mile away from that location,
+ * Then I will be notified of the visit by a text and a sound
+ *
+ *
+ * Scenario 2: I am not notified about my partner
+ * Given that I have a partner
+ * And my partner has not added a specific location
+ * Then I will not be notified when they visit different locations.
+ *
  * Created by Jace on 5/7/16.
  */
 public class TestGPSTrackerService extends ServiceTestCase<GPSTrackerService>{
