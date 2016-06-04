@@ -19,22 +19,21 @@ import java.util.List;
 /**
  * Created by bijancfarahani on 5/30/16.
  *
- * [Story 2]: Keep a list of the partner’s favorite locations: name, assigned location vibration
- * tones and location sound tones.
  *
- * Scenario 1:
+ * [Story 1]: Display a list of my partner’s daily location history
+ *
+ * Scenario 1: My partner doesn’t visit any one of the favorite locations
  * Given that I have a partner
- * And my partner has set at least one favorite location
- * When I enter the corresponding screen for displaying my partner’s favorite location.
- * Then I can see the name, location, vibration pattern, and names of assigned location vibration
- * tones and location sound tones of each location shown up next to each location name on the app.
+ * And my partner has added a favorite location,
+ * when my partner haven’t visited any of his/her favorite locations since 3:00am at that day
+ * Then the list of my partner’s visited history will be an empty list.
  *
- * Scenario 2:
+ * Scenario 2: My partner visits one of the favorite locations
  * Given that I have a partner
- * And my partner has never set a favorite location
- * When I enter the corresponding screen for displaying my partner’s favorite location.
- * Then I can see an empty list with no name or any extra information on the app.
- *
+ * And my partner has added a favorite location,
+ * when my partner visits the given location
+ * Then the name of the my partner’s favorite location will appear in my list ordered by
+ * the most recent visits.
  *
  * BDD Tests: Given a users partner has no favorite locations, then the
  * user should have an empty list of the partners favorite locations.
@@ -58,7 +57,8 @@ public class TestPartnerFavLocList extends ActivityInstrumentationTestCase2<Part
             public void run() {
                 ListView listView = (ListView) partnerFavoriteLocation.findViewById(R.id.list);
                 ArrayList<FavoriteLocation> favoriteLocationArrayList = new ArrayList<FavoriteLocation>();
-                CustomListViewAdapter customListViewAdapter = new CustomListViewAdapter(partnerFavoriteLocation, favoriteLocationArrayList);
+                CustomListViewAdapter customListViewAdapter =
+                        new CustomListViewAdapter(partnerFavoriteLocation, favoriteLocationArrayList);
                 listView.setAdapter(customListViewAdapter);
                 assertTrue(customListViewAdapter.isEmpty());
             }
@@ -73,7 +73,8 @@ public class TestPartnerFavLocList extends ActivityInstrumentationTestCase2<Part
             public void run() {
                 ListView listView = (ListView) partnerFavoriteLocation.findViewById(R.id.list);
                 ArrayList<FavoriteLocation> favoriteLocationArrayList = new ArrayList<FavoriteLocation>();
-                CustomListViewAdapter customListViewAdapter = new CustomListViewAdapter(partnerFavoriteLocation, favoriteLocationArrayList);
+                CustomListViewAdapter customListViewAdapter =
+                        new CustomListViewAdapter(partnerFavoriteLocation, favoriteLocationArrayList);
                 listView.setAdapter(customListViewAdapter);
                 LatLng coor = new LatLng(5.5, 3.2);
                 FavoriteLocation loc = new FavoriteLocation(coor, "testLoc");
@@ -91,7 +92,8 @@ public class TestPartnerFavLocList extends ActivityInstrumentationTestCase2<Part
             public void run() {
                 ListView listView = (ListView) partnerFavoriteLocation.findViewById(R.id.list);
                 ArrayList<FavoriteLocation> favoriteLocationArrayList = new ArrayList<FavoriteLocation>();
-                CustomListViewAdapter customListViewAdapter = new CustomListViewAdapter(partnerFavoriteLocation, favoriteLocationArrayList);
+                CustomListViewAdapter customListViewAdapter =
+                        new CustomListViewAdapter(partnerFavoriteLocation, favoriteLocationArrayList);
                 listView.setAdapter(customListViewAdapter);
                 LatLng coor = new LatLng(5.5, 3.2);
                 FavoriteLocation loc = new FavoriteLocation(coor, "testLoc");

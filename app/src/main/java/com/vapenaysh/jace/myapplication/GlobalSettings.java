@@ -45,6 +45,7 @@ public class GlobalSettings extends AppCompatActivity {
 
         setColor(mode, both, soundOnly, vibeOnly, mute);
 
+        // set the onClick method for the both notification button
         both.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +59,7 @@ public class GlobalSettings extends AppCompatActivity {
             }
         });
 
+        // set the onClick method for the sound only button
         soundOnly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +72,7 @@ public class GlobalSettings extends AppCompatActivity {
             }
         });
 
+        // set the onClick method for the vibe only button
         vibeOnly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +85,7 @@ public class GlobalSettings extends AppCompatActivity {
             }
         });
 
-
+        // set the onClick method for the mute button
         mute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +99,11 @@ public class GlobalSettings extends AppCompatActivity {
         });
     }
 
+    /**
+     * Setter method for notification mode
+     * @param sound
+     * @param vibe
+     */
     public void setNotificationSetting(boolean sound, boolean vibe) {
 
         if (sound && vibe){
@@ -112,6 +120,9 @@ public class GlobalSettings extends AppCompatActivity {
         }
     }
 
+    /**
+     * method for saving the current notification mode to local
+     */
     public void saveSettings(){
         SharedPreferences sharedPreferences = getSharedPreferences("notif_mode", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -120,10 +131,12 @@ public class GlobalSettings extends AppCompatActivity {
         mode = notificationMode+"";
     }
 
+    // getter method for the current notification mode
     public static int getNotificationMode(){
         return notificationMode;
     }
 
+    // method for setting color of buttons
     private void setColor(String mode, Button both, Button soundOnly, Button vibeOnly, Button mute){
         final int newColor = 0xFF66ccff;
         final int startColor = 0xFFc2c2d6;

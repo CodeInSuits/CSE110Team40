@@ -19,10 +19,17 @@ import junit.framework.Test;
 import java.util.Date;
 
 /**
+ * Created by Jerry on 5/30/16.
  *
+ * [Story 2]: Keep a list of the partner’s favorite locations: name, assigned location vibration
+ * tones and location sound tones.
  *
+ * Scenario 2:
+ * Given that I have a partner
+ * And my partner has never set a favorite location
+ * When I enter the corresponding screen for displaying my partner’s favorite location.
+ * Then I can see an empty list with no name or any extra information on the app.
  *
- * Created by Jerry on 5/30/2016.
  */
 public class TestEmptyList extends ActivityInstrumentationTestCase2<UserCenter>
 {
@@ -44,7 +51,8 @@ public class TestEmptyList extends ActivityInstrumentationTestCase2<UserCenter>
         setActivityIntent(i);
         FavoriteLocationList favoriteLocationList = new FavoriteLocationList("testolddata");
         favoriteLocationList.removeAllLocations();
-        favoriteLocationList.writeLocation(new FavoriteLocation(new LatLng(0, 0), "rand paul is a meme", new Date(System.currentTimeMillis()-2*24*60*60*1000)));
+        favoriteLocationList.writeLocation(new FavoriteLocation(new LatLng(0, 0),
+                "rand paul is a meme", new Date(System.currentTimeMillis()-2*24*60*60*1000)));
     }
     /*Test 1: (User Stories 1.1, 1.2) {(pass 3am),cleared empty list}
         Click on app icon to launch the app

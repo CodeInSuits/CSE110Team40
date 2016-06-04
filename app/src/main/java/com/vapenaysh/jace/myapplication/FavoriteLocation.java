@@ -23,28 +23,27 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
 
     public FavoriteLocation(){}
 
-    public int getVibeTone() {
-        return vibeTone;
-    }
-
-    public void setVibeTone(int vibeTone) {
-        this.vibeTone = vibeTone;
-    }
-
-    public String getRingTone() {
-        return ringTone;
-    }
-
     public void setRingTone(String ringTone) {
         this.ringTone = ringTone;
     }
 
+    /**
+     * Constructor for FavoriteLocation with parameter LatLng
+     * @param coord
+     * @param name
+     */
     public FavoriteLocation(LatLng coord, String name){
         this.myLatLng = new MyLatLng(coord.latitude, coord.longitude);
         this.name = name;
         this.myDate = new MyDate(new Date(0));
     }
 
+    /**
+     * Constructor for FavoriteLocation with parameter date
+     * @param coord
+     * @param name
+     * @param timeStamp
+     */
     public FavoriteLocation(LatLng coord, String name, Date timeStamp){
         this.myLatLng = new MyLatLng(coord.latitude, coord.longitude);
         this.name = name;
@@ -52,18 +51,37 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
     }
 
 
+    // getter method for vibe tone
+    public int getVibeTone() {
+        return vibeTone;
+    }
+
+    // setter method for vibe tone
+    public void setVibeTone(int vibeTone) {
+        this.vibeTone = vibeTone;
+    }
+
+    // getter method for ring tone
+    public String getRingTone() {
+        return ringTone;
+    }
+
+    // setter method for LatLng
     public void setMyLatLng(MyLatLng myLatLng) {
         this.myLatLng = myLatLng;
     }
 
+    // getter method for data
     public MyDate getMyDate() {
         return myDate;
     }
 
+    // setter method for data
     public void setMyDate(MyDate myDate) {
         this.myDate = myDate;
     }
 
+    // setter method for vistied
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
@@ -78,10 +96,12 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
         this.myDate = new MyDate(timeStamp);
     }
 
+    // getter method for name
     public String getName() {
         return name;
     }
 
+    // setter method for name
     public void setName(String name) {
         this.name = name;
     }
@@ -93,6 +113,8 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
     public MyLatLng getMyLatLng(){
         return myLatLng;
     }
+
+    // methods for updating visited instance variable
 
     public void setLat(double l){
         myLatLng.setLat(l);
@@ -154,6 +176,11 @@ public class FavoriteLocation implements Comparable<FavoriteLocation>{
 
     }
 
+    /**
+     * Method for comparing locations
+     * @param another
+     * @return
+     */
     @Override
     public int compareTo(FavoriteLocation another) {
         return date().compareTo(another.date());

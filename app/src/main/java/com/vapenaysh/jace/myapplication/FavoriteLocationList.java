@@ -64,6 +64,11 @@ public class FavoriteLocationList extends Observable{
 
     }
 
+    /**
+     * Method for saving the current favorite location
+     * @param favoriteLocation
+     * @return
+     */
     public boolean writeLocation(FavoriteLocation favoriteLocation){
         int i = fll.indexOf(favoriteLocation);
         if(i != -1){
@@ -81,13 +86,18 @@ public class FavoriteLocationList extends Observable{
         return fll;
     }
 
-
+    /**
+     * method for removing all the locations
+     */
     public void removeAllLocations(){
         fll = new ArrayList<>();
         db.setValue(fll);
         Log.v(TAG, "Deleted all locations");
     }
 
+    /**
+     * method for removing one favorite location
+     */
     public boolean removeLocation(FavoriteLocation loc){
         fll.remove(loc);
         db.setValue(fll);
@@ -95,6 +105,9 @@ public class FavoriteLocationList extends Observable{
         return true;
     }
 
+    /**
+     * method for removing one favorite location
+     */
     public boolean removeLocation(String loc){
         FavoriteLocation fave = null;
         for(FavoriteLocation l : fll ){
@@ -110,6 +123,7 @@ public class FavoriteLocationList extends Observable{
         }
     }
 
+    // getter method for size
     public int getSize(){
         return fll.size();
     }

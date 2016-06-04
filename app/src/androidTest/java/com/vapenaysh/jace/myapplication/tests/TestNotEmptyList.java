@@ -15,7 +15,18 @@ import com.vapenaysh.jace.myapplication.UserCenter;
 import java.util.Date;
 
 /**
- * Created by Jerry on 5/30/2016.
+ * Created by Jerry on 5/30/16.
+ *
+ * [Story 2]: Keep a list of the partner’s favorite locations: name, assigned location vibration
+ * tones and location sound tones.
+ *
+ * Scenario 1:
+ * Given that I have a partner
+ * And my partner has set at least one favorite location
+ * When I enter the corresponding screen for displaying my partner’s favorite location.
+ * Then I can see the name, location, vibration pattern, and names of assigned location vibration
+ * tones and location sound tones of each location shown up next to each location name on the app.
+ *
  */
 public class TestNotEmptyList extends ActivityInstrumentationTestCase2<UserCenter>
 {
@@ -38,7 +49,8 @@ public class TestNotEmptyList extends ActivityInstrumentationTestCase2<UserCente
         setActivityIntent(i);
         FavoriteLocationList favoriteLocationList = new FavoriteLocationList("testolddata2");
         favoriteLocationList.removeAllLocations();
-        favoriteLocationList.writeLocation(new FavoriteLocation(new LatLng(0, 0), "rand paul is a meme", new Date(System.currentTimeMillis())));
+        favoriteLocationList.writeLocation(new FavoriteLocation(new LatLng(0, 0),
+                "rand paul is a meme", new Date(System.currentTimeMillis())));
     }
     /*Test 3: (User Stories 1.1, 1.2) {(not pass 3am, visit some location), nonempty list}
         Click on app icon to launch the app

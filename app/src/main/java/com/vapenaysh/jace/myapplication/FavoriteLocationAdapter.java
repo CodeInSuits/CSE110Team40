@@ -25,6 +25,11 @@ public class FavoriteLocationAdapter extends BaseAdapter
     private static LayoutInflater inflater = null;
     private String partnerEmail;
 
+    /**
+     * Constructor for FavoriteLocationAdapter
+     * @param context
+     * @param data
+     */
     public FavoriteLocationAdapter(Context context, ArrayList<FavoriteLocation> data){
 
         mContext = context;
@@ -32,10 +37,18 @@ public class FavoriteLocationAdapter extends BaseAdapter
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    /**
+     * Setter method for partner email
+     * @param email
+     */
     public void setPartnerEmail(String email){
         partnerEmail  = email;
     }
 
+    /**
+     * Getter method for count
+     * @return
+     */
     @Override
     public int getCount() {
         if(locations != null) {

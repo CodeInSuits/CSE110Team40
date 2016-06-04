@@ -29,6 +29,11 @@ public class CustomListViewAdapter extends BaseAdapter  {
     private Activity activity;
     private String partnerEmail;
 
+    /**
+     * Constructor for CustomListViewAdapter
+     * @param context
+     * @param data
+     */
     public CustomListViewAdapter(Context context, ArrayList<FavoriteLocation> data){
 
         mContext = context;
@@ -36,10 +41,18 @@ public class CustomListViewAdapter extends BaseAdapter  {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    /**
+     * setter method for partner email
+     * @param email
+     */
     public void setPartnerEmail(String email){
         partnerEmail  = email;
     }
 
+    /**
+     * getter method for count
+     * @return
+     */
     @Override
     public int getCount() {
         if(locations != null) {
@@ -50,16 +63,33 @@ public class CustomListViewAdapter extends BaseAdapter  {
         }
     }
 
+    /**
+     * getter method for item
+     * @param position
+     * @return
+     */
     @Override
     public Object getItem(int position) {
         return position;
     }
 
+    /**
+     * getter method for item id
+     * @param position
+     * @return
+     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
+    /**
+     * getter method for view
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
 
@@ -67,6 +97,8 @@ public class CustomListViewAdapter extends BaseAdapter  {
         final int currPosition = position;
 
         if (convertView == null){
+
+            // UI setting for displaying the favorite location information
 
             view = inflater.inflate(R.layout.list_row, null);
 
@@ -85,6 +117,7 @@ public class CustomListViewAdapter extends BaseAdapter  {
             soundButton.setText("Ring Tone " + ringToneName);
             vibeButton.setText("Vibe Tone " + (mLocation.getVibeTone()+1));
 
+            // set the onClick method for the soundButton
             soundButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -98,6 +131,7 @@ public class CustomListViewAdapter extends BaseAdapter  {
 
             });
 
+            // set the onClick method for the vibeButton
             vibeButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override

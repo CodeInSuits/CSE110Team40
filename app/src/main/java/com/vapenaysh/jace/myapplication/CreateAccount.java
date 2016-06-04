@@ -16,10 +16,10 @@ import Utility.ProgressGenerator;
 
 /**
  *
- * This is for milestone 2 perhaps
+ * Not Used File
  *
+ * This is for milestone 3 perhaps
  */
-
 public class CreateAccount extends Activity implements ProgressGenerator.OnCompleteListener{
 
     private EditText username;
