@@ -12,7 +12,7 @@ import junit.framework.TestCase;
  *
  * Created by adamabadilla on 5/8/16.
  *
- * Story 2: User wants to set a favorite location
+ * [Story 2]: User wants to set a favorite location
  *
  * Unit Testing the fuctionality of FavoriteLocation.java
  *

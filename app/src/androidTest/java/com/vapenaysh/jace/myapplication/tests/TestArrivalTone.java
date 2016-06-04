@@ -18,7 +18,7 @@ import junit.framework.TestCase;
 
 /**
  *
- * Story 4: User will be notified when his/her partner arrives/departs at a location by a unique
+ * [Story 4]: User will be notified when his/her partner arrives/departs at a location by a unique
  * and fixed arrival/departure sound tone.
  *
  * Scenario 1: I will not get notified by the fixed and unique arrival sound tone
@@ -34,7 +34,7 @@ import junit.framework.TestCase;
  * Then I should get notified by the arrival tone which is a fixed sound notification
  *
  *
- * Story 5: User will be notified when his/her partner arrives/departs at a location by a unique
+ * [Story 5]: User will be notified when his/her partner arrives/departs at a location by a unique
  * and fixed arrival/departure vibration tone.
  *
  * Scenario 1: I will not get notified by the fixed and unique arrival vibration tone

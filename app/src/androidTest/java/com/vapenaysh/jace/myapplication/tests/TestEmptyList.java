@@ -19,6 +19,9 @@ import junit.framework.Test;
 import java.util.Date;
 
 /**
+ *
+ *
+ *
  * Created by Jerry on 5/30/2016.
  */
 public class TestEmptyList extends ActivityInstrumentationTestCase2<UserCenter>

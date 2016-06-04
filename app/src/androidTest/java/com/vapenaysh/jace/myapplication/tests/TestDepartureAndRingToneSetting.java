@@ -14,6 +14,23 @@ import static junit.framework.Assert.fail;
 
 /**
  *
+ * [Story 3]: User can customize the default CoupleTones location sound tone.
+ *
+ * Scenario 1: I get notified by default location sound tone
+ * Given that My partner already set a favorite location
+ * And I haven’t set a customized location tone for that location
+ * When my partner arrives at that favorite location
+ * Then I will be notified by a text notification shown on the top of the screen as well as
+ * the default sound tone of that location followed by appropriate arrival tone notification
+ *
+ * Scenario 2: I get notified by customized location sound tone
+ * Given that My partner already set a favorite location
+ * And I already set a customized location tone for that location
+ * When my partner arrives at that favorite location
+ * Then I will be notified by a text notification shown on the top of the screen as well as
+ * the customized sound tone of that location followed by appropriate arrival tone notification
+ *
+ *
  * [Story 4]: User will be notified when his/her partner arrives/departs at a location by a
  * unique and fixed arrival/departure sound tone.
  *
@@ -47,7 +64,7 @@ import static junit.framework.Assert.fail;
  *
  * Created by XuanpeiEstherOuyang on 6/1/16.
  */
-public class TestDepartureTone extends TestCase {
+public class TestDepartureAndRingToneSetting extends TestCase {
 
     // Constants
     final boolean RING = true;
@@ -60,7 +77,7 @@ public class TestDepartureTone extends TestCase {
     RingToneSetting ring;
     VibeToneSetting vibe;
 
-    public TestDepartureTone() {
+    public TestDepartureAndRingToneSetting() {
 
         // Instantiate GlobalSettings
         settings = new GlobalSettings();

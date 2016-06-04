@@ -1,8 +1,7 @@
 package com.vapenaysh.jace.myapplication.tests;
 
 /**
- * Story 1: Display a list of my partner’s daily location history
- *
+ * [Story 1]: Display a list of my partner’s daily location history
  *
  * Scenario 1: My partner doesn’t visit any one of the favorite locations
  * Given that I have a partner

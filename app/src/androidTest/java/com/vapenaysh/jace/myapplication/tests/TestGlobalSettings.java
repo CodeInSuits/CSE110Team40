@@ -16,7 +16,7 @@ import com.vapenaysh.jace.myapplication.PartnerSettings;
 import com.vapenaysh.jace.myapplication.R;
 
 /**
- * Story 7: User has the option of being notified via both LocationTone and VibeTone
+ * [Story 7]: User has the option of being notified via both LocationTone and VibeTone
  * notification, just one or neither
  *
  *

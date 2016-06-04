@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by bijancfarahani on 5/30/16.
  *
- * Story 2: Keep a list of the partner’s favorite locations: name, assigned location vibration
+ * [Story 2]: Keep a list of the partner’s favorite locations: name, assigned location vibration
  * tones and location sound tones.
  *
  * Scenario 1:

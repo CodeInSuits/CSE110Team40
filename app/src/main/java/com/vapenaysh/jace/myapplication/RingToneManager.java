@@ -136,4 +136,19 @@ public class RingToneManager extends AppCompatActivity {
 
         }
     }
+
+    /**
+     * Getter method for arrival ring tone
+     */
+    public Uri getArrivalRingTone(){
+        return arrivalRingTone;
+    }
+
+    /**
+     * Getter method for departure ring tone
+     */
+    public Uri getDepartureRingTone(){
+        return departureRingTone;
+    }
+
 }

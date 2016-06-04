@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 /**
  *
- * Story 2: User wants to set a favorite location
+ * [Story 2]: User wants to set a favorite location
  *
  *
  * Scenario 1:  The location is given a customized name when it is set via search bar

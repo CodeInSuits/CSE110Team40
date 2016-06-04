@@ -10,7 +10,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.vapenaysh.jace.myapplication.GPSTrackerService;
 
 /**
- * Story 4: Get notification when the partner gets close to one of their favorite locations
+ * [Story 4]: Get notification when the partner gets close to one of their favorite locations
  *
  * Scenario 1: I am notified about my partner
  * Given that I have a partner
