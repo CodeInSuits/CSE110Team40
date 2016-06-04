@@ -1,27 +1,17 @@
 package com.vapenaysh.jace.myapplication;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Vibrator;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -179,6 +169,7 @@ public class VibeToneSetting extends Activity implements Observer {
         DatabaseReference db = locationsDB.getReference(uid + Constants.LOC_URL);
         db.child(""+position).child("vibeTone").setValue(VibeToneIndex);
         Toast.makeText(getApplicationContext(), "VibeTone " + (VibeToneIndex+1) + " saved", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
 

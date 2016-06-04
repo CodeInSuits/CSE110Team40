@@ -15,6 +15,8 @@ import com.vapenaysh.jace.myapplication.R;
 /**
  * Created by adamabadilla on 5/7/16.
  *
+ * Story 1: Log in the app
+ *
  * Scenario 1: User tries registering with their Google Account
  *
  * Given that the user has a google account

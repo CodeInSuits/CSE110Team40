@@ -1,6 +1,7 @@
 package com.vapenaysh.jace.myapplication.tests;
 
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.suitebuilder.annotation.SmallTest;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -17,17 +18,39 @@ import java.util.List;
 
 /**
  * Created by bijancfarahani on 5/30/16.
+ *
+ * Story 2: Keep a list of the partner’s favorite locations: name, assigned location vibration
+ * tones and location sound tones.
+ *
+ * Scenario 1:
+ * Given that I have a partner
+ * And my partner has set at least one favorite location
+ * When I enter the corresponding screen for displaying my partner’s favorite location.
+ * Then I can see the name, location, vibration pattern, and names of assigned location vibration
+ * tones and location sound tones of each location shown up next to each location name on the app.
+ *
+ * Scenario 2:
+ * Given that I have a partner
+ * And my partner has never set a favorite location
+ * When I enter the corresponding screen for displaying my partner’s favorite location.
+ * Then I can see an empty list with no name or any extra information on the app.
+ *
+ *
  * BDD Tests: Given a users partner has no favorite locations, then the
  * user should have an empty list of the partners favorite locations.
  * When the partner adds a favorite location, then the users list should update to reflect this
  * and when the partner removes a favorite location, the users list should also reflect this
+ *
  */
 public class TestPartnerFavLocList extends ActivityInstrumentationTestCase2<PartnerFavoriteLocation> {
 
     PartnerFavoriteLocation partnerFavoriteLocation;
+
     public TestPartnerFavLocList(Class<PartnerFavoriteLocation> activityClass) {
         super(activityClass);
     }
+
+    @SmallTest
     public void testEmptyList() {
         partnerFavoriteLocation = getActivity();
         partnerFavoriteLocation.runOnUiThread(new Runnable() {
@@ -41,6 +64,7 @@ public class TestPartnerFavLocList extends ActivityInstrumentationTestCase2<Part
             }
         });
     }
+    @SmallTest
     public void testAddItem() {
         partnerFavoriteLocation = getActivity();
         partnerFavoriteLocation.runOnUiThread(new Runnable() {
@@ -57,6 +81,8 @@ public class TestPartnerFavLocList extends ActivityInstrumentationTestCase2<Part
             }
         });
     }
+
+    @SmallTest
     public void testRemoveItem() {
         partnerFavoriteLocation = getActivity();
         partnerFavoriteLocation.runOnUiThread(new Runnable() {

@@ -12,6 +12,8 @@ import com.vapenaysh.jace.myapplication.R;
 /**
  * Created by bijanfarahani on 5/8/16.
  *
+ * Story 3: Add a partner
+ *
  * Scenario 1: User does not have a partner but wants to add one
  * Given that I does not have a partner already,
  * When I wants to add a partner,
